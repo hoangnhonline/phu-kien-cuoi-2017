@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\LoaiSp;
+use App\Models\CateParent;
 use App\Models\BaoHanh;
 use App\Models\Cate;
 use App\Models\Product;
@@ -14,7 +14,7 @@ use App\Models\ProductImg;
 use App\Models\ThuocTinh;
 use App\Models\LoaiThuocTinh;
 use App\Models\Banner;
-use App\Models\HoverInfo;
+
 use App\Models\Articles;
 use App\Models\ArticlesCate;
 use App\Models\Customer;
@@ -27,7 +27,7 @@ class HomeController extends Controller
 {
     
     public static $loaiSp = []; 
-    public static $loaiSpArrKey = [];    
+    public static $cateParentListKey = [];    
 
     public function __construct(){        
        
@@ -36,125 +36,11 @@ class HomeController extends Controller
     * Display a listing of the resource.
     *
     * @return Response
-    */    
-    public function index(Request $request){
-         $productArr = $manhinhArr = [];
-        $loaiSp = LoaiSp::where('status', 1)->get();
-        $bannerArr = [];
-        $hoverInfo = [];
-        foreach( $loaiSp as $loai){            
-            $query = Product::where( [ 'status' => 1, 'loai_id' => $loai->id, 'is_old' => 1, 'is_hot' => 1])
-                            ->where('so_luong_ton', '>', 0)
-                            ->where('het_hang', 0)
-                            ->where('price', '>', 0)            
-                            ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')            
-                            ->select('product_img.image_url', 'product.*')                        
-                            ->orderBy('product.display_order')            
-                            ->limit(5);
-           
-            $productArr[$loai->id] = $query->get();
-
-            if( $loai->home_style > 0 ){
-                $bannerArr[$loai->id] = Banner::where(['object_id' => $loai->id, 'object_type' => 1])->orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
-            }       
-
-           
-            if(count($productArr) > 0){
-                $hoverInfoTmp = HoverInfo::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
-                
-                foreach($hoverInfoTmp as $value){
-                    if($value->loai_id == $loai->id){
-                        $hoverInfo[$value->loai_id][] = $value;
-                    }
-                }
-            }            
-        
-        }// foreach
-      //  dd($hoverInfo);
-        $settingArr = Settings::whereRaw('1')->lists('value', 'name');
-        $seo = $settingArr;
-        $seo['title'] =  $seo['description'] =  $seo['keywords'] = "Máy cũ giá rẻ";
-        $socialImage = $settingArr['banner'];
-
-        $articlesArr = Articles::where(['cate_id' => 1, 'is_hot' => 1])->orderBy('id', 'desc')->get();
-                
-        return view('frontend.old.index', compact(
-                                'productArr', 
-                                'bannerArr', 
-                                'articlesArr', 
-                                'socialImage', 
-                                'seo', 
-                                'thuocTinhArr', 
-                                'loaiThuocTinhArr', 
-                                'spThuocTinhArr',
-                                'hoverInfo'));
-    }
-    public function timBaoHanh(Request $request){
-        $kq = 4;
-        $end_date = '';
-        $serial_no = $request->serial_no ? $request->serial_no : null;
-        if($serial_no){
-            $rs = BaoHanh::where('serial_no', $serial_no)->first();
-            if(!$rs){
-                $kq = 3; // khong ton tai
-            }else{
-                $end_date = $rs->end_date;
-                if(date('Y-m-d', strtotime($end_date)) >= date('Y-m-d')){
-                    $kq = 1; // con bao hanh
-                }else{
-                    $kq = 2; // het bao hanh
-                }
-            }
-        }
-        $seo['title'] =  $seo['description'] =  $seo['keywords'] = "Bảo hành";
-
-        $newProductList =  Product::where('so_luong_ton', '>', 0)->where('price', '>', 0)
-                        ->where('het_hang', 0)
-                        ->where('is_new', 1)                   
-                        ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
-                        ->leftJoin('sp_thuoctinh', 'sp_thuoctinh.product_id', '=','product.id')
-                        ->join('loai_sp', 'loai_sp.id', '=', 'product.loai_id')
-                        ->select('product_img.image_url', 'product.*', 'thuoc_tinh')
-                        ->orderBy('id', 'desc')->limit(6)->get();
-
-        return view('frontend.bao-hanh.index', compact('kq', 'serial_no', 'seo', 'newProductList', 'end_date'));
-    }
-    public function indexs(Request $request)
+    */   
+    
+   
+    public function index(Request $request)
     {   
-        $productArr = $manhinhArr = [];
-        $loaiSp = LoaiSp::where('status', 1)->get();
-        $bannerArr = [];
-        $hoverInfo = [];
-        foreach( $loaiSp as $loai){            
-            $query = Product::where( [ 'status' => 1, 'loai_id' => $loai->id, 'is_old' => 0])
-                            ->where('so_luong_ton', '>', 0)
-                            ->where('het_hang', 0)
-                            ->where('price', '>', 0)            
-                            ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
-                            ->leftJoin('sp_thuoctinh', 'sp_thuoctinh.product_id', '=', 'product.id')            
-                            ->select('product_img.image_url', 'product.*', 'sp_thuoctinh.thuoc_tinh')
-                            ->orderBy('product.id', 'desc')                            
-                            ->limit(15);
-           
-            $productArr[$loai->id] = $query->get();
-
-            if( $loai->home_style > 0 ){
-                $bannerArr[$loai->id] = Banner::where(['object_id' => $loai->id, 'object_type' => 1])->orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
-            }       
-
-           
-            if(count($productArr) > 0){
-                $hoverInfoTmp = HoverInfo::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
-                
-                foreach($hoverInfoTmp as $value){
-                    if($value->loai_id == $loai->id){
-                        $hoverInfo[$value->loai_id][] = $value;
-                    }
-                }
-            }            
-        
-        }// foreach
-      //  dd($hoverInfo);
         $settingArr = Settings::whereRaw('1')->lists('value', 'name');
         $seo = $settingArr;
         $seo['title'] = $settingArr['site_title'];
@@ -162,32 +48,29 @@ class HomeController extends Controller
         $seo['keywords'] = $settingArr['site_keywords'];
         $socialImage = $settingArr['banner'];
 
+        $cateParentHot = CateParent::getList(['is_hot' => 1, 'limit' => 4]);
 
-
-        $articlesList = Articles::where(['cate_id' => 1])->orderBy('id', 'desc')->limit(4)->get();
+        $articlesHotList = Articles::where(['cate_id' => 1])->orderBy('id', 'desc')->limit(4)->get();
                 
-        return view('frontend.home.index', compact(
-                                'productArr', 
-                                'bannerArr', 
+        return view('frontend.home.index', compact(                                                                
                                 'articlesList', 
                                 'socialImage', 
                                 'seo', 
-                                'thuocTinhArr', 
-                                'loaiThuocTinhArr', 
-                                'spThuocTinhArr',
-                                'hoverInfo'));
+                                'cateParentHot',
+                                'articlesHotList'
+                            ));
     }
 
     public function oldDevice(Request $request)
     {   
         $productArr = $manhinhArr = [];
-        $loaiSp = LoaiSp::where('status', 1)->get();
+        $loaiSp = CateParent::where('status', 1)->get();
         $bannerArr = [];
         $hoverInfo = [];
         foreach( $loaiSp as $loai){            
-            $query = Product::where( [ 'status' => 1, 'loai_id' => $loai->id, 'is_old' => 1, 'is_hot' => 1])
-                            ->where('so_luong_ton', '>', 0)
-                            ->where('het_hang', 0)
+            $query = Product::where( [ 'status' => 1, 'parent_id' => $loai->id, 'is_hot' => 1])
+                            ->where('inventory', '>', 0)
+                            ->where('out_of_stock', 0)
                             ->where('price', '>', 0)            
                             ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')            
                             ->select('product_img.image_url', 'product.*')                        
@@ -203,8 +86,8 @@ class HomeController extends Controller
                 $hoverInfoTmp = HoverInfo::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
                 
                 foreach($hoverInfoTmp as $value){
-                    if($value->loai_id == $loai->id){
-                        $hoverInfo[$value->loai_id][] = $value;
+                    if($value->parent_id == $loai->id){
+                        $hoverInfo[$value->parent_id][] = $value;
                     }
                 }
             }            
@@ -253,7 +136,7 @@ class HomeController extends Controller
         $price_to = $request->price_to ? $request->price_to : 500000000;      
         $cateArr = $request->cate ? $request->cate : [];     
         $colorArr = $request->color ? $request->color : [];   
-        $loai_id = $request->loai_id ? $request->loai_id : null;
+        $parent_id = $request->parent_id ? $request->parent_id : null;
         $cate_id = $request->cate_id ? $request->cate_id : null;
 
         $sort = $request->sort ? $request->sort : 'new';
@@ -261,20 +144,19 @@ class HomeController extends Controller
         $colorArr = array_filter($colorArr);   
         $loaiDetail = (object) [];
         $query = Product::where('product.status', 1);
-        $query->where('so_luong_ton', '>', 0)->where('price', '>', 0)->where('loai_sp.status', 1) 
-                        ->where('het_hang', 0)                       
-                        ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
-                        ->leftJoin('sp_thuoctinh', 'sp_thuoctinh.product_id', '=','product.id')
-                        ->join('loai_sp', 'loai_sp.id', '=', 'product.loai_id')
-                        ->select('product_img.image_url', 'product.*', 'thuoc_tinh');
+        $query->where('inventory', '>', 0)->where('price', '>', 0)->where('cate_parent.status', 1) 
+                        ->where('out_of_stock', 0)                       
+                        ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')                        
+                        ->join('cate_parent', 'cate_parent.id', '=', 'product.parent_id')
+                        ->select('product_img.image_url', 'product.*');
         if($tu_khoa){
             $query->where('product.alias', 'LIKE', '%'.$tu_khoa.'%');
         }
         if(!empty($cateArr)){
             $query->whereIn('product.cate_id', $cateArr);
         }
-        if($loai_id){
-            $query->where('product.loai_id', $loai_id);
+        if($parent_id){
+            $query->where('product.parent_id', $parent_id);
         }
         if($cate_id){
             $query->where('product.cate_id', $cate_id);
@@ -300,11 +182,11 @@ class HomeController extends Controller
         if($productList->count() > 0){
             $hoverInfoTmp = HoverInfo::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
             foreach($hoverInfoTmp as $value){
-                $hoverInfo[$value->loai_id][] = $value;
+                $hoverInfo[$value->parent_id][] = $value;
             }
         }        
         //var_dump("<pre>", $hoverInfo);die;
-        return view('frontend.search.index', compact('productList', 'tu_khoa', 'seo', 'hoverInfo', 'loaiDetail', 'cateArr', 'price_fm', 'price_to', 'colorArr', 'loai_id', 'cate_id', 'sort'));
+        return view('frontend.search.index', compact('productList', 'tu_khoa', 'seo', 'hoverInfo', 'loaiDetail', 'cateArr', 'price_fm', 'price_to', 'colorArr', 'parent_id', 'cate_id', 'sort'));
     }
     public function ajaxTab(Request $request){
         $table = $request->type ? $request->type : 'category';

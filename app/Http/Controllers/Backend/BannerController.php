@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
-use App\Models\LoaiSp;
+use App\Models\CateParent;
 use App\Models\Cate;
 use App\Models\LandingProjects;
 use Helper, File, Session, Auth;
@@ -29,7 +29,7 @@ class BannerController extends Controller
         $arrSearch['object_type'] = $object_type = $request->object_type;
         $detail = (object) [];
         if( $object_type == 1){
-            $detail = LoaiSp::find( $object_id );
+            $detail = CateParent::find( $object_id );
         }
         if( $object_type == 2){
             $detail = Cate::find( $object_id );
@@ -39,14 +39,8 @@ class BannerController extends Controller
             if( $object_id == 1){
                 $detail->name = "Slide trang chủ";
             }elseif( $object_id == 2){
-                $detail->name = "Banner trang chủ - bên trái ";
-            }elseif( $object_id == 3){
-                $detail->name = "Banner trang chủ - bên phải";
-            }elseif( $object_id == 4){
-                $detail->name = "Banner sidebar trang tin tức";
-            }elseif($object_id == 5){
-                $detail->name = "Banner giữa trang";
-            }         
+                $detail->name = "Banner giữa trang chủ ";
+            }      
         }
         if($object_type == 4){
             $detail = LandingProjects::find($object_id);
@@ -74,7 +68,7 @@ class BannerController extends Controller
         $object_id = $request->object_id;
         $object_type = $request->object_type;
         if( $object_type == 1){
-            $detail = LoaiSp::find( $object_id );
+            $detail = CateParent::find( $object_id );
         }
         if( $object_type == 2){
             $detail = Cate::find( $object_id );
@@ -129,7 +123,7 @@ class BannerController extends Controller
 
             $destionation = date('Y/m/d'). '/'. end($tmp);
             
-            File::move(config('annam.upload_path').$dataArr['image_url'], config('annam.upload_path').$destionation);
+            File::move(config('phukien.upload_path').$dataArr['image_url'], config('phukien.upload_path').$destionation);
             
             $dataArr['image_url'] = $destionation;
         }
@@ -168,7 +162,7 @@ class BannerController extends Controller
         $object_id = $request->object_id;
         $object_type = $request->object_type;
         if( $object_type == 1){
-            $detail = LoaiSp::find( $object_id );
+            $detail = CateParent::find( $object_id );
         }
         if( $object_type == 2){
             $detail = Cate::find( $object_id );
@@ -215,7 +209,7 @@ class BannerController extends Controller
 
             $destionation = date('Y/m/d'). '/'. end($tmp);
             
-            File::move(config('annam.upload_path').$dataArr['image_url'], config('annam.upload_path').$destionation);
+            File::move(config('phukien.upload_path').$dataArr['image_url'], config('phukien.upload_path').$destionation);
             
             $dataArr['image_url'] = $destionation;
         }

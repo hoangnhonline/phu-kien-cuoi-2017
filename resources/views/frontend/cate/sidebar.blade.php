@@ -1,99 +1,103 @@
-<form action="{!! route('search') !!}" method="GET" id="searchForm">
-<input type="hidden" name="sort" id="sort-filter" value="new">
-<div class="col-md-3 col-sm-3 col-xs-12 block_cate_left" style="padding-bottom:30px">
-    <div class="block block_modul">
-        <div class="block_price">
-            <h3 class="block_title">Khoảng giá</h3>
-            <div class="block_content clearfix">
-                <div class="slider-range">
-                    <div id="slider-range"></div>
-                    <div class="action clearfix">
-                        <span id="amount-left"></span>
-                        <span id="amount-right"></span>
-                    </div>
-                </div>
+<div class="col-sm-3 col-xs-12 block-col-left">
+    <div class="block-sidebar">
+        <div class="block-module block-search-sidebar">
+            <div class="block-title">
+                <h2>
+                    <i class="fa fa-search"></i>
+                    TÌM KIẾM SẢN PHẨM
+                </h2>
             </div>
-            <input type="hidden" name="price_fm" value="{{ $price_fm }}" id="price_fm" />
-            <input type="hidden" name="price_to" value="{{ $price_to }}" id="price_to" />
+            <div class="block-content">
+                <form method="" action="" class="frm-search">
+                    <div class="form-group">
+                    <input type="text" class="form-control" id="" name="" value="" placeholder="Nhập từ khóa bạn muốn tìm kiếm">
+                  </div>
+                    <div class="form-group">
+                    <input type="text" class="form-control" id="" name="" value="" placeholder="Nhập mã sản phẩm">
+                  </div>
+                    <div class="form-group">
+                        <select class="form-control" id="" name="">
+                        <option value="0">--Chọn mức giá--</option>
+                      </select>
+                  </div>
+                    <div class="form-group">
+                        <select class="form-control" id="" name="">
+                        <option value="0">--Chọn danh mục--</option>
+                      </select>
+                  </div>
+                    <div class="form-group">
+                        <div class="choose-prod-color-list">
+                            <a href="#" class="color_01"></a>
+                            <a href="#" class="color_02 active"></a>
+                            <a href="#" class="color_03"></a>
+                            <a href="#" class="color_04"></a>
+                            <a href="#" class="color_05"></a>
+                            <a href="#" class="color_06"></a>
+                            <a href="#" class="color_07"></a>
+                            <a href="#" class="color_08"></a>
+                            <a href="#" class="color_09"></a>
+                        </div>
+                  </div>
+                    <div class="form-group">
+                    <button type="submit" class="btn btn-main show">Tìm kiếm</button>
+                  </div>
+                </form>
+            </div>
         </div>
-    </div><!-- /block_modul -->
-    @if($routeName != 'search')
-    <div class="block block_modul">
-        <div class="block_brands">
-            <div class="box-accordion in">
-                <div class="box-header accordion-header">
-                    <h3 class="block_title">Hãng {{ $loaiDetail ? $loaiDetail->name : "" }}</h3>
-                    <a href="javascript:void(0);" class="btn-opened" title="Down Up"></a>
-                </div>
-                <div class="box-collapse">
-                    <div class="block_content">
-                        <ul class="clearfix">
-                            @foreach( $cateArrByLoai[$loaiDetail->id] as $cate)
-                            <li>
-                                <input {{ isset($cateDetail) && $cateDetail->id == $cate->id ? "checked" : "" }} type="checkbox" class="cate-filter" name="cate[]" value="{!! $cate->id !!}" id="brand-{!! $cate->id !!}"> 
-                                <label for="brand-{!! $cate->id !!}" title="{!! $cate->name !!}">{!! $cate->name !!}
-                                    <span class="number-prod">{{ $cate->product->count() }}</span>
-                                </label>                            
-                            </li>
-                            @endforeach
-                           
-                        </ul>
-                    </div>
-                </div>
+        <div class="block-module block-links-sidebar">
+            <div class="block-title">
+                <h2>
+                    <i class="fa fa-gift"></i>
+                    Khuyến mãi hot
+                </h2>
             </div>
-        </div><!-- /block_brands -->
-    </div><!-- /block_modul -->
-    @else
-    @foreach($loaiSpList as $loaiSp)
-    <div class="block block_modul">
-        <div class="block_brands">
-            <div class="box-accordion in">
-                <div class="box-header accordion-header">
-                    <h3 class="block_title">{!! $loaiSp->name !!}</h3>
-                    <a href="javascript:void(0);" class="btn-opened" title="Down Up"></a>
-                </div>
-                <div class="box-collapse">
-                    <div class="block_content">
-                        <ul class="clearfix">
-                            @foreach( $cateArrByLoai[$loaiSp->id] as $cate)
-                            <li>
-                                <input type="checkbox" class="cate-filter" name="cate[]" value="{!! $cate->id !!}" id="brand-{!! $cate->id !!}"> 
-                                <label for="brand-{!! $cate->id !!}" title="{!! $cate->name !!}">{!! $cate->name !!}                                    
-                                </label>                            
-                            </li>
-                            @endforeach                           
-                        </ul>
-                    </div>
-                </div>
+            <div class="block-content">
+                <ul class="list">
+                    @if($kmHot)
+                    @foreach( $kmHot as $obj )
+                    <li>
+                        <a href="{!! route('news-detail', [ $obj->cate->slug, $obj->slug, $obj->id ] ) !!}" title="{!! $obj->title !!}">
+                            <p class="thumb"><img src="{!! Helper::showImage( $obj->image_url ) !!}" alt="{!! $obj->title !!}"></p>
+                            <h3>{!! $obj->title !!}</h3>
+                        </a>
+                    </li>
+                    @endforeach
+                    @endif
+                </ul>
             </div>
-        </div><!-- /block_brands -->
-    </div><!-- /block_modul -->
-    @endforeach
-    @endif
-    <div class="block block_modul" >
-        <div class="block_colors">
-            <div class="box-accordion in">
-                <div class="box-header accordion-header">
-                    <h3 class="block_title">MÀU SẮC</h3>
-                    <a href="javascript:void(0);" class="btn-opened" title="Down Up"></a>
-                </div>
-                <div class="box-collapse">
-                    <div class="block_content">
-                        <ul class="search-color">
-                            @foreach($colorList as $color)
-                            <li ><a href="javascript:;" class="color-filter" data-id="{{ $color->id }}" style="background:{!! $color->color_code !!};"></a>
-                            <input type="hidden" name="color[]" type="checkbox" value="" />
-                            </li>
-                            @endforeach                            
-                        </ul>
-                    </div>
-                </div>
+        </div>
+
+        <div class="block-module block-statistics-sidebar">
+            <div class="block-title">
+                <h2>
+                    <i class="fa fa-bar-chart"></i>
+                    THỐNG KÊ TRUY CẬP
+                </h2>
             </div>
-        </div><!-- /block_colors -->
-    </div><!-- /block_modul -->
-</div><!-- /block_cate_left -->
-<input type="hidden" name="loai_id" value="{{ $loaiDetail->id }}">
-@if(isset($cateDetail))
-<input type="hidden" name="cate_id" value="{{ $cateDetail->id }}">
-@endif
-</form>
+            <div class="block-content">
+                <ul class="list">
+                    <li>
+                        <span class="icon"><i class="fa fa-user"></i></span>
+                        <span class="text">Hôm qua:</span>
+                        <span class="number">246</span>
+                    </li>
+                    <li>
+                        <span class="icon"><i class="fa fa-user"></i></span>
+                        <span class="text">Hôm nay:</span>
+                        <span class="number">246</span>
+                    </li>
+                    <li>
+                        <span class="icon"><i class="fa fa-user"></i></span>
+                        <span class="text">Trong tuần:</span>
+                        <span class="number">246</span>
+                    </li>
+                    <li>
+                        <span class="icon"><i class="fa fa-user"></i></span>
+                        <span class="text">Tổng truy cập:</span>
+                        <span class="number">246</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div><!-- /block-col-left -->

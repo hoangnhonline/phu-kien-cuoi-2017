@@ -24,7 +24,7 @@ class Product extends Model  {
      * @var array
      */
     protected $fillable = [
-                    'ma_sp', 
+                    'code', 
                     'name', 
                     'alias',                     
                     'slug',                     
@@ -36,14 +36,14 @@ class Product extends Model  {
                     'price',
                     'price_new',
                     'price_sale',
-                    'loai_id', 
+                    'parent_id', 
                     'cate_id', 
-                    'mo_ta',                    
+                    'description',                    
                     'xuat_xu', 
                     'khuyen_mai', 
-                    'chi_tiet', 
+                    'content', 
                     'bao_hanh', 
-                    'so_luong_ton', 
+                    'inventory', 
                     'sale_percent', 
                     'so_luong_ban', 
                     'views', 
@@ -56,17 +56,66 @@ class Product extends Model  {
                     'meta_id',
                     'price_sell',
                     'thong_tin_chung_id',
-                    'het_hang'
+                    'out_of_stock'
                     ];
     
-    public function prices()
+    public static function getList($params = []){
+        $query = self::where('status', 1);
+        if( isset($params['parent_id']) && $params['parent_id'] ){
+            $query->where('parent_id', $params['parent_id']);
+        }
+        if( isset($params['cate_id']) && $params['cate_id'] ){
+            $query->where('cate_id', $params['cate_id']);
+        }
+        if( isset($params['is_hot']) && $params['is_hot'] ){
+            $query->where('is_hot', $params['is_hot']);
+        }
+        if( isset($params['is_sale']) && $params['is_sale'] ){
+            $query->where('is_sale', $params['is_sale']);
+        }
+        if( isset($params['is_new']) && $params['is_new'] ){
+            $query->where('is_new', $params['is_new']);
+        }
+        $query->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')            
+                            ->select('product_img.image_url', 'product.*');
+        $query->orderBy('product.is_hot', 'desc')->orderBy('product.id', 'desc');
+        if(isset($params['limit']) && $params['limit']){
+            return $query->limit($params['limit'])->get();
+        }
+        if(isset($params['pagination']) && $params['pagination']){
+            return $query->paginate($params['pagination']);
+        }                
+    }
+    public static function productTag( $id )
     {
-        return $this->hasMany('App\Models\ProductPrice', 'product_id');
+        $arr = [];
+        $rs = TagObjects::where( ['type' => 1, 'object_id' => $id] )->lists('tag_id');
+        if( $rs ){
+            $arr = $rs->toArray();
+        }
+        return $arr;
+    }    
+   
+    public static function getListTag($id){
+        $query = TagObjects::where(['object_id' => $id, 'tag_objects.type' => 1])
+            ->join('tag', 'tag.id', '=', 'tag_objects.tag_id')            
+            ->get();
+        return $query;
+    }   
+    public function cateParent()
+    {
+        return $this->belongsTo('App\Models\CateParent', 'parent_id');
     }
-    public function loaiSp(){
-        return $this->belongsTo('App\Models\LoaiSp', 'loai_id');
+    public function cate()
+    {
+        return $this->belongsTo('App\Models\Cate', 'cate_id');
     }
-    public function thuocTinh(){
-        return $this->hasOne('App\Models\SpThuocTinh', 'product_id');
+    public function createdUser()
+    {
+        return $this->belongsTo('App\Models\Account', 'created_user');
+    }
+     public function updatedUser()
+    {
+        return $this->belongsTo('App\Models\Account', 'updated_user');
     }
 }

@@ -32,21 +32,19 @@ Route::group(['prefix' => 'authentication'], function () {
     Route::get('/user-logout', ['as' => 'user-logout', 'uses' => 'AuthenticationController@logout']);
 });
 Route::group(['namespace' => 'Frontend'], function()
-{
-    Route::get('code/sang-map/seo-link', ['as' => 'seo-link', 'uses' => 'HomeController@showLink']);   
-
+{   
+    
     Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
     Route::get('/load-slider', ['as' => 'load-slider', 'uses' => 'HomeController@loadSlider']);
     Route::get('/count-message', ['as' => 'count-message', 'uses' => 'HomeController@getNoti']);
     Route::get('/chuong-trinh-khuyen-mai', ['as' => 'chuong-trinh-khuyen-mai', 'uses' => 'EventController@index']);
     Route::get('event/{slug}', ['as' => 'detail-event', 'uses' => 'EventController@detail']);
    Route::get('may-cu/{slug}', ['as' => 'old-cate', 'uses' => 'OldController@cate']);
-
+   Route::get('/{slugCate}/{slug}-p{id}.html', ['as' => 'news-detail', 'uses' => 'NewsController@newsDetail']);
     Route::post('/send-contact', ['as' => 'send-contact', 'uses' => 'ContactController@store']);
     Route::post('/set-service', ['as' => 'set-service', 'uses' => 'CartController@setService']);
     
-    Route::get('san-pham/{slug}-{id}.html', ['as' => 'product-detail', 'uses' => 'DetailController@index']);
-    Route::get('/tin-tuc/{slug}-{id}.html', ['as' => 'news-detail', 'uses' => 'HomeController@newsDetail']);
+    Route::get('san-pham/{slug}-{id}.html', ['as' => 'product', 'uses' => 'DetailController@index']);    
     
     Route::group(['prefix' => 'thanh-toan'], function () {
         Route::get('thong-tin-thanh-toan', ['as' => 'payment', 'uses' => 'CartController@payment']);
@@ -73,24 +71,19 @@ Route::group(['namespace' => 'Frontend'], function()
         Route::get('/reset-password/{key}', ['as' => 'reset-password', 'uses' => 'CustomerController@resetPassword']);
         Route::post('save-reset-password', ['as' => 'save-reset-password', 'uses' => 'CustomerController@saveResetPassword']);
     });
-    Route::get('{slugLoaiSp}/{slug}/', ['as' => 'child-cate', 'uses' => 'CateController@cate']);
+    Route::get('tim-kiem.html', ['as' => 'search', 'uses' => 'HomeController@search']);
+    Route::get('tin-tuc.html', ['as' => 'news-list', 'uses' => 'NewsController@newsList']);
+    Route::get('{slug}.html', ['as' => 'pages', 'uses' => 'HomeController@pages']);    
+    Route::get('{slugCateParent}', ['as' => 'cate-parent', 'uses' => 'CateController@cateParent']);    
+    Route::get('{slugCateParent}/{slugCateChild}', ['as' => 'cate', 'uses' => 'CateController@cateChild']);
+
     Route::post('/dang-ki-newsletter', ['as' => 'register.newsletter', 'uses' => 'HomeController@registerNews']);
     Route::get('/cap-nhat-thong-tin', ['as' => 'cap-nhat-thong-tin', 'uses' => 'CartController@updateUserInformation']);        
     Route::post('/search', ['as' => 'ajax-search', 'uses' => 'HomeController@ajaxSearch']);        
-    Route::get('/tin-tuc/{slug}-p{id}.html', ['as' => 'news-detail', 'uses' => 'NewsController@newsDetail']);
+    
     Route::post('/get-district', ['as' => 'get-district', 'uses' => 'DistrictController@getDistrict']);
     Route::post('/get-ward', ['as' => 'get-ward', 'uses' => 'WardController@getWard']);
-    Route::post('/customer/update', ['as' => 'update-customer', 'uses' => 'CustomerController@update']);
-    Route::post('/customer/register', ['as' => 'register-customer', 'uses' => 'CustomerController@register']);
-    Route::post('/customer/register-ajax', ['as' => 'register-customer-ajax', 'uses' => 'CustomerController@registerAjax']);
-    Route::post('/customer/checkemail', ['as' => 'checkemail-customer', 'uses' => 'CustomerController@isEmailExist']);    
-    Route::get('tim-kiem.html', ['as' => 'search', 'uses' => 'HomeController@search']);
-    Route::get('bao-hanh.html', ['as' => 'bao-hanh', 'uses' => 'HomeController@timBaoHanh']);
-    Route::get('lien-he.html', ['as' => 'contact', 'uses' => 'HomeController@contact']);
-    Route::get('may-cu-gia-re.html', ['as' => 'old-device', 'uses' => 'HomeController@oldDevice']);
-    Route::get('tin-tuc.html', ['as' => 'news-list', 'uses' => 'NewsController@newsList']);
-
-    Route::get('{slug}.html', ['as' => 'parent-cate', 'uses' => 'CateController@index']);
+    
 
 });
 

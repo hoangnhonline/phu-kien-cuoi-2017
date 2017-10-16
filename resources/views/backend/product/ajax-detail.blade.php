@@ -15,7 +15,7 @@
   </div>
   <div class="form-group">
     <label for="pwd">Tồn kho</label>
-    <input type="text" class="form-control" id="so_luong_ton" autocomplete="off" name="so_luong_ton" value="{{ $detail->so_luong_ton }}">
+    <input type="text" class="form-control" id="inventory" autocomplete="off" name="inventory" value="{{ $detail->inventory }}">
   </div>
   <div style="text-align:right">
   <button type="button" id="btnSaveAjax" class="btn btn-primary">Save</button>

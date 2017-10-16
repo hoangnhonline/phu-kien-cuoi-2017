@@ -5,20 +5,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\LoaiSp;
+use App\Models\CateParent;
 use App\Models\Cate;
 use App\Models\Product;
-use App\Models\SpThuocTinh;
+use App\Models\Articles;
 use App\Models\ProductImg;
-use App\Models\ThuocTinh;
-use App\Models\LoaiThuocTinh;
 use App\Models\Banner;
-use App\Models\Location;
-use App\Models\TinhThanh;
 use App\Models\MetaData;
-use App\Models\HoverInfo;
-use App\Models\ThongTinChung;
-
 
 use Helper, File, Session, Auth;
 
@@ -26,7 +19,7 @@ class DetailController extends Controller
 {
     
     public static $loaiSp = []; 
-    public static $loaiSpArrKey = [];    
+    public static $cateParentListKey = [];    
 
     public function __construct(){
         
@@ -40,41 +33,16 @@ class DetailController extends Controller
     */
     public function index(Request $request)
     {   
-        $spThuocTinhArr = $productArr = [];
+        $productArr = [];
         $id = $request->id;
         $detail = Product::find($id);
         if(!$detail){
             return redirect()->route('home');
         }
-        $loaiDetail = LoaiSp::find( $detail->loai_id );
+        $loaiDetail = CateParent::find( $detail->parent_id );
         $cateDetail = Cate::find( $detail->cate_id );
-        $detailChung = (object) [];
+      
         $hinhArr = ProductImg::where('product_id', $detail->id)->get()->toArray();
-        // hien thuoc tinh
-        if($detail->thong_tin_chung_id > 0){
-            $detailChung = ThongTinChung::find($detail->thong_tin_chung_id);
-        
-            if( $detailChung ){
-                $spThuocTinhArr = json_decode( $detailChung->thong_so, true);
-
-               // dd($spThuocTinhArr);
-            }
-        }
-        if ( $spThuocTinhArr ){
-            $loaiThuocTinhArr = LoaiThuocTinh::where('loai_id', $detail->loai_id)->orderBy('display_order')->get();            
-           
-            if( $loaiThuocTinhArr->count() > 0){
-                foreach ($loaiThuocTinhArr as $value) {
-
-                    $thuocTinhArr[$value->id]['id'] = $value->id;
-                    $thuocTinhArr[$value->id]['name'] = $value->name;
-
-                    $thuocTinhArr[$value->id]['child'] = ThuocTinh::where('loai_thuoc_tinh_id', $value->id)->select('id', 'name')->orderBy('display_order')->get()->toArray();
-                }
-                
-            }        
-        }
-        
         
         if( $detail->meta_id > 0){
            $meta = MetaData::find( $detail->meta_id )->toArray();
@@ -85,17 +53,15 @@ class DetailController extends Controller
             $seo['title'] = $seo['description'] = $seo['keywords'] = $detail->name;
         }               
         
-        $socialImage = ProductImg::find($detail->thumbnail_id)->image_url;
-        $hoverInfo = HoverInfo::where('loai_id', $detail->loai_id)->orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
+        $socialImage = ProductImg::find($detail->thumbnail_id)->image_url;        
         $price = $detail->is_sale == 1 ? $detail->price_sale : $detail->price;
         $price_fm = $price - 1000000;
         $price_to = $price + 1000000;
         $query = Product::where('product.slug', '<>', '')
-                    ->where('het_hang', 0)
-                    ->where('product.loai_id', $detail->loai_id)
+                    ->where('out_of_stock', 0)
+                    ->where('product.parent_id', $detail->parent_id)
                     ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
-                    ->leftJoin('sp_thuoctinh', 'sp_thuoctinh.product_id', '=', 'product.id')            
-                    ->select('product_img.image_url', 'product.*', 'sp_thuoctinh.thuoc_tinh')
+                    ->select('product_img.image_url', 'product.*')
                     ->where('product.id', '<>', $detail->id);    
                     $query->where(function($query) use ($price_fm, $price_to){
                         $query->where('price', '<=', $price_to)->where('price', '>=', $price_fm)->where('is_sale', 0);
@@ -104,8 +70,8 @@ class DetailController extends Controller
                         });
                     });
                     $otherList = $query->orderBy('product.id', 'desc')->limit(6)->get();
-        
-        return view('frontend.detail.index', compact('detail', 'loaiDetail', 'cateDetail', 'hinhArr', 'ttArr','thuocTinhArr', 'loaiThuocTinhArr', 'spThuocTinhArr', 'productArr', 'seo', 'socialImage', 'hoverInfo', 'otherList', 'detailChung'));
+        $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);
+        return view('frontend.detail.index', compact('detail', 'loaiDetail', 'cateDetail', 'hinhArr', 'productArr', 'seo', 'socialImage', 'otherList', 'kmHot'));
     }
 
     public function ajaxTab(Request $request){

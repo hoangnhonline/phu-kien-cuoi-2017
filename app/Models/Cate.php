@@ -23,12 +23,34 @@ class Cate extends Model  {
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'alias', 'loai_id', 'is_hot', 'status', 'display_order', 'description', 'meta_id', 'created_user', 'updated_user'];
+    protected $fillable = ['name', 'slug', 'alias', 'parent_id', 'is_hot', 'status', 'display_order', 'description', 'meta_id', 'created_user', 'updated_user', 'image_url'];
 
+    public static function getList($params = []){
+        $query = self::where('status', 1);
+        
+        if( isset($params['is_hot']) && $params['is_hot'] ){
+            $query->where('is_hot', $params['is_hot']);
+        }
+        if( isset($params['parent_id']) && $params['parent_id'] ){
+            $query->where('parent_id', $params['parent_id']);
+        }
+        $query->orderBy('is_hot', 'desc')->orderBy('id', 'desc');
+        if(isset($params['limit']) && $params['limit']){
+            return $query->limit($params['limit'])->get();
+        }
+        if(isset($params['pagination']) && $params['pagination']){
+            return $query->paginate($params['pagination']);
+        }                
+    }
     public function product()
     {
         return $this->hasMany('App\Models\Product', 'cate_id');
     }
+    public function cateParent()
+    {
+        return $this->belongsTo('App\Models\CateParent', 'parent_id');
+    }
+   
     public function productNew() {
         return $this->product()->where('is_old','=', 0);
     }

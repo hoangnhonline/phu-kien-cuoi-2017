@@ -1,130 +1,79 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
 @section('content')
-<div class="block block_breadcrumb">
-    <ol class="breadcrumb">
-        <li><a href="{{ route('home') }}" title="Trở về trang chủ">Trang chủ</a></li>       
-        <li class="active">{{ $loaiDetail->name }}</li>
-    </ol>
-</div><!-- /block_breadcrumb -->
-
-<div class="block_categories row">
-    @include('frontend.cate.sidebar')
-    <div class="col-md-9 col-sm-9 col-xs-12 block_cate_right">                        
-        <div class="block block_view">
-            <span>Xem theo:</span>
-            <ul class="block_content">
-                <li class="active"><a href="javascript:;" data-sort="new" class="sort">Mới nhất</a></li>
-                <li><a href="javascript:;" data-sort="old" class="sort" title="Cũ nhất">Cũ nhất</a></li>
-                <li><a href="javascript:;" data-sort="high" class="sort" title="Giá cao nhất">Giá cao nhất</a></li>
-                <li><a href="javascript:;" data-sort="low" class="sort" title="Giá thấp nhất">Giá thấp nhất</a></li>
-            </ul>
-            
-            <!-- <a href="#" onclick="return false;" class="filter-prod">Bộ lọc sản phẩm</a> -->
-        </div><!-- /block_view_by -->
-        <div class="block block_product block_pg-product">
-            <h3 class="block_title block_title_link">
-                {!! $loaiDetail->name !!}
-                <span class="num">{{ $productList->total() }}</span>
-            </h3>
-            <div class="block_content row">
-                <ul class="list">
-                	@foreach( $productList as $product )
-                    <li class="col-sm-3 col-xs-6 product_item">
-                        <div class="item">
-                            <a href="{{ route('product-detail', [$product->slug, $product->id]) }}" title="{!! $product->name !!}">
-                                <div class="product_img">
-                                    <img class="lazy" data-original="{{ $product->image_url ? Helper::showImageThumb($product->image_url) : URL::asset('admin/dist/img/no-image.jpg') }}" alt="{!! $product->name !!}" title="{!! $product->name !!}">
-                                </div>
-                                <div class="product_info">
-                                  <h3 class="product_name">{!! $product->name !!}</h3>
-                                  <div class="product_price">
-                                  <span class="product_price_new">{{ $product->is_sale == 1 ? number_format($product->price_sale) : number_format($product->price) }}đ</span>
-                                  @if($product->is_sale)
-                                  <span class="product_price_old">{{ number_format($product->price) }}đ</span>
-                                  @endif
-                                </div>
-                                @if($product->is_new)
-                                <span class="new">NEW</span>
-                                @endif
-                                @if($product->is_sale)
-                                <span class="sale_off">GIẢM {{ ceil(($product->price-$product->price_sale)*100/$product->price) }}%</span>
-                                @endif
-                                </div>
-                                <div class="product_detail">
-                                  <p class="name">{!! $product->name !!}</p>
-                                        <div class="product_price">
-                                  <span class="product_price_new">{{ $product->is_sale == 1 ? number_format($product->price_sale) : number_format($product->price) }}đ</span>
-                                  @if($product->is_sale)
-                                  <span class="product_price_old">{{ number_format($product->price) }}đ</span>
-                                  @endif
-                                </div>
-                                @if( $loaiDetail->is_hover == 1)            
-                                    @foreach($hoverInfo as $info)
-                                    <?php 
-                                    $tmpInfo = explode(",", $info->str_thuoctinh_id);              
-                                    ?>
-
-                                    <p>
-                                    {!! $info->text_hien_thi !!}: 
-                                    <?php                                    
-                                    $spThuocTinhArr = json_decode( $product->thuoc_tinh, true);                 
-                                   
-                                    $countT = 0; $totalT = count($tmpInfo);
-                                    foreach( $tmpInfo as $tinfo){
-                                        $countT++;
-                                        if(isset($spThuocTinhArr[$tinfo])){
-                                            echo $spThuocTinhArr[$tinfo];
-                                            echo $countT < $totalT ? ", " : "";
-                                        }
-                                    }
-
-                                     ?>                   
-                                     </p>
-                                    @endforeach
-                                    
-                                  @endif                    
-
-                                </div>
-                            </a>
-                        </div>
-                    </li><!-- /product_item -->        
-                    @endforeach                              
-                </ul>
-                <div class="clearfix"></div>
-                <div class="text-center">
-                    <div class="block_pagination">
-                    {{ $productList->links() }}
-                    </div>
+<div class="block block-breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+           <li><a href="{{ route('home') }}">Trang chủ</a></li>        
+            <li class="active">{!! $parentDetail->name !!}</li>
+        </ul>
+    </div>
+</div><!-- /block-breadcrumb -->
+<div class="block block-two-col container">
+    <div class="row">
+        <div class="col-xs-12 block-col-main">
+            <div class="block-page-common clearfix">
+                <div class="block block-title tit-more">
+                    <h2>{!! $parentDetail->name !!}</h2>
+                    @if($parentDetail->description)
+                    <p class="desc text-center">
+                       {!! $parentDetail->description !!}
+                    </p>
+                    @endif
                 </div>
-            </div>
-        </div><!-- /block_product -->
-    </div><!-- /block_cate_right -->
-</div><!-- /block_categories -->
-@stop
-@section('js')
-<script>
-    (function($) {
-         "use strict";
-        /*  [ Filter by price ]
-        - - - - - - - - - - - - - - - - - - - - */
-        $('#slider-range').slider({
-            range: true,
-            min: 0,
-            max: 50000000,
-            values: [{{ $price_fm }}, {{ $price_to }}],
-            step : 2000000,
-            slide: function (event, ui) {
-                $('#amount-left').text(ui.values[0]);
-                $('#price_fm').val(ui.values[0]);
-                $('#amount-right').text(ui.values[1] );
-                $('#price_to').val(ui.values[1]);
-                $('#searchForm').submit();
-            }
-        });
-        $('#amount-left').text($('#slider-range').slider('values', 0));        
-        $('#amount-right').text($('#slider-range').slider('values', 1));
-        
-    })(jQuery);
-    </script>
+                @if($cateList)
+                @foreach($cateList as $cate)
+                @if(isset($productArr[$cate->id]) && count($productArr[$cate->id]) > 0 )
+                <div class="block-content">
+                    <div class="box-title-cate-prod">
+                        <i class="fa fa-heart"></i> <h3>{!! $cate->name !!}</h3>                        
+                        <a href="{{ route('cate', [ $parentDetail->slug, $cate->slug ]) }}" class="readmore btn-main">Xem chi tiết <i class="fa fa-long-arrow-right"></i></a>
+                    </div>
+                    <div class="product-list">
+
+                        <div class="owl-carousel owl-theme owl-style2" data-nav="true" data-margin="30" data-items='5' data-autoplayTimeout="500" data-autoplay="false" data-loop="true" data-navcontainer="true" data-responsive='{"0":{"items":1},"480":{"items":2},"600":{"items":2},"768":{"items":3},"800":{"items":3},"992":{"items":5}}'>
+                            @foreach($productArr[$cate->id] as $obj)
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <p class="box-ico">
+                                        @if( $obj->is_new == 1)
+                                        <span class="ico-new ico">NEW</span>
+                                        @endif
+                                        @if( $obj->is_sale == 1 && $obj->sale_percent > 0 )
+                                        <span class="ico-sales ico">-15%</span>
+                                        @endif
+                                    </p>
+                                    <a href="{{ route('product', [$obj->slug, $obj->id ]) }}" title="{!! $obj->name !!}">
+                                        <img src="{!! Helper::showImageThumb( $obj->image_url ) !!}" class="img-1" alt="{!! $obj->name !!}">
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <h2 class="title"><a href="{{ route('product', [$obj->slug, $obj->id ]) }}" title="{!! $obj->name !!}">{!! $obj->name !!}</a></h2>
+                                    <div class="product-price">
+                                        <span class="label-txt">Giá:</span> <span class="price-new">
+                                            @if($obj->is_sale == 1 && $obj->price_sale > 0)
+                                            {{ number_format($obj->price_sale) }}đ
+                                            @else
+                                                {{ number_format($obj->price) }}đ
+                                            @endif  
+                                        </span>
+                                        @if( $obj->is_sale == 1)
+                                        <span class="price-old">{{ number_format($obj->price) }}đ</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                </div>
+                @endif
+                @endforeach
+                @endif
+
+            </div>                      
+        </div><!-- /block-ct-news -->
+    </div><!-- /block-col-left -->
+</div><!-- /block_big-title -->
 @stop

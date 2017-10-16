@@ -61,7 +61,7 @@
                                         100-round($product['price_sale']*100/$product['price'])
                                     }}%</span>
                                     @endif
-                                    <a href="{{ route('product-detail', $product['slug']) }}">
+                                    <a href="{{ route('product', $product['slug']) }}">
                                         <img class="img-responsive lazy" alt="{{ $detail->name }}" data-original="{{ Helper::showImage($product->image_url) }}" />
                                     </a>
                                     <!--<figure class="mask-info">
@@ -73,7 +73,7 @@
                                     </figure>-->
                                 </div>
                                 <div class="right-block">
-                                    <h2 class="product-name"><a title="{{ $product['name'] }}" href="{{ route('product-detail', $product['slug']) }}">{{ $product['name'] }}</a></h2>
+                                    <h2 class="product-name"><a title="{{ $product['name'] }}" href="{{ route('product', $product['slug']) }}">{{ $product['name'] }}</a></h2>
                                     <div class="content_price">
                                         <span class="price product-price">
                                             @if($product['price'] > 0)
@@ -87,7 +87,7 @@
                                         @endif
                                     </div>
                                     @if($product['price'] > 0)
-                                    <a class="add_to_cart_button" href="{{ route('product-detail', $product['slug']) }}">Mua</a>
+                                    <a class="add_to_cart_button" href="{{ route('product', $product['slug']) }}">Mua</a>
                                     @endif
                                 </div>
                             </div>

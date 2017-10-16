@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\LoaiSp;
+use App\Models\CateParent;
 use App\Models\Cate;
 use App\Models\Color;
 use App\Models\ProductImg;
@@ -30,13 +30,12 @@ class ProductController extends Controller
         $arrSearch['is_hot'] = $is_hot = isset($request->is_hot) ? $request->is_hot : null;
         $arrSearch['is_sale'] = $is_sale = isset($request->is_sale) ? $request->is_sale : null;
         $arrSearch['is_new'] = $is_new = isset($request->is_new) ? $request->is_new : null;
-        $arrSearch['is_old'] = $is_old = 0;
-        $arrSearch['loai_id'] = $loai_id = isset($request->loai_id) ? $request->loai_id : null;
+        $arrSearch['parent_id'] = $parent_id = isset($request->parent_id) ? $request->parent_id : 0;
         $arrSearch['cate_id'] = $cate_id = isset($request->cate_id) ? $request->cate_id : null;
        
         $arrSearch['name'] = $name = isset($request->name) && trim($request->name) != '' ? trim($request->name) : '';
         
-        $query = Product::where('product.status', $status)->where('is_old', 0);
+        $query = Product::where('product.status', $status);
         if( $is_hot ){
             $query->where('product.is_hot', $is_hot);
         }
@@ -47,8 +46,8 @@ class ProductController extends Controller
         if( $is_sale ){
             $query->where('product.is_sale', $is_sale);
         }
-        if( $loai_id ){
-            $query->where('product.loai_id', $loai_id);
+        if( $parent_id ){
+            $query->where('product.parent_id', $parent_id);
         }
         if( $cate_id ){
             $query->where('product.cate_id', $cate_id);
@@ -58,7 +57,7 @@ class ProductController extends Controller
             $query->where('product.name', 'LIKE', '%'.$name.'%');          
         }
         $query->join('users', 'users.id', '=', 'product.created_user');
-        $query->join('loai_sp', 'loai_sp.id', '=', 'product.loai_id');
+        $query->join('cate_parent', 'cate_parent.id', '=', 'product.parent_id');
         $query->join('cate', 'cate.id', '=', 'product.cate_id');
         $query->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id');        
         if($is_hot){
@@ -67,17 +66,17 @@ class ProductController extends Controller
             $query->orderBy('product.id', 'desc');    
         }
         
-        $items = $query->select(['product_img.image_url','product.*','product.id as product_id', 'full_name' , 'product.created_at as time_created', 'users.full_name', 'loai_sp.name as ten_loai', 'cate.name as ten_cate'])
+        $items = $query->select(['product_img.image_url','product.*','product.id as product_id', 'full_name' , 'product.created_at as time_created', 'users.full_name', 'cate_parent.name as ten_loai', 'cate.name as ten_cate'])
         ->paginate(50);   
-
-        $loaiSpArr = LoaiSp::all();  
-        if( $loai_id ){
-            $cateArr = Cate::where('loai_id', $loai_id)->orderBy('display_order', 'desc')->get();
+        
+        $cateParentList = CateParent::all();  
+        if( $parent_id  > -1 ){
+            $cateArr = Cate::where('parent_id', $parent_id)->orderBy('display_order', 'desc')->get();
         }else{
             $cateArr = (object) [];
         }
 
-        return view('backend.product.index', compact( 'items', 'arrSearch', 'loaiSpArr', 'cateArr'));
+        return view('backend.product.index', compact( 'items', 'arrSearch', 'cateParentList', 'cateArr'));
     }
     public function kho(Request $request)
     {
@@ -86,16 +85,16 @@ class ProductController extends Controller
         $arrSearch['is_hot'] = $is_hot = isset($request->is_hot) ? $request->is_hot : null;
         $arrSearch['is_sale'] = $is_sale = isset($request->is_sale) ? $request->is_sale : null;
         $arrSearch['is_new'] = $is_new = isset($request->is_new) ? $request->is_new : null;
-        $arrSearch['het_hang'] = $het_hang = isset($request->het_hang) ? $request->het_hang : null;
-        $arrSearch['is_old'] = $is_old = 0;
-        $arrSearch['loai_id'] = $loai_id = isset($request->loai_id) ? $request->loai_id : null;
+        $arrSearch['out_of_stock'] = $out_of_stock = isset($request->out_of_stock) ? $request->out_of_stock : null;
+        
+        $arrSearch['parent_id'] = $parent_id = isset($request->parent_id) ? $request->parent_id : null;
         $arrSearch['cate_id'] = $cate_id = isset($request->cate_id) ? $request->cate_id : null;
        
         $arrSearch['name'] = $name = isset($request->name) && trim($request->name) != '' ? trim($request->name) : '';
         
-        $query = Product::where('product.status', $status)->where('is_old', 0);
-        if( $het_hang ){
-            $query->where('product.het_hang', $het_hang);
+        $query = Product::where('product.status', $status);
+        if( $out_of_stock ){
+            $query->where('product.out_of_stock', $out_of_stock);
         }
         if( $is_hot ){
             $query->where('product.is_hot', $is_hot);
@@ -107,8 +106,8 @@ class ProductController extends Controller
         if( $is_sale ){
             $query->where('product.is_sale', $is_sale);
         }
-        if( $loai_id ){
-            $query->where('product.loai_id', $loai_id);
+        if( $parent_id ){
+            $query->where('product.parent_id', $parent_id);
         }
         if( $cate_id ){
             $query->where('product.cate_id', $cate_id);
@@ -118,7 +117,7 @@ class ProductController extends Controller
             $query->where('product.name', 'LIKE', '%'.$name.'%');          
         }
         $query->join('users', 'users.id', '=', 'product.created_user');
-        $query->join('loai_sp', 'loai_sp.id', '=', 'product.loai_id');
+        $query->join('cate_parent', 'cate_parent.id', '=', 'product.parent_id');
         $query->join('cate', 'cate.id', '=', 'product.cate_id');             
         if($is_hot){
             $query->orderBy('product.display_order', 'asc');
@@ -126,29 +125,29 @@ class ProductController extends Controller
             $query->orderBy('product.id', 'desc');    
         }
         
-        $items = $query->select(['product.*','product.id as product_id', 'full_name' , 'product.created_at as time_created', 'users.full_name', 'loai_sp.name as ten_loai', 'cate.name as ten_cate'])
+        $items = $query->select(['product.*','product.id as product_id', 'full_name' , 'product.created_at as time_created', 'users.full_name', 'cate_parent.name as ten_loai', 'cate.name as ten_cate'])
         ->paginate(50);   
 
-        $loaiSpArr = LoaiSp::all();  
-        if( $loai_id ){
-            $cateArr = Cate::where('loai_id', $loai_id)->orderBy('display_order', 'desc')->get();
+        $cateParentList = CateParent::all();  
+        if( $parent_id ){
+            $cateArr = Cate::where('parent_id', $parent_id)->orderBy('display_order', 'desc')->get();
         }else{
             $cateArr = (object) [];
         }
 
-        return view('backend.product.kho', compact( 'items', 'arrSearch', 'loaiSpArr', 'cateArr'));
+        return view('backend.product.kho', compact( 'items', 'arrSearch', 'cateParentList', 'cateArr'));
     }
     public function short(Request $request)
     {
         
         $arrSearch['status'] = $status = isset($request->status) ? $request->status : 1;
-        $arrSearch['loai_id'] = $loai_id = isset($request->loai_id) ? $request->loai_id : null;
+        $arrSearch['parent_id'] = $parent_id = isset($request->parent_id) ? $request->parent_id : null;
         $arrSearch['cate_id'] = $cate_id = isset($request->cate_id) ? $request->cate_id : null;
         $arrSearch['name'] = $name = isset($request->name) && trim($request->name) != '' ? trim($request->name) : '';
         
         $query = Product::where('product.status', $status);
-        if( $loai_id ){
-            $query->where('product.loai_id', $loai_id);
+        if( $parent_id ){
+            $query->where('product.parent_id', $parent_id);
         }
         if( $cate_id ){
             $query->where('product.cate_id', $cate_id);
@@ -160,25 +159,25 @@ class ProductController extends Controller
         $items = $query->select(['product.*','product.id as product_id' , 'product.created_at as time_created'])
         ->paginate(50);
 
-        $loaiSpArr = LoaiSp::all();  
-        if( $loai_id ){
-            $cateArr = Cate::where('loai_id', $loai_id)->orderBy('display_order', 'desc')->get();
+        $cateParentList = CateParent::all();  
+        if( $parent_id ){
+            $cateArr = Cate::where('parent_id', $parent_id)->orderBy('display_order', 'desc')->get();
         }else{
             $cateArr = (object) [];
         }
 
-        return view('backend.product.short', compact( 'items', 'arrSearch', 'loaiSpArr', 'cateArr'));
+        return view('backend.product.short', compact( 'items', 'arrSearch', 'cateParentList', 'cateArr'));
     }    
     public function ajaxSearch(Request $request){    
         $search_type = $request->search_type;
-        $arrSearch['loai_id'] = $loai_id = isset($request->loai_id) ? $request->loai_id : -1;
+        $arrSearch['parent_id'] = $parent_id = isset($request->parent_id) ? $request->parent_id : -1;
         $arrSearch['cate_id'] = $cate_id = isset($request->cate_id) ? $request->cate_id : -1;
         $arrSearch['name'] = $name = isset($request->name) && trim($request->name) != '' ? trim($request->name) : '';
         
         $query = Product::whereRaw('1');
         
-        if( $loai_id ){
-            $query->where('product.loai_id', $loai_id);
+        if( $parent_id ){
+            $query->where('product.parent_id', $parent_id);
         }
         if( $cate_id ){
             $query->where('product.cate_id', $cate_id);
@@ -188,21 +187,21 @@ class ProductController extends Controller
             $query->orWhere('name_extend', 'LIKE', '%'.$name.'%');
         }
         $query->join('users', 'users.id', '=', 'product.created_user');
-        $query->join('loai_sp', 'loai_sp.id', '=', 'product.loai_id');
+        $query->join('cate_parent', 'cate_parent.id', '=', 'product.parent_id');
         $query->join('cate', 'cate.id', '=', 'product.cate_id');
         $query->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id');        
         $query->orderBy('product.id', 'desc');
-        $items = $query->select(['product_img.image_url','product.*','product.id as product_id', 'full_name' , 'product.created_at as time_created', 'users.full_name', 'loai_sp.name as ten_loai', 'cate.name as ten_cate'])
+        $items = $query->select(['product_img.image_url','product.*','product.id as product_id', 'full_name' , 'product.created_at as time_created', 'users.full_name', 'cate_parent.name as ten_loai', 'cate.name as ten_cate'])
         ->paginate(1000);
 
-        $loaiSpArr = LoaiSp::all();  
-        if( $loai_id ){
-            $cateArr = Cate::where('loai_id', $loai_id)->orderBy('display_order', 'desc')->get();
+        $cateParentList = CateParent::all();  
+        if( $parent_id ){
+            $cateArr = Cate::where('parent_id', $parent_id)->orderBy('display_order', 'desc')->get();
         }else{
             $cateArr = (object) [];
         }
 
-        return view('backend.product.content-search', compact( 'items', 'arrSearch', 'loaiSpArr', 'cateArr', 'search_type'));
+        return view('backend.product.content-search', compact( 'items', 'arrSearch', 'cateParentList', 'cateArr', 'search_type'));
     }
   
     /**
@@ -212,19 +211,18 @@ class ProductController extends Controller
     */
     public function create(Request $request)
     {
-        $loai_id = $request->loai_id ? $request->loai_id : null;
+        $parent_id = $request->parent_id ? $request->parent_id : 0;
         $cate_id = $request->cate_id ? $request->cate_id : null;
-        $cateArr = $thongTinChungList = (object) [];
+        $cateArr = (object) [];
   
-        $loaiSpArr = LoaiSp::all();
+        $cateParentList = CateParent::all();
         
-        if( $loai_id ){
+        if( $parent_id > -1){
             
-            $cateArr = Cate::where('loai_id', $loai_id)->select('id', 'name')->orderBy('display_order', 'desc')->get();
-            $thongTinChungList = ThongTinChung::where('loai_id', $loai_id)->get();
+            $cateArr = Cate::where('parent_id', $parent_id)->select('id', 'name')->orderBy('display_order', 'desc')->get();           
         }
         $colorArr = Color::orderBy('display_order')->get();        
-        return view('backend.product.create', compact('loaiSpArr', 'cateArr', 'colorArr', 'loai_id', 'cate_id', 'thongTinChungList'));
+        return view('backend.product.create', compact('cateParentList', 'cateArr', 'colorArr', 'parent_id', 'cate_id'));
     }
 
     /**
@@ -239,23 +237,19 @@ class ProductController extends Controller
 
         $this->validate($request,[
             'name' => 'required',
-            'slug' => 'required' ,
-            'thong_tin_chung_id' => 'required',
-            'price' => 'required',
-            'price' => 'required',
-            'so_luong_ton' => 'required'       
+            'slug' => 'required' ,         
+            'price' => 'required',      
+            'inventory' => 'required'       
         ],
         [
             'name.required' => 'Bạn chưa nhập tên sản phẩm',
-            'slug.required' => 'Bạn chưa nhập slug',      
-            'thong_tin_chung_id.required' => 'Bạn chưa chọn thông tin sản phẩm',
+            'slug.required' => 'Bạn chưa nhập slug',
             'price.required' => 'Bạn chưa nhập giá',
-            'so_luong_ton.required' => 'Bạn chưa nhập số lượng tồn'                      
+            'inventory.required' => 'Bạn chưa nhập số lượng tồn'                      
         ]);
        
         $dataArr['is_hot'] = isset($dataArr['is_hot']) ? 1 : 0;
-        $dataArr['is_sale'] = isset($dataArr['is_sale']) ? 1 : 0; 
-        $dataArr['is_old'] = 0;
+        $dataArr['is_sale'] = isset($dataArr['is_sale']) ? 1 : 0;         
         $dataArr['is_new'] = isset($dataArr['is_new']) ? 1 : 0;
         
         $dataArr['alias'] = Helper::stripUnicode($dataArr['name']);
@@ -265,8 +259,8 @@ class ProductController extends Controller
         
         $dataArr['price'] = str_replace(',', '', $request->price);
         $dataArr['price_sale'] = str_replace(',', '', $request->price_sale);
-        $dataArr['price_new'] =null;
-        $dataArr['so_luong_ton'] = str_replace(',', '', $request->so_luong_ton);
+        
+        $dataArr['inventory'] = str_replace(',', '', $request->inventory);
 
         $dataArr['status'] = 1;
         $dataArr['price_sell'] = $dataArr['is_sale'] == 1 ? $dataArr['price_sale'] : $dataArr['price'];
@@ -277,8 +271,7 @@ class ProductController extends Controller
         if($dataArr['is_hot'] == 1){
             $dataArr['display_order'] = Helper::getNextOrder('product', 
                                             [
-                                            'is_old' => $dataArr['is_old'],
-                                            'loai_id' => $dataArr['loai_id'],
+                                            'parent_id' => $dataArr['parent_id'],
                                             'cate_id' => $dataArr['cate_id']
                                         ]);
         }
@@ -293,7 +286,7 @@ class ProductController extends Controller
         Session::flash('message', 'Tạo mới sản phẩm thành công');
 
         return redirect()->route('product.index', [
-                        'loai_id' => $dataArr['loai_id'], 
+                        'parent_id' => $dataArr['parent_id'], 
                         'cate_id' => $dataArr['cate_id']            
                         ]
                         );
@@ -314,23 +307,9 @@ class ProductController extends Controller
             $model = MetaData::find($meta_id);           
             $model->update( $arrData );
         }              
-    }
-    public function storeThuocTinh($id, $dataArr){
-        
-        SpThuocTinh::where('product_id', $id)->delete();
+    }   
 
-        if( !empty($dataArr['thuoc_tinh'])){
-            foreach( $dataArr['thuoc_tinh'] as $k => $value){
-                if( $value == ""){
-                    unset( $dataArr['thuoc_tinh'][$k]);
-                }
-            }
-            
-            SpThuocTinh::create(['product_id' => $id, 'thuoc_tinh' => json_encode($dataArr['thuoc_tinh'])]);
-        }
-    }
-
-    public function storeImage($id, $dataArr){        
+  public function storeImage($id, $dataArr){        
         //process old image
         $imageIdArr = isset($dataArr['image_id']) ? $dataArr['image_id'] : [];
         $hinhXoaArr = ProductImg::where('product_id', $id)->whereNotIn('id', $imageIdArr)->lists('id');
@@ -338,7 +317,7 @@ class ProductController extends Controller
         {
             foreach ($hinhXoaArr as $image_id_xoa) {
                 $model = ProductImg::find($image_id_xoa);
-                $urlXoa = config('annam.upload_path')."/".$model->image_url;
+                $urlXoa = config('phukien.upload_path')."/".$model->image_url;
                 if(is_file($urlXoa)){
                     unlink($urlXoa);
                 }
@@ -355,43 +334,32 @@ class ProductController extends Controller
             if( !empty( $dataArr['image_tmp_url'] )){
 
                 foreach ($dataArr['image_tmp_url'] as $k => $image_url) {
-
-                    if( $image_url && $dataArr['image_tmp_name'][$k] ){
-
-                        $tmp = explode('/', $image_url);
-
-                        if(!is_dir('public/uploads/'.date('Y/m/d'))){
-                            mkdir('public/uploads/'.date('Y/m/d'), 0777, true);
-                        }
-                        if(!is_dir('public/uploads/thumbs/'.date('Y/m/d'))){
-                            mkdir('public/uploads/thumbs/'.date('Y/m/d'), 0777, true);
-                        }
-
-                        $destionation = date('Y/m/d'). '/'. end($tmp);
-                        
-                        File::move(config('annam.upload_path').$image_url, config('annam.upload_path').$destionation);
+                    
+                    $origin_img = base_path().$image_url;
+                    if( $image_url ){
 
                         $imageArr['is_thumbnail'][] = $is_thumbnail = $dataArr['thumbnail_id'] == $image_url  ? 1 : 0;
 
-                        //if($is_thumbnail == 1){
-                            $img = Image::make(config('annam.upload_path').$destionation);
-                            $w_img = $img->width();
-                            $h_img = $img->height();                            
-                           // var_dump($w_img, $h_img);
-                            if($h_img >= $w_img){
-                                //die('height > hon');
-                                Image::make(config('annam.upload_path').$destionation)->resize(210, null, function ($constraint) {
-                                        $constraint->aspectRatio();
-                                })->crop(210, 210)->save(config('annam.upload_thumbs_path').$destionation);
-                            }else{                             
-                                Image::make(config('annam.upload_path').$destionation)->resize(null, 210, function ($constraint) {
-                                        $constraint->aspectRatio();
-                                })->crop(210, 210)->save(config('annam.upload_thumbs_path').$destionation);
-                            }
+                        $img = Image::make($origin_img);
+                        $w_img = $img->width();
+                        $h_img = $img->height();
 
-                        //}
+                        $tmpArrImg = explode('/', $origin_img);
+                        
+                        $new_img = config('phukien.upload_thumbs_path').end($tmpArrImg);
+                       
+                        if($w_img > $h_img){
 
-                        $imageArr['name'][] = $destionation;
+                            Image::make($origin_img)->resize(204, null, function ($constraint) {
+                                    $constraint->aspectRatio();
+                            })->crop(204, 204)->save($new_img);
+                        }else{
+                            Image::make($origin_img)->resize(null, 204, function ($constraint) {
+                                    $constraint->aspectRatio();
+                            })->crop(204, 204)->save($new_img);
+                        }                           
+
+                        $imageArr['name'][] = $image_url;
                         
                     }
                 }
@@ -436,11 +404,11 @@ class ProductController extends Controller
         $hinhArr = ProductImg::where('product_id', $id)->lists('image_url', 'id');
              
 
-        $loaiSpArr = LoaiSp::all();
+        $cateParentList = CateParent::all();
         
-        $loai_id = $detail->loai_id; 
-        $thongTinChungList = ThongTinChung::where('loai_id', $loai_id)->get();
-        $cateArr = Cate::where('loai_id', $loai_id)->select('id', 'name')->orderBy('display_order', 'desc')->get();
+        $parent_id = $detail->parent_id; 
+        
+        $cateArr = Cate::where('parent_id', $parent_id)->select('id', 'name')->orderBy('display_order', 'desc')->get();
         
         $meta = (object) [];
         if ( $detail->meta_id > 0){
@@ -449,7 +417,7 @@ class ProductController extends Controller
              
         $colorArr = Color::all();          
             
-        return view('backend.product.edit', compact( 'detail', 'hinhArr', 'colorArr', 'loaiSpArr', 'cateArr', 'meta', 'thongTinChungList'));
+        return view('backend.product.edit', compact( 'detail', 'hinhArr', 'colorArr', 'cateParentList', 'cateArr', 'meta'));
     }
     public function copy($id)
     {
@@ -460,11 +428,11 @@ class ProductController extends Controller
         $hinhArr = ProductImg::where('product_id', $id)->lists('image_url', 'id');
         
             
-        $loaiSpArr = LoaiSp::all();
+        $cateParentList = CateParent::all();
         
-        $loai_id = $detail->loai_id; 
+        $parent_id = $detail->parent_id; 
             
-        $cateArr = Cate::where('loai_id', $loai_id)->select('id', 'name')->orderBy('display_order', 'desc')->get();
+        $cateArr = Cate::where('parent_id', $parent_id)->select('id', 'name')->orderBy('display_order', 'desc')->get();
         
        
         $meta = (object) [];
@@ -474,7 +442,7 @@ class ProductController extends Controller
         
         $colorArr = Color::all();          
             
-        return view('backend.product.copy', compact( 'detail', 'hinhArr', 'colorArr', 'loaiSpArr', 'cateArr', 'meta'));
+        return view('backend.product.copy', compact( 'detail', 'hinhArr', 'colorArr', 'cateParentList', 'cateArr', 'meta'));
     }
     public function ajaxDetail(Request $request)
     {       
@@ -495,25 +463,21 @@ class ProductController extends Controller
         
         $this->validate($request,[
             'name' => 'required',
-            'slug' => 'required',
-            'thong_tin_chung_id' => 'required',
+            'slug' => 'required',            
             'price' => 'required',
-            'so_luong_ton' => 'required'            
+            'inventory' => 'required'            
         ],
         [
             'name.required' => 'Bạn chưa nhập tên sản phẩm',
-            'slug.required' => 'Bạn chưa nhập slug',
-            'thong_tin_chung_id.required' => 'Bạn chưa chọn thông tin sản phẩm',            
+            'slug.required' => 'Bạn chưa nhập slug',            
             'price.required' => 'Bạn chưa nhập giá',
-            'so_luong_ton.required' => 'Bạn chưa nhập số lượng tồn'                    
+            'inventory.required' => 'Bạn chưa nhập số lượng tồn'                    
         ]);
 
         
         $dataArr['is_hot'] = isset($dataArr['is_hot']) ? 1 : 0;
-        $dataArr['is_sale'] = isset($dataArr['is_sale']) ? 1 : 0;  
-        $dataArr['is_old'] = 0;
+        $dataArr['is_sale'] = isset($dataArr['is_sale']) ? 1 : 0;          
         $dataArr['is_new'] = isset($dataArr['is_new']) ? 1 : 0;
-
         $dataArr['slug'] = str_replace(".", "-", $dataArr['slug']);
         $dataArr['slug'] = str_replace("(", "-", $dataArr['slug']);
         $dataArr['slug'] = str_replace(")", "", $dataArr['slug']);
@@ -521,8 +485,8 @@ class ProductController extends Controller
 
         $dataArr['price'] = str_replace(',', '', $request->price);
         $dataArr['price_sale'] = str_replace(',', '', $request->price_sale);
-        $dataArr['price_new'] = null;
-        $dataArr['so_luong_ton'] = str_replace(',', '', $request->so_luong_ton);
+        
+        $dataArr['inventory'] = str_replace(',', '', $request->inventory);
 
         $dataArr['updated_user'] = Auth::user()->id;    
 

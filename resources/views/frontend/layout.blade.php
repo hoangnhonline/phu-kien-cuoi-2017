@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--[if lt IE 7 ]><html dir="ltr" lang="vi-VN" class="no-js ie ie6 lte7 lte8 lte9"><![endif]-->
+<!--[if IE 7 ]><html dir="ltr" lang="vi-VN" class="no-js ie ie7 lte7 lte8 lte9"><![endif]-->
+<!--[if IE 8 ]><html dir="ltr" lang="vi-VN" class="no-js ie ie8 lte8 lte9"><![endif]-->
+<!--[if IE 9 ]><html dir="ltr" lang="vi-VN" class="no-js ie ie9 lte9"><![endif]-->
+<!--[if IE 10 ]><html dir="ltr" lang="vi-VN" class="no-js ie ie10 lte10"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
 <html lang="vi">
 <head>
 	<title>@yield('title')</title>
@@ -23,149 +29,238 @@
     <meta name="twitter:description" content="@yield('site_description')" />
     <meta name="twitter:title" content="@yield('title')" />        
     <meta name="twitter:image" content="{{ Helper::showImage($socialImage) }}" />	
-	<!-- <link rel="shortcut icon" href="{{ URL::asset('public/assets/images/favicon.ico') }}" type="image/x-icon">
-	<link rel="icon" href="{{ URL::asset('public/assets/images/favicon.ico') }}" type="image/x-icon"> -->
+
 	<!-- ===== Style CSS ===== -->
 	<link rel="stylesheet" type="text/css" href="{{ URL::asset('public/assets/css/style.css') }}">
 	<!-- ===== Responsive CSS ===== -->
 	<link rel="stylesheet" type="text/css" href="{{ URL::asset('public/assets/css/responsive.css') }}">
 
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic&amp;subset=latin,vietnamese" rel="stylesheet" type="text/css">
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,700,800,300&amp;subset=latin,vietnamese" rel="stylesheet" type="text/css">
-	<link href="http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700&amp;amp;subset=latin,vietnamese" rel="stylesheet" type="text/css">
-
-
-	<!-- ===== Responsive CSS ===== -->
-  	<!-- <link href="{{ URL::asset('public/assets/responsive.css') }}" rel="stylesheet"> -->
-
   	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
-		<link href='{{ URL::asset('public/assets/animations-ie-fix.css') }}' rel='stylesheet'>
-		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<link href='css/animations-ie-fix.css' rel='stylesheet'>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js') }}"></script>
 	<![endif]-->
 </head>
-<body {!! $routeName == 'payment' ? "class=pre_checkout" : '' !!}>
-
+<body>
 	<div id="fb-root"></div>
 	<script>(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];
 	  if (d.getElementById(id)) return;
 	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+	  js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.10&appId=567408173358902";
 	  fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));</script>
-	
+	<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+	@include('frontend.partials.header')
+
 	<div class="wrapper">
+		
+		@yield('content')
 
-		<header class="header-bar">
-			<div class="container">
-				<div class="row"></div>
-			</div>
-		</header><!-- /header -->
+	</div><!-- /wrapper-->
 
-		<main class="main">
-			<div class="container">
-				@include('frontend.partials.header')
+	@include('frontend.partials.footer')
 
-				@yield('content')
-			</div>
-		</main><!-- /main -->
-
-		<footer class="footer">
-			<div class="footer_top">
-				<div class="container">
-					<ul class="row block_bottom_menu">
-	                    <li><a href="{{ route('home') }}" title="Trang chủ">Trang chủ</a></li>	                  	                
-	                    <li><a href="{{ route('parent-cate', 'chinh-sach-bao-hanh') }}" title="Chính sách bảo hành">Chính sách bảo hành</a></li>
-	                    <li><a href="{{ route('parent-cate', 'gioi-thieu') }}" title="Giới thiệu">Giới thiệu</a></li>
-	                    <li><a href="{{ route('contact') }}" title="Liên hệ">Liên hệ</a></li>
-	                    <li><a href="{{ route('parent-cate', 'huong-dan-dat-hang') }}" title="Hướng dẫn đặt hàng">Hướng dẫn đặt hàng</a></li>	            
-	                    <li><a href="{{ route('parent-cate', 'chinh-sach-bao-mat') }}" title="Chính sách bảo mật">Chính sách bảo mật</a></li>
-					</ul><!-- /block_bottom_menu -->
-				</div>
-			</div><!-- /footer_top -->
-			<div class="footer_bottom">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-8 col-sm-12 col-xs-12 block_copy">
-							<a href="{!! route('home') !!}" class="logo"><img src="{{ URL::asset('public/assets/images/logo_white.png') }}" alt="Logo Ân Nam Mobile"></a>
-							<div class="copyright">
-                                <p>Cửa hàng điện thoại Ân Nam</p>
-                                <p>Đ/C : 683/1B An Dương Vương, P.Bình Trị Đông, Q.Bình Tân, Tp.HCM</p>
-                                <p>Email: contact@annam.vn</p>                               
-                                <p>Hotline: 0904500057</p>
-                                <p>Copyrights © 2017 annammobile.com. All Rights Reserved</p>
-                            </div>
-						</div><!-- /block_copy -->
-						<div class="col-md-2 col-sm-3 col-xs-4 block_pay">
-							<div class="block_payment"> 
-                                <p>CHẤP NHẬN THANH TOÁN</p>
-                            	<i class="fa fa-cc-visa"></i>
-                            	<i class="fa fa-cc-mastercard"></i>
-                            </div>
-						</div><!-- /block_pay -->
-						<div class="col-md-2 col-sm-3 col-xs-4 block_indus">
-							<a href="http://online.gov.vn/CustomWebsiteDisplay.aspx?DocId=5895" target="_blank" class="block_industry">
-                            	<img src="{{ URL::asset('public/assets/images/logo-bocongthuong.png') }}" alt="TMĐT">
-                            </a>
-						</div>
+	<!-- Modal Cart -->
+	<div class="modal fade" id="Cart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<i class="fa fa-times-circle"></i>
+				</button>
+				<div class="shopcart-ct">
+					<div class="modal-body">
+						<form action="#" method="POST" id="frm_order_items">
+							<div class="table cart-tbl">
+								<div class="table-row thead">
+									<div class="table-cell product-col t-c">Sản phẩm</div>
+									<div class="table-cell numb-col t-c">Số lượng</div>
+									<div class="table-cell total-col t-c">Thành tiền</div>
+								</div><!-- table-row thead -->
+								<div class="tr-wrap">
+									<div class="table-row clearfix">
+										<div class="table-cell product-col">
+											<figure class="img-prod">
+												<img alt="Tên sản phẩm quần jeans chất lượng cao được thêm vào giỏ hàng" src="{{ URL::asset('public/assets/images/cart/1.jpg') }}">
+											</figure>
+											<a href="#" target="_blank" title="Tên sản phẩm quần jeans chất lượng cao được thêm vào giỏ hàng">Tên sản phẩm quần jeans chất lượng cao được thêm vào giỏ hàng</a>
+											<p class="p-color">
+												<span>Màu sắc sản phẩm:</span>
+												<span>Đen</span>
+											</p>
+											<p class="p-size">
+												<span>Size sản phẩm:</span>
+												<span>39</span>
+												<span>|</span>
+												<a href="#" title="Xóa sản phẩm">Xóa</a>
+											</p>
+										</div>
+										<div class="table-cell numb-col t-c">
+											<select name="" size="1" class="change_quantity">
+												<option value="0">0</option>
+												<option value="1" selected="">1</option>
+												<option value="2">2</option>
+											</select>
+										</div>
+										<div class="table-cell total-col t-r">355.000đ</div><!-- /table-cell total-col t-r -->
+									</div>
+									<div class="table-row clearfix">
+										<div class="table-cell product-col">
+											<figure class="img-prod">
+												<img alt="Tên sản phẩm quần jeans chất lượng cao được thêm vào giỏ hàng" src="{{ URL::asset('public/assets/images/cart/1.jpg') }}">
+											</figure>
+											<a href="#" target="_blank" title="Tên sản phẩm quần jeans chất lượng cao được thêm vào giỏ hàng">Tên sản phẩm quần jeans chất lượng cao được thêm vào giỏ hàng</a>
+											<p class="p-color">
+												<span>Màu sắc sản phẩm:</span>
+												<span>Đen</span>
+											</p>
+											<p class="p-size">
+												<span>Size sản phẩm:</span>
+												<span>39</span>
+												<span>|</span>
+												<a href="#" title="Xóa sản phẩm">Xóa</a>
+											</p>
+										</div>
+										<div class="table-cell numb-col t-c">
+											<select name="" size="1" class="change_quantity">
+												<option value="0">0</option>
+												<option value="1" selected="">1</option>
+												<option value="2">2</option>
+											</select>
+										</div>
+										<div class="table-cell total-col t-r">355.000đ</div><!-- /table-cell total-col t-r -->
+									</div>
+								</div><!-- tr-wrap -->
+							</div><!-- table cart-tbl -->
+							<div class="block-btn">
+								<a href="#" title="Xóa tất cả" class="btn btn-default">Xóa tất cả <i class="fa fa-trash-o"></i></a>
+								<a href="cart.html" title="Xóa tất cả" class="btn btn-danger">Thanh toán <i class="fa fa-angle-right"></i></a>
+							</div>
+						</form>
 					</div>
-				</div>
-			</div><!-- /footer_bottom -->
-		</footer><!-- /footer -->
-
-		<a id="return-to-top" class="td-scroll-up" href="javascript:void(0)">
-      		<i class="fa fa-angle-up" aria-hidden="true"></i>
-    	</a><!-- Return To Top -->
-
-    	<!-- Modal -->
-		<div class="modal fade" id="scart_popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content" id="short-cart-content">
-				
 				</div>
 			</div>
 		</div>
-	</div><!-- /wrapper -->
-	
-	<input type="hidden" id="route-register-customer-ajax" value="{{ route('register-customer-ajax') }}">
-	<input type="hidden" id="route-register-newsletter" value="{{ route('register.newsletter') }}">
-	<input type="hidden" id="route-add-to-cart" value="{{ route('add-product') }}" />
-	<input type="hidden" id="route-payment" value="{{ route('payment') }}" />
-	<input type="hidden" id="route-short-cart" value="{{ route('short-cart') }}" />
-	<input type="hidden" id="route-update-product" value="{{ route('update-product') }}" />
+	</div>
+	<div id="editContentModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Cập nhật nội dung</h4>
+	      </div>
+	      <form method="POST" action="{{ route('save-content') }}">
+	      {{ csrf_field() }}
+	      <input type="hidden" name="id" id="txtId" value="">
+	      <div class="modal-body">
+	        <textarea rows="5" class="form-control" name="content" id="txtContent"></textarea>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary" id="btnSaveContent">Save</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	      </form>
+	    </div>
+
+	  </div>
+	</div>
+	<style type="text/css">
+		.edit {  
+		position: relative;
+		border: 1px dashed transparent;
+		min-height: 20px;
+		}
+		.edit:hover {
+		border: 1px dashed #c70f19;\
+		}
+		.edit:hover:before {
+		content: "\f040";
+		font-family: "FontAwesome";
+		font-size: 13px;
+		color: #ffffff;
+		width: 20px;
+		height: 20px;
+		display: block;
+		background: #c70f19;
+		position: absolute;
+		top: 0;
+		right: 0;
+		cursor: pointer;
+		}
+	</style>
 	<!-- ===== JS ===== -->
 	<script src="{{ URL::asset('public/assets/js/jquery.min.js') }}"></script>
 	<!-- ===== JS Bootstrap ===== -->
-	<script src="{{ URL::asset('public/assets/lib/bootstrap/bootstrap.min.js') }}"></script>	<!-- ===== Plugins ===== -->
-	
+	<script src="{{ URL::asset('public/assets/lib/bootstrap/bootstrap.min.js') }}"></script>
 	<!-- carousel -->
 	<script src="{{ URL::asset('public/assets/lib/carousel/owl.carousel.min.js') }}"></script>
 	<!-- sticky -->
-    <script src="{{ URL::asset('public/assets/lib/jquery-ui/jquery-ui.js') }}"></script>
-    <script src="{{ URL::asset('public/assets/js/lazy.js') }}"></script>	
-   	@if($routeName == 'home')
-    <script src="{{ URL::asset('public/assets/js/plugins.min.js') }}"></script>
-    <script src="{{ URL::asset('public/assets/lib/slick/slick.min.js') }}"></script>
-    @endif
-    <!-- Select2 --> 
-    @if($routeName == 'product-detail')
-	<script src="{{ URL::asset('public/assets/lib/bxslider/bxslider.min.js') }}"></script>
-	<script src="{{ URL::asset('public/assets/lib/lightbox/js/lightbox.js') }}"></script>
-	
-	@endif
-	<script src="{{ URL::asset('public/assets/lib/sticky/jquery.sticky.js') }}"></script>
-    <!-- Slick -->    
-    <script src="{{ URL::asset('public/assets/js/common.js') }}"></script>
-    @if($routeName == 'home')
-	<script src="{{ URL::asset('public/assets/js/home.js') }}"></script>	
-	@endif
-	<script src="{{ URL::asset('public/assets/js/general.js') }}"></script>	
-	@if($routeName != 'product-detail')
-	<script src="{{ URL::asset('public/assets/lib/select2/js/select2.min.js') }}"></script>	
-	@endif	
-	@yield('js')	
+    <script src="{{ URL::asset('public/assets/lib/sticky/jquery.sticky.js') }}"></script>
+    <!-- Js Common -->
+	<script src="{{ URL::asset('public/assets/js/common.js') }}"></script>
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59b215c2a2658a8a"></script> 	
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script>
+		jQuery('.fb-page1').toggleClass('hide');
+			jQuery('#closefbchat').html('<i class="fa fa-comments fa-2x"></i> Chat Tư Vấn').css({'bottom':0});
+		jQuery('#closefbchat').click(function(){
+			jQuery('.fb-page1').toggleClass('hide');
+			if(jQuery('.fb-page1').hasClass('hide')){
+				jQuery('#closefbchat').html('<i class="fa fa-comments fa-2x"></i> Chat Tư Vấn').css({'bottom':0});
+			}
+			else{
+				jQuery('#closefbchat').text('Tắt Chat').css({'bottom':299});
+			}
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$.ajaxSetup({
+			      headers: {
+			          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			      }
+			  });
+
+			$('.edit').click(function(){
+				$('#txtId').val($(this).data('text'));
+				$('#txtContent').val($(this).html());
+				$('#editContentModal').modal('show');
+			});
+			$('#btnSaveContent').click(function(){
+				$.ajax({
+					url : '{{ route('save-content') }}',
+					type : "POST",
+					data : {
+						id : $('#txtId').val(),
+						content : $('#txtContent').val()
+					},
+					success:  function(){
+						window.location.reload();
+					}
+
+				});
+			});
+		});
+	</script>
 </body>
 </html>

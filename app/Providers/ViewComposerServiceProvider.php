@@ -2,12 +2,13 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Models\LoaiSp;
+use App\Models\CateParent;
 use App\Models\Cate;
 use App\Models\Settings;
 use App\Models\Color;
-use Request;
-//use App\Models\Entity\SuperStar\Account\Traits\Behavior\SS_Shortcut_Icon;
+use App\Models\Text;
+
+use Request, Auth;
 
 class ViewComposerServiceProvider extends ServiceProvider
 {
@@ -38,14 +39,14 @@ class ViewComposerServiceProvider extends ServiceProvider
 	 */
 	private function composerMenu()
 	{
-		$cateArrByLoai = [];		
-		view()->composer( '*' , function( $view ){
 			
-			$loaiSpList = LoaiSp::where(['status' => 1])->orderBy('display_order')->get();
+		view()->composer( '*' , function( $view ){
+			$cateArrByLoai = [];	
+			$cateParentList = CateParent::where(['status' => 1])->orderBy('display_order')->get();
 
-	        if( $loaiSpList ){
-	            foreach ( $loaiSpList as $key => $value) {	            	          		
-	            	$cateArrByLoai[$value->id] = Cate::where(['status' => 1, 'loai_id' => $value->id])
+	        if( $cateParentList ){
+	            foreach ( $cateParentList as $key => $value) {	            	          		
+	            	$cateArrByLoai[$value->id] = Cate::where(['status' => 1, 'parent_id' => $value->id])
 	                    ->orderBy('display_order')
 	                    ->select('name', 'slug', 'id')
 	                    ->get();
@@ -53,15 +54,20 @@ class ViewComposerServiceProvider extends ServiceProvider
 	        }    
 	        $settingArr = Settings::whereRaw('1')->lists('value', 'name');
 	        $routeName = \Request::route()->getName();
-	       // var_dump("<pre>", $menuDoc);die;   
-	        //var_dump("<pre>", $loaiSpKey);die;
+	  
 	        $colorList = Color::orderBy('display_order')->get();
+
+	        $textList = Text::whereRaw('1')->lists('content', 'id');              
+	        
+	        $isEdit = Auth::check();	    
 			$view->with( [
-					'loaiSpList' => $loaiSpList, 
+					'cateParentList' => $cateParentList, 
 					'settingArr' => $settingArr,
 					'cateArrByLoai' => $cateArrByLoai,
 					'routeName' => $routeName,
-					'colorList' => $colorList
+					'colorList' => $colorList,
+					'textList' => $textList,
+					'isEdit' => $isEdit
 					] );
 		});
 	}

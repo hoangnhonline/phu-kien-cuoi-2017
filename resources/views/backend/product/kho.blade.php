@@ -28,10 +28,10 @@
           <form class="form-inline" id="searchForm" role="form" method="GET" action="{{ route('product.kho') }}">
             <div class="form-group">
              
-              <select class="form-control" name="loai_id" id="loai_id">
+              <select class="form-control" name="parent_id" id="parent_id">
                 <option value="">--Danh mục cha--</option>
-                @foreach( $loaiSpArr as $value )
-                <option value="{{ $value->id }}" {{ $value->id == $arrSearch['loai_id'] ? "selected" : "" }}>{{ $value->name }}</option>
+                @foreach( $cateParentList as $value )
+                <option value="{{ $value->id }}" {{ $value->id == $arrSearch['parent_id'] ? "selected" : "" }}>{{ $value->name }}</option>
                 @endforeach
               </select>
             </div>
@@ -55,7 +55,7 @@
               <label><input type="checkbox" name="is_sale" value="1" {{ $arrSearch['is_sale'] == 1 ? "checked" : "" }}> SALE</label>              
             </div>
             <div class="form-group">
-              <label><input type="checkbox" name="het_hang" value="1" {{ $arrSearch['het_hang'] == 1 ? "checked" : "" }}> Hết hàng</label>              
+              <label><input type="checkbox" name="out_of_stock" value="1" {{ $arrSearch['out_of_stock'] == 1 ? "checked" : "" }}> Hết hàng</label>              
             </div>
                
             <button type="submit" style="margin-top:-5px" class="btn btn-primary btn-sm">Lọc</button>
@@ -74,7 +74,7 @@
            {{ $items->appends( $arrSearch )->links() }}
           </div>  
           <form action="{{ route('cap-nhat-thu-tu') }}" method="POST">
-           @if( $items->count() > 0 && $arrSearch['is_hot'] == 1 && $arrSearch['loai_id'] > 0 ) 
+           @if( $items->count() > 0 && $arrSearch['is_hot'] == 1 && $arrSearch['parent_id'] > 0 ) 
           <button type="submit" class="btn btn-warning btn-sm">Cập nhật thứ tự</button>
           @endif
             {{ csrf_field() }}
@@ -116,9 +116,9 @@
                    </b>
                     @endif </td>
                 <td style="text-align:center">
-                  <input type="checkbox" data-id="{{ $item->id }}" data-col="het_hang" data-table="product" class="change-value" value="1" {{ $item->het_hang == 1  ? "checked" : "" }}>
+                  <input type="checkbox" data-id="{{ $item->id }}" data-col="out_of_stock" data-table="product" class="change-value" value="1" {{ $item->out_of_stock == 1  ? "checked" : "" }}>
                 </td>
-                <td style="text-align:right">{{ number_format($item->so_luong_ton) }}</td>
+                <td style="text-align:right">{{ number_format($item->inventory) }}</td>
                 <td style="white-space:nowrap; text-align:right">
                   <a href="{{ route( 'product.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>
                 </td>
@@ -198,7 +198,7 @@ $(document).ready(function(){
     obj.parent().parent().parent().submit(); 
   });
   
-  $('#loai_id').change(function(){
+  $('#parent_id').change(function(){
     $('#cate_id').val('');
     $('#searchForm').submit();
   });

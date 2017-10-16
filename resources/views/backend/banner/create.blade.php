@@ -43,9 +43,9 @@
                   <label class="col-md-3 row">Banner 
                   <?php 
                   if($object_id == 1){
-                    echo "( 870 x 448 px)";
+                    echo "( 1349 x 400 px)";
                   }elseif($object_id == 2){
-                    echo "( 570 x 102 px)";
+                    echo "( 1349 x 200 px)";
                   }elseif($object_id == 3){
                     echo "( 570 x 102 px)";
                   }elseif($object_id == 4){
@@ -54,11 +54,9 @@
                   ?>
                   </label>    
                   <div class="col-md-9">
-                    <img id="thumbnail_image" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="145" height="85">
-                    
-                    <input type="file" id="file-image" style="display:none" />
+                    <img id="thumbnail_image_url" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="300">
                  
-                    <button class="btn btn-default btn-sm" id="btnUploadImage" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
+                    <button class="btn btn-default btn-sm btnSingleUpload" data-set="image_url" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
                   </div>
                   <div style="clear:both"></div>
                 </div>  

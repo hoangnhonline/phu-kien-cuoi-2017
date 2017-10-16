@@ -15,8 +15,8 @@
 
   <!-- Main content -->
   <section class="content">
-    <a class="btn btn-default btn-sm" href="{{ route('product.index', ['loai_id' => $detail->loai_id, 'cate_id' => $detail->cate_id]) }}" style="margin-bottom:5px">Quay lại</a>
-    <a class="btn btn-primary btn-sm" href="{{ route('product-detail', [$detail->slug, $detail->id] ) }}" target="_blank" style="margin-top:-6px"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>
+    <a class="btn btn-default btn-sm" href="{{ route('product.index', ['parent_id' => $detail->parent_id, 'cate_id' => $detail->cate_id]) }}" style="margin-bottom:5px">Quay lại</a>
+    <a class="btn btn-primary btn-sm" href="{{ route('product', [$detail->slug, $detail->id] ) }}" target="_blank" style="margin-top:-6px"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>
     <form role="form" method="POST" action="{{ route('product.update') }}" id="dataForm">
     <div class="row">
       <!-- left column -->
@@ -55,14 +55,14 @@
                     <div role="tabpanel" class="tab-pane active" id="home">
                         <div class="form-group col-md-6 none-padding">
                           <label for="email">Danh mục cha<span class="red-star">*</span></label>
-                          <select class="form-control req" name="loai_id" id="loai_id">
+                          <select class="form-control" name="parent_id" id="parent_id">
                             <option value="">--Chọn--</option>
-                            @foreach( $loaiSpArr as $value )
+                            @foreach( $cateParentList as $value )
                             <option value="{{ $value->id }}"
                             <?php 
-                            if( old('loai_id') && old('loai_id') == $value->id ){ 
+                            if( old('parent_id') && old('parent_id') == $value->id ){ 
                               echo "selected";
-                            }else if( $detail->loai_id == $value->id ){
+                            }else if( $detail->parent_id == $value->id ){
                               echo "selected";
                             }else{
                               echo "";
@@ -84,22 +84,7 @@
                             >{{ $value->name }}</option>
                             @endforeach
                           </select>
-                        </div>
-                         <div class="form-group">
-                          <label for="email">Thông tin sản phẩm<span class="red-star">*</span></label>
-                          <?php 
-                          $loai_id = old('loai_id');
-                          if($loai_id > 0){
-                            $thongTinChungList = DB::table('thong_tin_chung')->where('loai_id', $loai_id)->get();
-                          }
-                          ?>
-                          <select class="form-control req select2" name="thong_tin_chung_id" id="thong_tin_chung_id" style="height:40px !important">
-                            <option value="">--Chọn--</option>
-                            @foreach( $thongTinChungList as $value )
-                            <option value="{{ $value->id }}" {{ $value->id == old('thong_tin_chung_id', $detail->thong_tin_chung_id) ? "selected" : "" }}>{{ $value->name }}</option>
-                            @endforeach
-                          </select>
-                        </div>  
+                        </div>                         
                         <div class="form-group" >                  
                           <label>Tên <span class="red-star">*</span></label>
                           <input type="text" class="form-control req" name="name" id="name" value="{{ old('name', $detail->name) }}">
@@ -123,18 +108,21 @@
                               <label><input type="checkbox" name="is_sale" id="is_sale" value="1" {{ old('is_sale', $detail->is_sale) == 1 ? "checked" : "" }}> SALE </label>
                           </div>
                         </div>
-                        <div class="form-group col-md-6 none-padding" >                  
+                        <div class="form-group col-md-4 none-padding" >                  
                             <label>Giá<span class="red-star">*</span></label>
                             <input type="text" class="form-control req number" name="price" id="price" value="{{ old('price', $detail->price) }}">
                         </div>
-                        <div class="form-group col-md-6" >                  
+                        <div class="form-group col-md-4 pleft-5 none-padding" >                  
                             <label>Giá SALE</label>
                             <input type="text" class="form-control number {{ old('is_sale', $detail->is_sale) == 1  ? "req" : "" }}" name="price_sale" id="price_sale" value="{{ old('price_sale', $detail->price_sale) }}">
                         </div>
-                        
+                        <div class="form-group col-md-4" >                  
+                            <label>% SALE</label>
+                            <input type="text" class="form-control number {{ old('is_sale', $detail->is_sale) == 1  ? "req" : "" }}" name="sale_percent" id="sale_percent" value="{{ old('sale_percent', $detail->sale_percent) }}">
+                        </div>
                          <div class="col-md-6 none-padding">
                           <label>Số lượng tồn<span class="red-star">*</span></label>                  
-                          <input type="text" class="form-control req number" name="so_luong_ton" id="so_luong_ton" value="{{ old('so_luong_ton', $detail->so_luong_ton) }}">                        
+                          <input type="text" class="form-control req number" name="inventory" id="inventory" value="{{ old('inventory', $detail->inventory) }}">                        
                         </div>
                       <div class="col-md-6">
                           <label>Màu sắc</label>
@@ -148,14 +136,15 @@
                           </select>
                       </div>
                       <div style="margin-bottom:10px;clear:both"></div>
-                      <div class="form-group col-md-6 none-padding">
-                          <label>Mô tả</label>
-                          <textarea class="form-control" rows="4" name="mo_ta" id="mo_ta">{{ old('mo_ta', $detail->mo_ta) }}</textarea>
-                        </div>
-                      <div class="form-group col-md-6 none-padding pleft-5">
-                        <label>Khuyến mãi</label>
-                        <textarea class="form-control" rows="4" name="khuyen_mai" id="khuyen_mai">{{ old('khuyen_mai', $detail->khuyen_mai) }}</textarea>
+                      <div class="form-group">
+                        <label>Mô tả</label>
+                        <textarea class="form-control" rows="4" name="description" id="description">{{ old('description', $detail->description) }}</textarea>
                       </div>
+                      
+                      <div class="form-group">
+                          <label>Chi tiết</label>
+                          <textarea class="form-control" rows="4" name="content" id="content">{{ old('content') }}</textarea>
+                        </div>  
                         <div class="clearfix"></div>
                     </div><!--end thong tin co ban-->                    
                    
@@ -197,7 +186,7 @@
             <div class="box-footer">             
               <button type="button" class="btn btn-default" id="btnLoading" style="display:none"><i class="fa fa-spin fa-spinner"></i></button>
               <button type="submit" class="btn btn-primary" id="btnSave">Lưu</button>
-              <a class="btn btn-default" class="btn btn-primary" href="{{ route('product.index', ['loai_id' => $detail->loai_id, 'cate_id' => $detail->cate_id])}}">Hủy</a>
+              <a class="btn btn-default" class="btn btn-primary" href="{{ route('product.index', ['parent_id' => $detail->parent_id, 'cate_id' => $detail->cate_id])}}">Hủy</a>
             </div>
             
         </div>
@@ -326,35 +315,11 @@ $(document).on('keypress', '#name_search', function(e){
           $(this).addClass('error');
         }
       });
-      $('#loai_id').change(function(){
-        location.href="{{ route('product.create') }}?loai_id=" + $(this).val();
+      $('#parent_id').change(function(){
+        location.href="{{ route('product.create') }}?parent_id=" + $(this).val();
       })
-      $(".select2").select2();    
-    
-      var editor2 = CKEDITOR.replace( 'khuyen_mai',{
-          language : 'vi',
-          height : 100,
-          toolbarGroups : [
-            
-            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-            { name: 'links', groups: [ 'links' ] },           
-            '/',
-            
-          ]
-      });
-      var editor3 = CKEDITOR.replace( 'mo_ta',{
-          language : 'vi',
-          height : 100,
-          toolbarGroups : [
-            
-            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-            { name: 'links', groups: [ 'links' ] },           
-            '/',
-            
-          ]
-      });
+      $(".select2").select2();   
+      
       $('#btnUploadImage').click(function(){        
         $('#file-image').click();
       }); 

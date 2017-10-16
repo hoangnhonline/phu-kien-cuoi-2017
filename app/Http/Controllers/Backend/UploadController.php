@@ -46,7 +46,7 @@ class UploadController extends Controller
         $count = 0;
         if($dataArr['myfile']){
             
-            $url = config('annam.upload_url');
+            $url = config('phukien.upload_url');
 
             foreach( $dataArr['myfile'] as $file ){
                 $count++;

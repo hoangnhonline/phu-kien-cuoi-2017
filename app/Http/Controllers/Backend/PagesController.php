@@ -21,7 +21,7 @@ class PagesController extends Controller
     public function index(Request $request)
     {
         
-
+        
         $title = isset($request->title) && $request->title != '' ? $request->title : '';
         $created_user = isset($request->created_user) ? $request->created_user : null;
         $userList = (object) [];
@@ -77,22 +77,7 @@ class PagesController extends Controller
             'slug.unique' => 'Slug đã được sử dụng.'
         ]);       
         
-        $dataArr['alias'] = Helper::stripUnicode($dataArr['title']);
-        
-        if($dataArr['image_url'] && $dataArr['image_name']){
-            
-            $tmp = explode('/', $dataArr['image_url']);
-
-            if(!is_dir('public/uploads/'.date('Y/m/d'))){
-                mkdir('public/uploads/'.date('Y/m/d'), 0777, true);
-            }
-
-            $destionation = date('Y/m/d'). '/'. end($tmp);
-            
-            File::move(config('annam.upload_path').$dataArr['image_url'], config('annam.upload_path').$destionation);
-            
-            $dataArr['image_url'] = $destionation;
-        }        
+        $dataArr['alias'] = Helper::stripUnicode($dataArr['title']);      
         
         $dataArr['created_user'] = Auth::user()->id;
 
@@ -102,7 +87,7 @@ class PagesController extends Controller
 
         $object_id = $rs->id;
 
-        Session::flash('message', 'Tạo mới trang thành công');
+        Session::flash('message', 'Tạo mới thành công');
 
         return redirect()->route('pages.index');
     }
@@ -130,7 +115,7 @@ class PagesController extends Controller
         $detail = Pages::find($id);
         if(Auth::user()->role == 1){
             if($detail->created_user != Auth::user()->id){        
-                return redirect()->route('dashboard.index');        
+                return redirect()->route('product.index');        
             }
         }
         return view('backend.pages.edit', compact('detail'));
@@ -159,30 +144,15 @@ class PagesController extends Controller
             'slug.unique' => 'Slug đã được sử dụng.'
         ]);       
         
-        $dataArr['alias'] = Helper::stripUnicode($dataArr['title']);
-        
-        if($dataArr['image_url'] && $dataArr['image_name']){
-            
-            $tmp = explode('/', $dataArr['image_url']);
-
-            if(!is_dir('public/uploads/'.date('Y/m/d'))){
-                mkdir('public/uploads/'.date('Y/m/d'), 0777, true);
-            }
-
-            $destionation = date('Y/m/d'). '/'. end($tmp);
-            
-            File::move(config('annam.upload_path').$dataArr['image_url'], config('annam.upload_path').$destionation);
-            
-            $dataArr['image_url'] = $destionation;
-        }
-
+        $dataArr['alias'] = Helper::stripUnicode($dataArr['title']);        
+       
         $dataArr['updated_user'] = Auth::user()->id;
 
         $model = Pages::find($dataArr['id']);
 
         $model->update($dataArr);
        
-        Session::flash('message', 'Cập nhật thông tin trang thành công');        
+        Session::flash('message', 'Cập nhật thành công');        
 
         return redirect()->route('pages.edit', $dataArr['id']);
     }
@@ -200,7 +170,7 @@ class PagesController extends Controller
         $model->delete();
 
         // redirect
-        Session::flash('message', 'Xóa trang thành công');
+        Session::flash('message', 'Xóa thành công');
         return redirect()->route('pages.index');
     }
 }

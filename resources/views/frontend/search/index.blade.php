@@ -32,7 +32,7 @@
                   @foreach( $productList as $product )
                     <li class="col-sm-3 col-xs-6 product_item">
                         <div class="item">
-                            <a href="{{ route('product-detail', [$product->slug, $product->id]) }}" title="{!! $product->name !!}">
+                            <a href="{{ route('product', [$product->slug, $product->id]) }}" title="{!! $product->name !!}">
                                 <div class="product_img">
                                     <img class="lazy" data-original="{{ $product->image_url ? Helper::showImageThumb($product->image_url) : URL::asset('admin/dist/img/no-image.jpg') }}" alt="{!! $product->name !!}" title="{!! $product->name !!}">
                                 </div>
@@ -60,7 +60,7 @@
                                   @endif
                                 </div>
                                 @if( $product->loaiSp->is_hover == 1)            
-                                    @foreach($hoverInfo[$product->loai_id] as $info)
+                                    @foreach($hoverInfo[$product->parent_id] as $info)
                                     <?php 
                                     $tmpInfo = explode(",", $info->str_thuoctinh_id);              
                                     ?>
@@ -95,7 +95,7 @@
                 <div class="clearfix"></div>
                 <div class="text-center">
                     <div class="block_pagination">
-                        {{ $productList->appends(['loai_id' => $loai_id, 'cate_id' => $cate_id, 'price_fm' => $price_fm, 'price_to' => $price_to, 'cate' => $cateArr, 'keyword' => $tu_khoa, 'color' => $colorArr])->links() }}   
+                        {{ $productList->appends(['parent_id' => $parent_id, 'cate_id' => $cate_id, 'price_fm' => $price_fm, 'price_to' => $price_to, 'cate' => $cateArr, 'keyword' => $tu_khoa, 'color' => $colorArr])->links() }}   
                     </div>                
                 </div>
             </div>

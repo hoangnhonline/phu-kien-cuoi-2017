@@ -4,7 +4,7 @@
 <div class="block_cate_top">
   <ul class="list">
     <li style="margin-left:0px"><a href="{{ route('old-device') }}" title="Máy cũ nổi bật">Máy cũ nổi bật</a></li>
-    @foreach( $loaiSpList as $loaiSp)
+    @foreach( $cateParentList as $loaiSp)
     <li @if($loaiDetail->id == $loaiSp->id) class="actused" @endif><a href="{{ route('old-cate', $loaiSp->slug ) }}" title="{!! $loaiSp->name !!} cũ">{!! $loaiSp->name !!} cũ</a></li>
     @endforeach   
   </ul>
@@ -114,7 +114,7 @@
           @foreach( $productList as $product )
           <li class="col-sm-5ths col-xs-6 product_item">
             <div class="de_old_img">
-              <a href="{{ route('product-detail', [$product->slug, $product->id]) }}" title="{!! $product->name !!}">
+              <a href="{{ route('product', [$product->slug, $product->id]) }}" title="{!! $product->name !!}">
                 <img width="150" height="150" alt="{!! $product->name !!}" class="lazy" data-original="{{ $product->image_url ? Helper::showImageThumb($product->image_url) : URL::asset('admin/dist/img/no-image.jpg') }}">
               </a>
               <figure class="product_detail_de">
@@ -146,7 +146,7 @@
             </div>
             <div class="product_info">
               <h3 class="product_name">
-                <a href="{{ route('product-detail', [$product->slug, $product->id]) }}" title="">{!! $product->name !!}</a>
+                <a href="{{ route('product', [$product->slug, $product->id]) }}" title="">{!! $product->name !!}</a>
               </h3>
               <div class="product_price">
               <p class="price_title price_now">Giá : <span>{{ number_format($product->price) }}₫</span></p>

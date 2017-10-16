@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Helpers\Helper;
 use App\Models\Settings;
+use App\Models\Text;
+
 use File, Session, DB, Auth;
 
 class SettingsController  extends Controller
@@ -18,7 +20,13 @@ class SettingsController  extends Controller
 
         return view('backend.settings.index', compact( 'settingArr'));
     }
-
+    public function saveContent(Request $request){
+        $id = $request->id;
+        $content = $request->content;
+        $md = Text::find($id);
+        $md->content = $content;
+        $md->save();
+    }
     public function update(Request $request){
 
     	$dataArr = $request->all();
@@ -46,7 +54,7 @@ class SettingsController  extends Controller
 
             $destionation = date('Y/m/d'). '/'. end($tmp);
             
-            File::move(config('annam.upload_path').$dataArr['logo'], config('annam.upload_path').$destionation);
+            File::move(config('phukien.upload_path').$dataArr['logo'], config('phukien.upload_path').$destionation);
             
             $dataArr['logo'] = $destionation;
         }
@@ -61,7 +69,7 @@ class SettingsController  extends Controller
 
             $destionation = date('Y/m/d'). '/'. end($tmp);
             
-            File::move(config('annam.upload_path').$dataArr['favicon'], config('annam.upload_path').$destionation);
+            File::move(config('phukien.upload_path').$dataArr['favicon'], config('phukien.upload_path').$destionation);
             
             $dataArr['favicon'] = $destionation;
         }
@@ -76,7 +84,7 @@ class SettingsController  extends Controller
 
             $destionation = date('Y/m/d'). '/'. end($tmp);
             
-            File::move(config('annam.upload_path').$dataArr['banner'], config('annam.upload_path').$destionation);
+            File::move(config('phukien.upload_path').$dataArr['banner'], config('phukien.upload_path').$destionation);
             
             $dataArr['banner'] = $destionation;
         }        

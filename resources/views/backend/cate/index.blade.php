@@ -3,9 +3,11 @@
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
+  @if($parent_id > 0)
   <h1>
     Danh mục con của : <span class="cate-name">{{ $loaiSp->name }}</span>
   </h1>
+  @endif
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ route( 'cate.index' ) }}">Danh mục cha</a></li>
@@ -20,7 +22,7 @@
       @if(Session::has('message'))
       <p class="alert alert-info" >{{ Session::get('message') }}</p>
       @endif
-      <a href="{{ route('cate.create', [$loai_id]) }}" class="btn btn-info btn-sm" style="margin-bottom:5px">Tạo mới</a>
+      <a href="{{ route('cate.create', [$parent_id]) }}" class="btn btn-info btn-sm" style="margin-bottom:5px">Tạo mới</a>
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Bộ lọc</h3>
@@ -29,9 +31,10 @@
           <form class="form-inline" role="form" method="GET" action="{{ route('cate.index') }}" id="formSearch">
             <div class="form-group">
               <label for="email">Danh mục :</label>
-              <select class="form-control" name="loai_id" id="loai_id">
-                @foreach( $loaiSpArr as $value )
-                <option value="{{ $value->id }}" {{ $value->id == $loai_id ? "selected" : "" }}>{{ $value->name }}</option>
+              <select class="form-control" name="parent_id" id="parent_id">
+                <option value="0">--Không chọn--</option>
+                @foreach( $cateParentList as $value )
+                <option value="{{ $value->id }}" {{ $value->id == $parent_id ? "selected" : "" }}>{{ $value->name }}</option>
                 @endforeach
               </select>
             </div>            
@@ -74,15 +77,12 @@
 
                   <p>{{ $item->description }}</p>
                 </td> 
-                <td style="text-align:center"><a class="btn btn-info" href="{{ route('cate.index', [$item->id])}}">{{ $item->Product->count() }}</a></td>
+                <td style="text-align:center"><a class="btn btn-info" href="{{ route('cate.index', [$item->id])}}">{{ $item->product->count() }}</a></td>
                 <td style="white-space:nowrap; text-align:right">
                 
-                 <a class="btn btn-default btn-sm" href="{{ route('child-cate', [$loaiSp->slug, $item->slug] ) }}" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>
-                  @if($item->home_style > 0)
-                  <a class="btn-sm btn btn-primary" href="{{ route('banner.index', ['object_type' => 2, 'object_id' => $item->id]) }}" ><span class="badge">{{ $item->banners->count() }}</span> Banner </a>
-                  @endif
+                 <a class="btn btn-default btn-sm" href="{{ route('child-cate', ['danh-muc', $item->slug] ) }}" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>                  
                   <a href="{{ route( 'cate.edit', [ 'id' => $item->id ]) }}" class="btn-sm btn btn-warning">Chỉnh sửa</a>                 
-                  @if($item->Product->count() == 0)
+                  @if($item->product->count() == 0)
                   <a onclick="return callDelete('{{ $item->name }}','{{ route( 'cate.destroy', [ 'id' => $item->id ]) }}');" class="btn-sm btn btn-danger">Xóa</a>
                   @endif
                   
@@ -124,7 +124,7 @@ function callDelete(name, url){
   return flag;
 }
 $(document).ready(function(){
-  $('#loai_id').change(function(){
+  $('#parent_id').change(function(){
     $('#formSearch').submit();
   });
   $('#table-list-data tbody').sortable({

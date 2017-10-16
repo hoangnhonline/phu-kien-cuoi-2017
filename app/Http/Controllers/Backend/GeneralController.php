@@ -41,8 +41,7 @@ class GeneralController extends Controller
             if($value == 1){
                 $display_order = Helper::getNextOrder($table,
                 [
-                    'is_old' => $detail->is_old,
-                    'loai_id' =>  $detail->loai_id,
+                    'parent_id' =>  $detail->parent_id,
                     'cate_id' => $detail->cate_id
                 ]
             );    

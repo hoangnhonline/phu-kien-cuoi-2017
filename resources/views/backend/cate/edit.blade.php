@@ -15,8 +15,11 @@
 
   <!-- Main content -->
   <section class="content">
+    <?php 
+    $slug = $loaiSp ? $loaiSp->slug : "danh-muc";
+    ?>
     <a class="btn btn-default" href="{{ route('cate.index') }}" style="margin-bottom:5px">Quay lại</a>
-    <a class="btn btn-primary btn-sm" href="{{ route('child-cate', [$loaiSp->slug, $detail->slug] ) }}" target="_blank" style="margin-top:-6px"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>
+    <a class="btn btn-primary btn-sm" href="{{ route('child-cate', [$slug, $detail->slug] ) }}" target="_blank" style="margin-top:-6px"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>
     <div class="row">
       <!-- left column -->
 
@@ -28,7 +31,7 @@
           </div>
           <!-- /.box-header -->
           <!-- form start -->
-          <form role="form" method="POST" action="{{ route('cate.update') }}">
+          <form role="form" method="POST" action="{{ route('cate.update') }}" id="dataForm">
             {!! csrf_field() !!}
             <input type="hidden" name="id" value="{{ $detail->id }}">
             <div class="box-body">
@@ -46,10 +49,10 @@
               @endif
                <div class="form-group">
                   <label>Danh mục cha</label>
-                  <select class="form-control" name="loai_id" id="loai_id">                  
-                    <option value="0" {{ $detail->loai_id == 0 ? "selected" : "" }}>--chọn--</option>
-                    @foreach( $loaiSpArr as $value )
-                    <option value="{{ $value->id }}" {{ ( $detail->loai_id == $value->id ) ? "selected" : "" }}>{{ $value->name }}</option>
+                  <select class="form-control" name="parent_id" id="parent_id">                  
+                    <option value="0" {{ $detail->parent_id == 0 ? "selected" : "" }}>--chọn--</option>
+                    @foreach( $cateParentList as $value )
+                    <option value="{{ $value->id }}" {{ ( $detail->parent_id == $value->id ) ? "selected" : "" }}>{{ $value->name }}</option>
                     @endforeach
                   </select>
                 </div> 
@@ -60,7 +63,7 @@
               </div>
               <div class="form-group">
                 <label>Slug <span class="red-star">*</span></label>
-                <input type="text" class="form-control" name="slug" id="slug" value="{{ $detail->slug }}">
+                <input type="text" class="form-control" readonly="readonly" name="slug" id="slug" value="{{ $detail->slug }}">
               </div>
               <!-- textarea -->
               <div class="form-group">
@@ -123,37 +126,4 @@
   </section>
   <!-- /.content -->
 </div>
-<input type="hidden" id="route_upload_tmp_image" value="{{ route('image.tmp-upload') }}">
-@stop
-@section('javascript_page')
-<script type="text/javascript">
-$(document).ready(funtion(){
-  $('#name').change(function(){
-         var name = $.trim( $(this).val() );
-         if( name != '' && $('#slug').val() == ''){
-            $.ajax({
-              url: $('#route_get_slug').val(),
-              type: "POST",
-              async: false,      
-              data: {
-                str : name
-              },              
-              success: function (response) {
-                if( response.str ){                  
-                  $('#slug').val( response.str );
-                }                
-              },
-              error: function(response){                             
-                  var errors = response.responseJSON;
-                  for (var key in errors) {
-                    
-                  }
-                  //$('#btnLoading').hide();
-                  //$('#btnSave').show();
-              }
-            });
-         }
-      });
-});
-</script>
 @stop

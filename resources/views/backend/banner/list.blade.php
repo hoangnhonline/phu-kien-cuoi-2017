@@ -39,33 +39,18 @@
            
               <tr>
                 <td><span class="order">1</span></td>                                                                           
-                <td><a href="{{ route( 'banner.index', [ 'object_id' => 1, 'object_type' => 3 ]) }}" class="link_edit">Banner slide trang chủ <span style="color:red">( 870 x 448 px) </span></a></td>
+                <td><a href="{{ route( 'banner.index', [ 'object_id' => 1, 'object_type' => 3 ]) }}" class="link_edit">Banner slide trang chủ <span style="color:red">( 1349 x 400 px) </span></a></td>
                 <td style="white-space:nowrap; text-align:right">                 
                   <a href="{{ route( 'banner.index', [ 'object_id' => 1, 'object_type' => 3 ]) }}" class="btn-sm btn btn-primary">Banner</a>
                 </td>
               </tr> 
               <tr>
                 <td><span class="order">2</span></td>                                                                           
-                <td><a href="{{ route( 'banner.index', [ 'object_id' => 2, 'object_type' => 3 ]) }}" class="link_edit">Banner trang chủ - bên trái <span style="color:red">( 570 x 102 px)</span></a></td>
+                <td><a href="{{ route( 'banner.index', [ 'object_id' => 2, 'object_type' => 3 ]) }}" class="link_edit">Banner giữa trang chủ <span style="color:red">( 1349 x 400 px)</span></a></td>
                 <td style="white-space:nowrap; text-align:right">                 
                   <a href="{{ route( 'banner.index', [ 'object_id' => 2, 'object_type' => 3 ]) }}" class="btn-sm btn btn-primary">Banner</a>
                 </td>
               </tr> 
-              <tr>
-                <td><span class="order">3</span></td>                                                                           
-                <td><a href="{{ route( 'banner.index', [ 'object_id' => 3, 'object_type' => 3 ]) }}" class="link_edit">Banner trang chủ - bên phải <span style="color:red">( 570 x 102 px)</span></a></td>
-                <td style="white-space:nowrap; text-align:right">                 
-                  <a href="{{ route( 'banner.index', [ 'object_id' => 3, 'object_type' => 3 ]) }}" class="btn-sm btn btn-primary">Banner</a>
-                </td>
-              </tr> 
-              <tr>
-                <td><span class="order">4</span></td>                                                                           
-                <td><a href="{{ route( 'banner.index', [ 'object_id' => 4, 'object_type' => 3 ]) }}" class="link_edit">Banner sidebar trang tin tức <span style="color:red">( 270 x 0 px)</span></a></td>
-                <td style="white-space:nowrap; text-align:right">                 
-                  <a href="{{ route( 'banner.index', [ 'object_id' => 4, 'object_type' => 3 ]) }}" class="btn-sm btn btn-primary">Banner</a>
-                </td>
-              </tr> 
-             
 
           </tbody>
           </table>

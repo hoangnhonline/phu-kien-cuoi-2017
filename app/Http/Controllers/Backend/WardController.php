@@ -92,7 +92,7 @@ class ArticlesController extends Controller
 
             $destionation = date('Y/m/d'). '/'. end($tmp);
             
-            File::move(config('annam.upload_path').$dataArr['image_url'], config('annam.upload_path').$destionation);
+            File::move(config('phukien.upload_path').$dataArr['image_url'], config('phukien.upload_path').$destionation);
             
             $dataArr['image_url'] = $destionation;
         }        
@@ -198,7 +198,7 @@ class ArticlesController extends Controller
 
             $destionation = date('Y/m/d'). '/'. end($tmp);
             
-            File::move(config('annam.upload_path').$dataArr['image_url'], config('annam.upload_path').$destionation);
+            File::move(config('phukien.upload_path').$dataArr['image_url'], config('phukien.upload_path').$destionation);
             
             $dataArr['image_url'] = $destionation;
         }

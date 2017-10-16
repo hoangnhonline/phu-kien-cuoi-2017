@@ -41,10 +41,10 @@
               @endif
                 <div class="form-group">
                   <label>Danh mục cha</label>
-                  <select class="form-control" name="loai_id" id="loai_id">                  
-                    <option value="0" {{ old('loai_id') == 0 ? "selected" : "" }}>--chọn--</option>
-                    @foreach( $loaiSpArr as $value )
-                    <option value="{{ $value->id }}" {{ ( old('loai_id') == $value->id || $loai_id == $value->id ) ? "selected" : "" }}>{{ $value->name }}</option>
+                  <select class="form-control" name="parent_id" id="parent_id">                  
+                    <option value="0" {{ old('parent_id') == 0 ? "selected" : "" }}>--chọn--</option>
+                    @foreach( $cateParentList as $value )
+                    <option value="{{ $value->id }}" {{ ( old('parent_id') == $value->id || $parent_id == $value->id ) ? "selected" : "" }}>{{ $value->name }}</option>
                     @endforeach
                   </select>
                 </div> 
@@ -55,7 +55,7 @@
                 </div>
                 <div class="form-group">
                   <label>Slug <span class="red-star">*</span></label>
-                  <input type="text" class="form-control" name="slug" id="slug" value="{{ old('slug') }}">
+                  <input type="text" class="form-control" readonly="readonly" name="slug" id="slug" value="{{ old('slug') }}">
                 </div>
                 <!-- textarea -->
                 <div class="form-group">

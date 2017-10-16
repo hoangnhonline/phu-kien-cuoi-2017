@@ -2,7 +2,7 @@
 @section('content')
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
-@if(Auth::user()->email != "huongll@annammobile.com")
+@if(Auth::user()->email != "huongll@DASHBOARD")
 <section class="content-header">
   <h1>
     Sản phẩm mới
@@ -27,10 +27,10 @@
             
             <div class="form-group">
               <label for="email">Danh mục cha&nbsp;</label>
-              <select class="form-control" name="loai_id" id="loai_id">
+              <select class="form-control" name="parent_id" id="parent_id">
                 <option value="">--Tất cả--</option>
-                @foreach( $loaiSpArr as $value )
-                <option value="{{ $value->id }}" {{ $value->id == $arrSearch['loai_id'] ? "selected" : "" }}>{{ $value->name }}</option>
+                @foreach( $cateParentList as $value )
+                <option value="{{ $value->id }}" {{ $value->id == $arrSearch['parent_id'] ? "selected" : "" }}>{{ $value->name }}</option>
                 @endforeach
               </select>
             </div>
@@ -95,7 +95,7 @@
                 </td>
                 <td style="text-align:right">{{ number_format($item->price) }}</td>
                 <td style="text-align:right">{{ ($item->price_sale > 0) ? number_format($item->price_sale) : "-"}}</td>
-                <td style="text-align:right">{{ number_format($item->so_luong_ton) }}</td>               
+                <td style="text-align:right">{{ number_format($item->inventory) }}</td>               
                 
                 <td style="white-space:nowrap; text-align:right">                 
                   <button class="btn btn-warning btn-sm btnEdit" data-value="{{ $item->id }}">Chỉnh sửa</button>
@@ -145,7 +145,7 @@
 .pagination{
   margin: 0px !important;
 }
-@if(Auth::user()->email == "huongll@annammobile.com")
+@if(Auth::user()->email == "huongll@DASHBOARD")
 .content-wrapper{
   margin-left: 0px !important;
 }
@@ -179,7 +179,7 @@ $(document).ready(function(){
     obj.parent().parent().parent().submit(); 
   });
   
-  $('#loai_id').change(function(){
+  $('#parent_id').change(function(){
     $('#cate_id').val('');
     $('#searchForm').submit();
   });

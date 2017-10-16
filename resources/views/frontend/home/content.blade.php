@@ -1,81 +1,95 @@
 @section('content')
-<div class="block block_hero">
-  <div class="row">
-    @include('frontend.home.slider')
-    @include('frontend.home.hot-news')
-  </div>
-</div><!-- /block_hero -->
-@include('frontend.home.ads')  
-@foreach( $loaiSpList as $loaiSp)
-<div class="block block_product block_product-home">
-  <h3 class="block_title">
-    <span>{!! $loaiSp->name !!}</span>
-  </h3>
-  <div class="block_content row">
-    <ul class="list">
-      @foreach( $productArr[$loaiSp->id] as $product )
-      <li class="col-sm-5ths col-xs-6 product_item">
-        <div class="item">
-          <a href="{{ route('product-detail', [$product->slug, $product->id]) }}" title="{!! $product->name !!}">
-            <div class="product_img">              
-              <img class="lazy" data-original="{{ $product->image_url ? Helper::showImageThumb($product->image_url) : URL::asset('admin/dist/img/no-image.jpg') }}" alt="{!! $product->name !!}" title="{!! $product->name !!}">
+<?php 
+$bannerArr = DB::table('banner')->where(['object_id' => 1, 'object_type' => 3])->orderBy('display_order', 'asc')->get();
+?>
+@if($bannerArr)
+<div class="block block-side">
+    <div class="owl-carousel owl-style2" data-nav="true" data-margin="0" data-items='1' data-autoplayTimeout="1000" data-autoplay="true" data-loop="true" data-navcontainer="true">
+      <?php $i = 0; ?>
+      @foreach($bannerArr as $banner)
+      <?php $i++; ?>
+      <div class="item-slide">
+        @if($banner->ads_url !='')
+        <a href="{{ $banner->ads_url }}" title="banner slide {{ $i }}">
+        @endif
+        <img src="{{ Helper::showImage($banner->image_url) }}" alt="slide {{ $i }}">
+        @if($banner->ads_url !='')
+        </a>
+        @endif
+      </div>
+      @endforeach   
+    </div>
+  </div><!-- /block-side -->
+@endif
+  <div class="block block-title-cm block-categories-home">
+    <div class="container">
+      <div class="block-title">
+        <h2 data-text="1" @if($isEdit) class="edit" @endif>{!! $textList[1] !!}</h2>
+        <p data-text="2" class="desc @if($isEdit) edit @endif">{!! $textList[2] !!}</p>
+      </div>
+      <div class="block-cate-product">
+        <div class="row">
+          @foreach( $cateParentHot as $obj )
+          <div class="col-sm-3">
+            <div class="cate-item">
+              <figure class="box-thumb">
+                <a href="{!! route( 'cate-parent', $obj->slug ) !!}" title="{!! $obj->name !!}"><img src="{{ Helper::showImage( $obj->image_url ) }}" alt="{!! $obj->name !!}"></a>
+              </figure>
+              <figcaption class="box-caption">
+                <h2 class="cate-name"><a href="{!! route( 'cate-parent', $obj->slug ) !!}" title="{!! $obj->name !!}">{!! $obj->name !!}</a></h2>
+                <p class="cate-desc">{!! $obj->description !!}</p>
+                <p class="cate-btn"><a href="{!! route( 'cate-parent', $obj->slug ) !!}">Xem chi tiết</a></p>
+              </figcaption>
             </div>
-            <div class="product_info">
-              <h3 class="product_name">{!! $product->name !!}</h3>
-              <div class="product_price">
-              <span class="product_price_new">{{ $product->is_sale == 1 ? number_format($product->price_sale) : number_format($product->price) }}đ</span>
-              @if($product->is_sale)
-              <span class="product_price_old">{{ number_format($product->price) }}đ</span>
-              @endif
-            </div>
-            @if($product->is_new)
-            <span class="new">NEW</span>
-            @endif
-            @if($product->is_sale)
-            <span class="sale_off">GIẢM {{ ceil(($product->price-$product->price_sale)*100/$product->price) }}%</span>
-            @endif
-            </div>
-            <div class="product_detail">
-              <p class="name">{!! $product->name !!}</p>
-                    <div class="product_price">
-              <span class="product_price_new">{{ $product->is_sale == 1 ? number_format($product->price_sale) : number_format($product->price) }}đ</span>
-              @if($product->is_sale)
-              <span class="product_price_old">{{ number_format($product->price) }}đ</span>
-              @endif              
-            </div>
-            @if( $loaiSp->is_hover == 1)            
-                @foreach($hoverInfo[$loaiSp->id] as $info)
-                <?php 
-                $tmpInfo = explode(",", $info->str_thuoctinh_id);              
-                ?>
-
-                <p>
-                {!! $info->text_hien_thi !!}: 
-                <?php                
-                $spThuocTinhArr = json_decode( $product->thuoc_tinh, true);                 
-                
-                $countT = 0; $totalT = count($tmpInfo);
-                foreach( $tmpInfo as $tinfo){
-                    $countT++;
-                    if(isset($spThuocTinhArr[$tinfo])){
-                        echo $spThuocTinhArr[$tinfo];
-                        echo $countT < $totalT ? ", " : "";
-                    }
-                }
-                 ?>                   
-                 </p>
-                @endforeach
-                
-              @endif                    
-
-            </div>
-          </a>
+          </div><!-- /item -->
+          @endforeach
         </div>
-      </li><!-- /product_item -->
-      @endforeach
-      
-    </ul>
-  </div>
-</div><!-- /block_product -->
-@endforeach
+      </div>
+    </div>
+  </div><!-- /block_big-title -->
+<?php 
+$bannerArr = DB::table('banner')->where(['object_id' => 2, 'object_type' => 3])->orderBy('display_order', 'asc')->get();
+?>
+@if($bannerArr)  
+  <?php $i = 0; ?>
+  @foreach($bannerArr as $banner)
+  <?php $i++; ?>
+  <div class="block block-banner">
+    @if($banner->ads_url !='')
+    <a href="{{ $banner->ads_url }}" title="banner slide {{ $i }}">
+    @endif
+    <img src="{{ Helper::showImage($banner->image_url) }}" alt="slide {{ $i }}">
+    @if($banner->ads_url !='')
+    </a>
+    @endif
+  </div><!-- /block-banner -->
+  @endforeach
+@endif
+  <div class="block block-title-cm">
+    <div class="container">
+      <div class="block-title">
+        <h2 data-text="3" @if($isEdit) class="edit" @endif>{!! $textList[3] !!}</h2>
+        <p data-text="4" class="desc @if($isEdit) edit @endif">{!! $textList[4] !!}</p>
+      </div>
+      <div class="block-news-home">
+        <div class="row">
+          @foreach( $articlesHotList as $obj )
+          <div class="col-sm-3">
+            <div class="news-item">
+              <figure class="box-thumb">
+                <a href="{!! route('news-detail', [ $obj->cate->slug, $obj->slug, $obj->id ]) !!}" title="{!! $obj->title !!}"><img src="{{ Helper::showImage( $obj->image_url ) }}" alt="{!! $obj->title !!}"></a>
+              </figure>
+              <figcaption class="box-caption">
+                <h2 class="news-title"><a href="{!! route('news-detail', [ $obj->cate->slug, $obj->slug, $obj->id ]) !!}" title="{!! $obj->title !!}">{!! $obj->title !!}</a></h2>
+                <p class="news-meta"><i class="fa fa-calendar"></i> 20/09/2017</p>
+                <p class="news-desc">{!! $obj->description !!}</p>
+              </figcaption>
+              <p class="news-btn"><a href="{!! route('news-detail', [$obj->cate->slug, $obj->slug, $obj->id ]) !!}">Xem chi tiết</a></p>
+            </div>
+          </div><!-- /item -->
+          @endforeach
+        </div>
+      </div>
+    </div>
+  </div><!-- /block_big-title -->
 @stop
