@@ -52,7 +52,7 @@
                    
                     <div role="tabpanel" class="tab-pane active" id="home">
                         <div class="form-group col-md-6 none-padding">
-                          <label for="email">Danh mục cha<span class="red-star">*</span></label>
+                          <label for="email">Danh mục cha</label>
                           <select class="form-control" name="parent_id" id="parent_id">
                             <option value="">--Chọn--</option>
                             @foreach( $cateParentList as $value )
@@ -74,7 +74,11 @@
                             <option value="{{ $value->id }}" {{ $value->id == old('cate_id') || $value->id == $cate_id ? "selected" : "" }}>{{ $value->name }}</option>
                             @endforeach
                           </select>
-                        </div>                          
+                        </div>   
+                        <div class="form-group" >                  
+                          <label>CODE <span class="red-star">*</span></label>
+                          <input type="text" class="form-control req" name="code" id="code" value="{{ old('code') }}">
+                        </div>                       
                         <div class="form-group" >                  
                           <label>Tên <span class="red-star">*</span></label>
                           <input type="text" class="form-control req" name="name" id="name" value="{{ old('name') }}">

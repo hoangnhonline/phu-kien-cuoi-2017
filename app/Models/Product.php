@@ -118,4 +118,8 @@ class Product extends Model  {
     {
         return $this->belongsTo('App\Models\Account', 'updated_user');
     }
+    public function color()
+    {
+        return $this->belongsTo('App\Models\Color', 'color_id');
+    }
 }

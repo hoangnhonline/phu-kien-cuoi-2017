@@ -59,17 +59,22 @@ Route::group(['namespace' => 'Frontend'], function()
         Route::post('save-order', ['as' => 'save-order', 'uses' => 'CartController@saveOrder']);        
     });
 
-    Route::group(['prefix' => 'tai-khoan'], function () {
-        Route::get('don-hang-cua-toi', ['as' => 'order-history', 'uses' => 'OrderController@history']);
-        Route::get('thong-bao-cua-toi', ['as' => 'notification', 'uses' => 'CustomerController@notification']);
-        Route::get('thong-tin-tai-khoan', ['as' => 'account-info', 'uses' => 'CustomerController@accountInfo']);
-        Route::get('doi-mat-khau', ['as' => 'change-password', 'uses' => 'CustomerController@changePassword']);
-        Route::post('save-new-password', ['as' => 'save-new-password', 'uses' => 'CustomerController@saveNewPassword']);
-        Route::get('/chi-tiet-don-hang/{order_id}', ['as' => 'order-detail', 'uses' => 'OrderController@detail']);
-        Route::post('/huy-don-hang', ['as' => 'order-cancel', 'uses' => 'OrderController@huy']);
-        Route::post('/forget-password', ['as' => 'forget-password', 'uses' => 'CustomerController@forgetPassword']);
-        Route::get('/reset-password/{key}', ['as' => 'reset-password', 'uses' => 'CustomerController@resetPassword']);
-        Route::post('save-reset-password', ['as' => 'save-reset-password', 'uses' => 'CustomerController@saveResetPassword']);
+    Route::group(['prefix' => 'gio-hang'], function () {
+        Route::get('/', ['as' => 'cart', 'uses' => 'CartController@index']);
+        Route::get('thong-tin-nhan-hang', ['as' => 'address-info', 'uses' => 'CartController@addressInfo']);
+        Route::get('thong-tin-don-hang', ['as' => 'order-info', 'uses' => 'CartController@orderInfo']);
+        Route::get('empty-cart', ['as' => 'empty-cart', 'uses' => 'CartController@deleteAll']);
+        Route::get('get-branch', ['as' => 'get-branch', 'uses' => 'CartController@getBranch']);
+        Route::get('phuong-thuc-thanh-toan', ['as' => 'payment-method', 'uses' => 'CartController@paymentInfo']);
+        Route::post('store-address', ['as' => 'store-address', 'uses' => 'CartController@storeAddress']);
+        Route::get('short-cart', ['as' => 'short-cart', 'uses' => 'CartController@shortCart']);
+        Route::any('shipping-step-1', ['as' => 'shipping-step-1', 'uses' => 'CartController@shippingStep1']);
+        Route::get('shipping-step-2', ['as' => 'shipping-step-2', 'uses' => 'CartController@shippingStep2']);
+        Route::get('shipping-step-3', ['as' => 'shipping-step-3', 'uses' => 'CartController@shippingStep3']);
+        Route::post('update-product', ['as' => 'update-product', 'uses' => 'CartController@update']);
+        Route::get('add-product', ['as' => 'add-product', 'uses' => 'CartController@addProduct']);
+        Route::get('mua-hang-thanh-cong', ['as' => 'success', 'uses' => 'CartController@success']);
+        Route::post('save-order', ['as' => 'payment', 'uses' => 'CartController@saveOrder']);        
     });
     Route::get('tim-kiem.html', ['as' => 'search', 'uses' => 'HomeController@search']);
     Route::get('tin-tuc.html', ['as' => 'news-list', 'uses' => 'NewsController@newsList']);

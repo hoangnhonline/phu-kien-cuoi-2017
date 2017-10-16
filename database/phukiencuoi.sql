@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 16, 2017 at 04:20 PM
--- Server version: 5.5.57-0ubuntu0.14.04.1
--- PHP Version: 7.0.24-1+ubuntu14.04.1+deb.sury.org+1
+-- Host: 127.0.0.1
+-- Generation Time: Oct 16, 2017 at 05:14 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -1129,46 +1127,6 @@ INSERT INTO `district` (`id`, `name`, `alias`, `city_id`, `display_order`) VALUE
 (731, 'Thị xã Cai Lậy', 'Thi xa Cai Lay', 336, 1),
 (732, 'Thị xã Duyên Hải', 'Thi xa Duyen Hai', 314, 1),
 (733, 'Huyện Bắc Tân Uyên', 'Huyen Bac Tan Uyen', 285, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `hover_info`
---
-
-CREATE TABLE `hover_info` (
-  `id` int(11) NOT NULL,
-  `text_hien_thi` varchar(255) NOT NULL,
-  `str_thuoctinh_id` varchar(50) NOT NULL,
-  `loai_id` tinyint(4) NOT NULL,
-  `display_order` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `hover_info`
---
-
-INSERT INTO `hover_info` (`id`, `text_hien_thi`, `str_thuoctinh_id`, `loai_id`, `display_order`) VALUES
-(2, 'CPU', '46,47,49', 2, 1),
-(5, 'RAM', '52,53,54', 2, 2),
-(6, 'HDD', '55,56', 2, 3),
-(7, 'LCD', '57,58', 2, 4),
-(8, 'VGA', '61,62', 2, 5),
-(10, 'Màn hình', '1,2,3', 8, 1),
-(11, 'HĐH', '14', 8, 1),
-(12, 'CPU', '15,16', 8, 1),
-(13, 'Camera', '6,7', 8, 1),
-(14, 'Dung lượng pin', '39,40', 8, 1),
-(15, 'Màn hình', '105,104', 10, 1),
-(16, 'HĐH', '111,112,113', 10, 1),
-(17, 'RAM', '115,116', 10, 1),
-(18, 'Camera', '107,110', 10, 1),
-(19, 'Kết nối', '121', 10, 1),
-(20, 'CPU', '136', 3, 1),
-(21, 'RAM', '137', 3, 1),
-(22, 'HDD', '138', 3, 1),
-(23, 'VGA', '139', 3, 1),
-(24, 'Audio', '140', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -2852,31 +2810,21 @@ CREATE TABLE `newsletter` (
 
 CREATE TABLE `orders` (
   `id` bigint(20) NOT NULL,
-  `customer_id` int(11) DEFAULT '0',
-  `gender` tinyint(1) DEFAULT NULL COMMENT '1 : nam 2 nu',
-  `tong_tien` int(11) DEFAULT NULL,
-  `tong_sp` tinyint(4) DEFAULT NULL,
+  `total_bill` int(11) DEFAULT NULL,
+  `total_product` tinyint(4) DEFAULT NULL,
   `status` tinyint(4) NOT NULL,
   `method_id` tinyint(4) DEFAULT NULL,
-  `coupon_id` int(11) DEFAULT NULL,
-  `giam_gia` int(11) DEFAULT NULL,
-  `tien_thanh_toan` int(11) NOT NULL,
-  `ngay_giao_du_kien` varchar(255) DEFAULT NULL,
-  `ngay_giao_thuc` datetime DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
+  `total_payment` int(11) NOT NULL,
   `updated_user` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `full_name` varchar(255) DEFAULT NULL,
+  `fullname` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `phone` varchar(50) DEFAULT NULL,
-  `district_id` int(11) DEFAULT NULL,
-  `city_id` int(11) DEFAULT NULL,
-  `ward_id` int(11) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `phi_giao_hang` int(11) DEFAULT '0',
-  `phi_cod` int(11) NOT NULL DEFAULT '0',
-  `service_fee` int(11) NOT NULL DEFAULT '0',
-  `address_type` tinyint(4) DEFAULT NULL
+  `shipping_fee` int(11) DEFAULT '0',
+  `cod_fee` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -2889,12 +2837,9 @@ CREATE TABLE `order_detail` (
   `id` int(11) NOT NULL,
   `order_id` int(11) DEFAULT NULL,
   `product_id` bigint(20) DEFAULT NULL,
-  `so_luong` tinyint(4) DEFAULT NULL,
-  `don_gia` int(11) DEFAULT NULL,
-  `tong_tien` int(11) DEFAULT NULL,
-  `so_dich_vu` tinyint(4) NOT NULL DEFAULT '0',
-  `don_gia_dich_vu` int(11) NOT NULL DEFAULT '0',
-  `tong_dich_vu` int(11) NOT NULL DEFAULT '0'
+  `amount` tinyint(4) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `total` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -3002,13 +2947,13 @@ INSERT INTO `product` (`id`, `code`, `name`, `alias`, `slug`, `thumbnail_id`, `i
 (2, NULL, 'Samsung Galaxy Note 8 Black', 'Samsung Galaxy Note 8 Black', 'samsung-galaxy-note-8-black', 8, 1, 0, 0, 18500000, NULL, 18500000, 8, 38, '', NULL, 0, 4, 0, 0, 0, NULL, 1, 1, 1593, 1, 1, '2017-10-14 11:58:46', '2017-10-14 11:58:47'),
 (3, NULL, 'iPhone 8 Plus 64Gb', 'iPhone 8 Plus 64Gb', 'iphone-8-plus-64gb', 11, 1, 0, 1, 20199000, 0, 20199000, 8, 37, '', NULL, 1, 0, 0, 1, 0, NULL, 1, 1, 1594, 1, 1, '2017-10-14 12:32:43', '2017-10-14 12:33:34'),
 (4, NULL, 'Ipad Gen 5 silver 32g 4g fulbox', 'Ipad Gen 5 silver 32g 4g fulbox', 'ipad-gen-5-silver-32g-4g-fulbox', 12, 1, 0, 0, 8700000, NULL, 8700000, 10, 57, '', NULL, 0, 2, 0, 1, 0, NULL, 3, 1, 1595, 1, 1, '2017-10-14 15:00:45', '2017-10-14 15:00:45'),
-(8, NULL, 'Vương miện cho bé 001', 'Vuong mien cho be 001', 'vuong-mien-cho-be-001', 16, 1, 0, 1, 120000, 0, 120000, 2, 1, '', '', 0, 12, 0, 4, 0, 0, 5, 1, 1609, 1, 1, '2017-10-16 12:18:18', '2017-10-16 12:18:18'),
-(9, NULL, 'Vương miện cho bé 002', 'Vuong mien cho be 002', 'vuong-mien-cho-be-002', 17, 1, 0, 1, 150000, 0, 150000, 2, 1, '', '', 0, 2, 0, 5, 0, 0, 3, 1, 1610, 1, 1, '2017-10-16 12:49:14', '2017-10-16 12:49:14'),
-(10, NULL, 'Vương miện cho bé 003', 'Vuong mien cho be 003', 'vuong-mien-cho-be-003', 18, 1, 0, 1, 90000, 0, 90000, 2, 1, '', '', 0, 2, 0, 6, 0, 0, 6, 1, 1611, 1, 1, '2017-10-16 12:49:38', '2017-10-16 12:49:38'),
-(11, NULL, 'Cài tóc cho bé 001', 'Cai toc cho be 001', 'cai-toc-cho-be-001', 19, 1, 0, 1, 40000, 0, 40000, 2, 2, '', '', 0, 2, 0, 1, 0, 0, 2, 1, 1612, 1, 1, '2017-10-16 12:51:18', '2017-10-16 12:51:18'),
-(12, NULL, 'Cài tóc cho bé 002', 'Cai toc cho be 002', 'cai-toc-cho-be-002', 21, 1, 0, 1, 50000, 0, 50000, 2, 2, '', '', 0, 2, 0, 2, 0, 0, 2, 1, 1613, 1, 1, '2017-10-16 12:51:38', '2017-10-16 12:51:38'),
-(13, NULL, 'Cài tóc cho bé 003', 'Cai toc cho be 003', 'cai-toc-cho-be-003', 22, 1, 0, 1, 60000, 0, 60000, 2, 2, '', '', 0, 2, 0, 3, 0, 0, 5, 1, 1614, 1, 1, '2017-10-16 12:52:03', '2017-10-16 12:52:04'),
-(14, NULL, 'Cài tóc cho bé 004', 'Cai toc cho be 004', 'cai-toc-cho-be-004', 23, 1, 0, 1, 56000, 0, 56000, 2, 2, '', '', 0, 2, 0, 4, 0, 0, 6, 1, 1615, 1, 1, '2017-10-16 12:52:28', '2017-10-16 12:52:28');
+(8, 'VM001', 'Vương miện cho bé 001', 'Vuong mien cho be 001', 'vuong-mien-cho-be-001', 16, 1, 0, 1, 120000, 0, 120000, 2, 1, '', '', 0, 12, 0, 4, 0, 0, 5, 1, 1609, 1, 1, '2017-10-16 12:18:18', '2017-10-16 18:40:20'),
+(9, 'VM002', 'Vương miện cho bé 002', 'Vuong mien cho be 002', 'vuong-mien-cho-be-002', 17, 1, 0, 1, 150000, 0, 150000, 2, 1, '', '', 0, 2, 0, 5, 0, 0, 3, 1, 1610, 1, 1, '2017-10-16 12:49:14', '2017-10-16 18:40:16'),
+(10, 'VM003', 'Vương miện cho bé 003', 'Vuong mien cho be 003', 'vuong-mien-cho-be-003', 18, 1, 0, 1, 90000, 0, 90000, 2, 1, '', '', 0, 2, 0, 6, 0, 0, 6, 1, 1611, 1, 1, '2017-10-16 12:49:38', '2017-10-16 18:40:13'),
+(11, 'CT001', 'Cài tóc cho bé 001', 'Cai toc cho be 001', 'cai-toc-cho-be-001', 19, 1, 0, 1, 40000, 0, 40000, 2, 2, '', '<h2>What is Lorem Ipsum?</h2>\r\n\r\n<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n\r\n<h2>Why do we use it?</h2>\r\n\r\n<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using &#39;Content here, content here&#39;, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for &#39;lorem ipsum&#39; will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>\r\n&nbsp;\r\n\r\n<h2>Where does it come from?</h2>\r\n\r\n<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of &quot;de Finibus Bonorum et Malorum&quot; (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, &quot;Lorem ipsum dolor sit amet..&quot;, comes from a line in section 1.10.32.</p>\r\n\r\n<p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from &quot;de Finibus Bonorum et Malorum&quot; by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>\r\n', 0, 2, 0, 1, 0, 0, 9, 1, 1612, 1, 1, '2017-10-16 12:51:18', '2017-10-16 18:46:40'),
+(12, 'CT002', 'Cài tóc cho bé 002', 'Cai toc cho be 002', 'cai-toc-cho-be-002', 21, 1, 0, 1, 50000, 0, 50000, 2, 2, '', '', 0, 2, 0, 2, 0, 0, 2, 1, 1613, 1, 1, '2017-10-16 12:51:38', '2017-10-16 18:39:48'),
+(13, 'CT003', 'Cài tóc cho bé 003', 'Cai toc cho be 003', 'cai-toc-cho-be-003', 22, 1, 0, 1, 60000, 0, 60000, 2, 2, '', '', 0, 2, 0, 3, 0, 0, 5, 1, 1614, 1, 1, '2017-10-16 12:52:03', '2017-10-16 18:39:42'),
+(14, 'CT004', 'Cài tóc cho bé 004', 'Cai toc cho be 004', 'cai-toc-cho-be-004', 23, 1, 0, 1, 56000, 0, 56000, 2, 2, '', '', 0, 2, 0, 4, 0, 0, 6, 1, 1615, 1, 1, '2017-10-16 12:52:28', '2017-10-16 18:39:07');
 
 -- --------------------------------------------------------
 
@@ -14565,13 +14510,6 @@ ALTER TABLE `district`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `hover_info`
---
-ALTER TABLE `hover_info`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `loai_id` (`loai_id`);
-
---
 -- Indexes for table `info_seo`
 --
 ALTER TABLE `info_seo`
@@ -14681,164 +14619,131 @@ ALTER TABLE `ward`
 --
 ALTER TABLE `articles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
 -- AUTO_INCREMENT for table `articles_cate`
 --
 ALTER TABLE `articles_cate`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT for table `banner`
 --
 ALTER TABLE `banner`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
 --
 -- AUTO_INCREMENT for table `cate`
 --
 ALTER TABLE `cate`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
 -- AUTO_INCREMENT for table `cate_parent`
 --
 ALTER TABLE `cate_parent`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
 -- AUTO_INCREMENT for table `city`
 --
 ALTER TABLE `city`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=342;
-
 --
 -- AUTO_INCREMENT for table `color`
 --
 ALTER TABLE `color`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
 --
 -- AUTO_INCREMENT for table `contact`
 --
 ALTER TABLE `contact`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- AUTO_INCREMENT for table `counter_values`
 --
 ALTER TABLE `counter_values`
   MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `district`
 --
 ALTER TABLE `district`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=734;
-
---
--- AUTO_INCREMENT for table `hover_info`
---
-ALTER TABLE `hover_info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
-
 --
 -- AUTO_INCREMENT for table `info_seo`
 --
 ALTER TABLE `info_seo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `meta_data`
 --
 ALTER TABLE `meta_data`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1617;
-
 --
 -- AUTO_INCREMENT for table `newsletter`
 --
 ALTER TABLE `newsletter`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `pages`
 --
 ALTER TABLE `pages`
   MODIFY `id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
 --
 -- AUTO_INCREMENT for table `price_range`
 --
 ALTER TABLE `price_range`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
 --
 -- AUTO_INCREMENT for table `product_img`
 --
 ALTER TABLE `product_img`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
 --
 -- AUTO_INCREMENT for table `rating`
 --
 ALTER TABLE `rating`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-
 --
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
-
 --
 -- AUTO_INCREMENT for table `tag`
 --
 ALTER TABLE `tag`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `text`
 --
 ALTER TABLE `text`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
 --
 -- AUTO_INCREMENT for table `ward`
 --
 ALTER TABLE `ward`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11605;
-COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

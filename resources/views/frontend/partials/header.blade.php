@@ -39,10 +39,10 @@
 				</form>
 
 				<div class="hdr-cart">
-					<a href="#" onclick="return false;" title="Cart" data-toggle="modal" data-target="#Cart">
+					<a href="{{ route('cart') }}" title="Cart" data-toggle="modal" data-target="#Cart">
 						<i class="fa fa-shopping-cart"></i>
 						<span>Giỏ hàng</span><br>
-						<span><b>0</b> Sản phẩm</span>
+						<span><b>{{ Session::get('products') ? array_sum(Session::get('products')) : 0 }}</b> sản phẩm</span>
 					</a>
 				</div>
 
@@ -69,9 +69,9 @@
 			<i class="fa"></i>
 		</div>
 		<div class="block-cart-mb">
-			<a href="#" onclick="return false;" title="Cart" data-toggle="modal" data-target="#Cart">
+			<a href="{{ route('cart') }}" title="Cart" data-toggle="modal" data-target="#Cart">
 				<i class="fa fa-shopping-cart"></i>
-				<span>10</span>
+				<span>{{ Session::get('products') ? array_sum(Session::get('products')) : 0 }}</span>
 			</a>
 		</div>
 		<nav class="menu-top">

@@ -25,24 +25,7 @@ use Mail;
 class CartController extends Controller
 {
 
-    public static $loaiSp = [];
-    public static $cateParentListKey = [];
-
-
-    /**
-    * Session products define array [ id => quantity ]
-    *
-    */
-
-    public function __construct(){
-        // Session::put('products', [
-        //     '1' => 2,
-        //     '3' => 3
-        // ]);
-        // Session::put('login', true);
-        // Session::put('userId', 1);
-        // Session::forget('login');
-        // Session::forget('userId');
+    public function __construct(){      
 
     }
     public function index(Request $request)
@@ -72,6 +55,22 @@ class CartController extends Controller
         $seo['title'] = $seo['description'] = $seo['keywords'] = "Thanh toán";
         $cityList = City::all();
         return view('frontend.cart.payment', compact('arrProductInfo', 'getlistProduct', 'seo', 'cityList'));
+    }
+    public function addressInfo(Request $request){        
+        if(!Session::has('products')) {
+            return redirect()->route('home');
+        }
+        
+        $getlistProduct = Session::get('products');
+        
+        $listProductId = array_keys($getlistProduct);
+    
+        $arrProductInfo = Product::whereIn('product.id', $listProductId)->get();
+        
+        
+        $seo['title'] = $seo['description'] = $seo['keywords'] = "Thời gian & địa chỉ nhận hàng";
+
+        return view('frontend.cart.address-info', compact('arrProductInfo', 'getlistProduct', 'seo'));
     }
     public function shortCart(Request $request)
     {
@@ -104,14 +103,14 @@ class CartController extends Controller
     public function addProduct(Request $request)
     {
         $id = $request->id;
-    
+        $quantity = $request->quantity;
         if($id > 0){
             $listProduct = Session::get('products');
             
             if(!empty($listProduct[$request->id])) {
-                $listProduct[$request->id] += 1;
+                $listProduct[$request->id] += $quantity;
             } else {
-                $listProduct[$request->id] = 1;
+                $listProduct[$request->id] = $quantity;
             }
 
             Session::put('products', $listProduct);

@@ -59,7 +59,7 @@ class DetailController extends Controller
         $price_to = $price + 1000000;
         $query = Product::where('product.slug', '<>', '')
                     ->where('out_of_stock', 0)
-                    ->where('product.parent_id', $detail->parent_id)
+                    ->where('product.cate_id', $detail->cate_id)
                     ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
                     ->select('product_img.image_url', 'product.*')
                     ->where('product.id', '<>', $detail->id);    

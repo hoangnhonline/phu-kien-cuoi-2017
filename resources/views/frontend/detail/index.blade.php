@@ -46,74 +46,57 @@
                                 </div>
                             </div><!-- /block-slide-detail -->
                         </div>
-
-                         <div class="bxslider product-img-gallery">
-                                    @foreach( $hinhArr as $hinh )
-                                    <div class="item">
-                                        <a href="{{ Helper::showImage($hinh['image_url']) }}" data-lightbox="roadtrip">
-                                            <img src="{{ Helper::showImage($hinh['image_url']) }}" alt=" hinh anh {!! $detail->name !!}" />
-                                        </a>
-                                    </div>
-                                    @endforeach
-                                </div><!-- /product-img-gallery -->
-                                <div class="product-img-thumb">
-                                    <div id="gallery_01" class="pro-thumb-img">
-                                        <?php $i = 0; ?>
-                                        @foreach( $hinhArr as $hinh )
-                                        <div class="item">
-                                            <a href="#" data-slide-index="{{ $i }}">
-                                                <img src="{{ Helper::showImageThumb($hinh['image_url']) }}" alt="thumb {!! $detail->name !!}" />
-                                            </a>
-                                        </div>
-                                        <?php $i++; ?>
-                                        @endforeach
-                                    </div>
-                                </div><!-- /product-img-thumb -->
-
-
-
                         <div class="col-sm-7">
                             <div class="block-page-common clearfix">
                                 <div class="block block-title">
-                                    <h2>TIÊU ĐỀ SẢN PHẨM ĐÃ CHỌN XEM</h2>
+                                    <h2>{!! $detail->name !!}</h2>
                                 </div>
                                 <div class="block-content">
 
                                     <div class="block block-product-options clearfix">
                                         <div class="bl-modul-cm bl-code">
                                             <p class="title">Mã sản phẩm:</p>
-                                            <p class="des">PKCP01</p>
+                                            <p class="des">{!! $detail->code !!}</p>
                                         </div>
+                                        @if( $detail->is_sale == 1)
                                         <div class="bl-modul-cm bl-price">
                                             <p class="title">Giá giảm:</p>
-                                            <p class="des">225.000đ</p>
+                                            <p class="des">{!! number_format($detail->price_sale) !!}đ</p>
                                         </div>
                                         <div class="bl-modul-cm bl-price-old">
                                             <p class="title">Giá gốc:</p>
-                                            <p class="des">260.000đ</p>
+                                            <p class="des">{!! number_format($detail->price) !!}đ</p>
                                         </div>
+                                        @else
+                                        <div class="bl-modul-cm bl-price">
+                                            <p class="title">Giá giảm:</p>
+                                            <p class="des">{!! number_format($detail->price) !!}đ</p>
+                                        </div>
+                                        @endif
                                         <div class="bl-modul-cm bl-color">
                                             <p class="title">Màu sản phẩm:</p>
                                             <div class="des">
                                                 <ul class="cl-list">
-                                                    <li class="color_01 out-of-stock" style="background:#000;"><a href="#"></a></li>
-                                                    <li class="color_02" style="background:#222;"><a href="#"></a></li>
-                                                    <li class="color_03" style="background:#444;"><a href="#"></a></li>
-                                                    <li class="color_04" style="background:#666;"><a href="#"></a></li>
-                                                    <li class="color_05 active" style="background:#888;"><a href="#"></a></li>
+                                                    <li class="color_01" style="background:{!! $detail->color->color_code !!};"><a href="#"></a></li></li>
                                                 </ul>
                                             </div>
                                         </div>
+                                        <?php 
+                                        $sessionArr = Session::get('products');
+                                        $quantity = isset($sessionArr[$detail->id]) ? $detail->inventory - $sessionArr[$detail->id] : $detail->inventory;    
+                                        ?>
+                                        @if( $quantity > 0 )
                                         <div class="bl-modul-cm bl-qty">
                                             <p class="title">Chọn số lượng:</p>
                                             <div class="des">
-                                                <select name="" class="prod_qty">
-                                                    <option value="0">0</option>
-                                                    <option value="1" selected="">1</option>
-                                                    <option value="2">2</option>
+                                                <select name="" class="prod_qty" id="quantity">
+                                                    @for($i = 0; $i < $quantity ; $i++)
+                                                    <option value="{{ $i + 1 }}">{!! $i + 1 !!}</option>>
+                                                    @endfor
                                                 </select>
                                             </div>
                                         </div>
+                                        @endif
                                         @if( $detail->description )
                                         <div class="bl-modul-cm bl-desc">
                                             <span class="lb-txt">Mô tả ngắn:</span>
@@ -137,13 +120,17 @@
                                         </div>
                                     </div><!-- /block-share-->
                                     <div class="block-btn-addtocart">
-                                        <button type="button" class="btn btn-addcart-product btn-main">MUA NGAY</button>
+                                        @if( $quantity > 0 )
+                                        <button type="button" data-id="{{ $detail->id }}" class="btn btn-addcart-product btn-main">MUA NGAY</button>
+                                        @else
                                         <button type="button" class="btn btn-default btn-order-contact">LIÊN HỆ</button>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @if( $detail->content )
                     <div class="block block-datail-atc block-page-common">
                         <div class="block block-title">
                             <h2>THÔNG TIN CHI TIẾT SẢN PHẨM</h2>
@@ -152,6 +139,7 @@
                            {!! $detail->content !!}
                         </div>
                     </div>
+                    @endif
                     <div class="block-datail-atc block-page-common">
                         <div class="block block-title">
                             <h2>SẢN PHẨM LIÊN QUAN</h2>
@@ -212,51 +200,33 @@
 <script type="text/javascript">
 $(document).ready(function () {
        // The slider being synced must be initialized first
-            $('#carousel').flexslider({
-                animation: "slide",
-                controlNav: false,
-                animationLoop: true,
-                slideshow: false,
-                itemWidth: 75,
-                itemMargin: 15,
-                nextText: "",
-                prevText: "",
-                asNavFor: '#slider'
-            });
-
-            $('#slider').flexslider({
-                animation: "fade",
-                controlNav: false,
-                directionNav: false,
-                animationLoop: false,
-                slideshow: false,
-                animationSpeed: 500,
-                sync: "#carousel"
-            });
-
-            $('.slides-large li').each(function () {
-                $(this).zoom();
-            });
+    $('#carousel').flexslider({
+        animation: "slide",
+        controlNav: false,
+        animationLoop: true,
+        slideshow: false,
+        itemWidth: 75,
+        itemMargin: 15,
+        nextText: "",
+        prevText: "",
+        asNavFor: '#slider'
     });
-$(document).ready(function($){  
-  $('a.block_order').click(function() {
-        var product_id = $(this).data('id');
-        add_product_to_cart(product_id);
-        
-      });
-});
-function add_product_to_cart(product_id) {
-  $.ajax({
-    url: $('#route-add-to-cart').val(),
-    method: "GET",
-    data : {
-      id: product_id
-    },
-    success : function(data){
-       $('.cart-link').click();
-    }
-  });
-}
+
+    $('#slider').flexslider({
+        animation: "fade",
+        controlNav: false,
+        directionNav: false,
+        animationLoop: false,
+        slideshow: false,
+        animationSpeed: 500,
+        sync: "#carousel"
+    });
+
+    $('.slides-large li').each(function () {
+        $(this).zoom();
+    });
+    });
+
 </script>
 @stop
 

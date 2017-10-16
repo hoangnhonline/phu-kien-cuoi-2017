@@ -48,7 +48,5 @@
 			</div>
 		</div>
 	</div><!-- /footer-bot-->
-	<a id="return-to-top" class="td-scroll-up" href="javascript:void(0)">
-  		<img src="{{ URL::asset('public/assets/images/back-to-top.png') }}" alt="Returm to top">
-	</a><!-- return to top -->
+	
 </footer><!-- footer -->

@@ -74,3 +74,23 @@
   });
 
 })(jQuery); // End of use strict
+$(document).ready(function(){
+  $('.btn-addcart-product').click(function(){
+      var quantity = $('#quantity').val();
+      var product_id = $(this).data('id');
+      addToCart(product_id, quantity);
+  });
+});
+function addToCart(product_id, quantity) {
+  $.ajax({
+    url: $('#route-add-to-cart').val(),
+    method: "GET",
+    data : {
+      id: product_id,
+      quantity : quantity
+    },
+    success : function(data){
+       location.href = $('#route-cart').val();
+    }
+  });
+}
