@@ -1,6 +1,7 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
 @section('content')
+<?php $total = 0; ?>
 <div class="block block-breadcrumb">
   <div class="container">
     <ul class="breadcrumb">
@@ -22,50 +23,56 @@
         <div class="block-title">
           THÔNG TIN ĐẶT HÀNG
         </div>
-        <div class="block-content">
-          <form action="billing-infomation_submit" method="get" class="form-billing">
+        <div class="block-content">          
+          <form id="addressForm" action="{{ route('store-address') }}" method="POST" class="form-billing">
+                {{ csrf_field() }}
             <div class="form-group">
               <span class="input-addon"><i class="fa fa-user"></i></span>
-              <input type="text" class="form-control" id="inputname" placeholder="Họ và tên">
+              <input type="text" class="form-control req" id="fullname" name="fullname" placeholder="Họ và tên" value="{!! isset($addressInfo['fullname']) ? $addressInfo['fullname'] : "" !!}">
             </div>
             <div class="form-group">
               <span class="input-addon"><i class="fa fa-envelope"></i></span>
-              <input type="text" class="form-control" id="inputmail" placeholder="Email">
+              <input type="email" class="form-control req" id="email" name="email" placeholder="Email" value="{!! isset($addressInfo['email']) ? $addressInfo['email'] : "" !!}">
             </div>
             <div class="form-group">
               <span class="input-addon"><i class="fa fa-phone"></i></span>
-              <input type="text" class="form-control" id="inputphone" placeholder="Số điện thoại">
+              <input type="text" class="form-control req" id="phone" name="phone" placeholder="Số điện thoại" value="{!! isset($addressInfo['phone']) ? $addressInfo['phone'] : "" !!}">
             </div>
             <div class="form-group">
               <span class="input-addon"><i class="fa fa-home"></i></span>
-              <input type="text" class="form-control" id="inputaddress" placeholder="Địa chỉ">
+              <input type="text" class="form-control req" id="address" name="address" placeholder="Địa chỉ" value="{!! isset($addressInfo['address']) ? $addressInfo['address'] : "" !!}">
             </div>
             <div class="form-group">
-              <label class="choose-another"><input type="radio" class="radio-cus"> Giao đến địa chỉ khác</label>
+              <?php 
+              var_dump($addressInfo['choose_other_address']);
+              ?>
+              <label class="choose-another"><input type="checkbox" value="1" id="choose-other-address" @if( isset($addressInfo['choose_other_address']) && $addressInfo['choose_other_address'] == 1 )  ? "checked" : "" @endif name="choose_other_address" class="radio-cus"> Giao đến địa chỉ khác</label>
             </div>
-            <div class="form-group">
-              <b>Thông tin người nhận</b>
+            <div id="div-other-address" @if( !isset($addressInfo['choose_other_address'])) style="display: none;" @endif>
+              <div class="form-group">
+                <b>Thông tin người nhận</b>
+              </div>
+              <div class="form-group">
+                <span class="input-addon"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" id="other_fullname" name="other_fullname" placeholder="Họ và tên" value="{!! isset($addressInfo['other_fullname']) ? $addressInfo['other_fullname'] : "" !!}">
+              </div>
+              <div class="form-group">
+                <span class="input-addon"><i class="fa fa-envelope"></i></span>
+                <input type="email" class="form-control" placeholder="Email" id="other_email" name="other_email" value="{!! isset($addressInfo['other_email']) ? $addressInfo['other_email'] : "" !!}">
+              </div>
+              <div class="form-group">
+                <span class="input-addon"><i class="fa fa-phone"></i></span>
+                <input type="text" class="form-control" placeholder="Số điện thoại" id="other_phone" name="other_phone" value="{!! isset($addressInfo['other_phone']) ? $addressInfo['other_phone'] : "" !!}">
+              </div>
+              <div class="form-group">
+                <span class="input-addon"><i class="fa fa-home"></i></span>
+                <input type="text" class="form-control" placeholder="Địa chỉ" id="other_address" name="other_address" value="{!! isset($addressInfo['other_address']) ? $addressInfo['other_address'] : "" !!}">
+              </div>
             </div>
-            <div class="form-group">
-              <span class="input-addon"><i class="fa fa-user"></i></span>
-              <input type="text" class="form-control" id="inputname" placeholder="Họ và tên">
-            </div>
-            <div class="form-group">
-              <span class="input-addon"><i class="fa fa-envelope"></i></span>
-              <input type="text" class="form-control" id="inputmail" placeholder="Email">
-            </div>
-            <div class="form-group">
-              <span class="input-addon"><i class="fa fa-phone"></i></span>
-              <input type="text" class="form-control" id="inputphone" placeholder="Số điện thoại">
-            </div>
-            <div class="form-group">
-              <span class="input-addon"><i class="fa fa-home"></i></span>
-              <input type="text" class="form-control" id="inputaddress" placeholder="Địa chỉ">
-            </div>
-            <div class="text-right">
-              <a href="payments.html" class="btn btn-main">
+            <div class="text-right" style="margin-top: 10px">
+              <button type="submit" id="btnSave" class="btn btn-main">
                 Tiếp tục <i class="fa fa-long-arrow-right"></i>
-              </a>
+              </button>
             </div>
           </form>
         </div>
@@ -86,7 +93,7 @@
             </thead>
             <tbody>
               @if(!empty(Session::get('products')))
-             <?php $total = 0; ?>
+              
               @if( $arrProductInfo->count() > 0)
                   <?php $i = 0; ?>
                 @foreach($arrProductInfo as $product)
@@ -141,12 +148,57 @@
 </div><!-- /block_big-title -->
 <style type="text/css">
   .error{
-    border : 1px solid red;
+    border : 1px solid red !important;
   }
 </style>
 @stop
 @section('js')
- 
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#choose-other-address').click(function(){
+      if( $(this).prop('checked') == true ){
+        $('#div-other-address').show();
+        $('#div-other-address input').addClass('req');
+        $('#div-other-address #other_email').removeClass('req');
+      }else{
+        $('#div-other-address').hide();
+        $('#div-other-address input').val('').removeClass('req');
+      }
+    });
+    $('#btnSave').click(function(){      
+        var errReq = 0;
+        var parent = $(this).parents('form');
+        parent.find('.req').each(function(){
+          var obj = $(this);
+          if(obj.val() == ''){
+            errReq++;
+            obj.addClass('error');
+            obj.prev().addClass('error');
+          }else{
+            obj.removeClass('error');
+            obj.prev().removeClass('error');
+          }
+        });
+        if(errReq > 0){          
+         $('html, body').animate({
+              scrollTop: parent.offset().top
+          }, 500);
+          return false;
+        }       
+
+    });
+    $('.req').blur(function(){    
+        var obj = $(this);
+        if(obj.val() != ''){
+          obj.removeClass('error');
+          obj.prev().removeClass('error');
+        }else{
+          obj.addClass('error');
+          obj.prev().addClass('error');
+        }
+      });
+  });
+</script>
 @endsection
 
 

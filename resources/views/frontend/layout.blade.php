@@ -103,6 +103,17 @@
 		right: 0;
 		cursor: pointer;
 		}
+		.block-info-address .block-content{
+			padding: 10px 15px;
+		}
+		.block-info-address{
+			margin-bottom: 15px;
+		}
+		.form-billing .choose-another{
+			color : #056839;
+			font-weight: bold;
+			font-size: 14px;
+		}
 	</style>
 	<!-- ===== JS ===== -->
 	<script src="{{ URL::asset('public/assets/js/jquery.min.js') }}"></script>

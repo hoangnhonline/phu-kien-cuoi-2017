@@ -60,7 +60,7 @@ class CartController extends Controller
         if(!Session::has('products')) {
             return redirect()->route('home');
         }
-        
+        $addressInfo = Session::get('address_info'); 
         $getlistProduct = Session::get('products');
         
         $listProductId = array_keys($getlistProduct);
@@ -70,8 +70,32 @@ class CartController extends Controller
         
         $seo['title'] = $seo['description'] = $seo['keywords'] = "Thời gian & địa chỉ nhận hàng";
 
-        return view('frontend.cart.address-info', compact('arrProductInfo', 'getlistProduct', 'seo'));
+        return view('frontend.cart.address-info', compact('arrProductInfo', 'getlistProduct', 'seo', 'addressInfo'));
     }
+
+    public function storeAddress(Request $request){
+        $dataArr = $request->all();
+        
+        Session::put('address_info', $dataArr);
+
+        return redirect()->route('payment-method');
+    }
+
+    public function paymentInfo(Request $request){     
+        
+        $addressInfo = Session::get('address_info');     
+        
+        $getlistProduct = Session::get('products');
+        
+        $listProductId = array_keys($getlistProduct);
+    
+        $arrProductInfo = Product::whereIn('product.id', $listProductId)->get();        
+        
+        $seo['title'] = $seo['description'] = $seo['keywords'] = "Phương thức thanh toán";
+        
+        return view('frontend.cart.payment-method', compact('getlistProduct', 'listProductId', 'arrProductInfo', 'seo', 'addressInfo'));
+    }
+
     public function shortCart(Request $request)
     {
         $getlistProduct = Session::get('products');       
