@@ -8,17 +8,11 @@ use App\Http\Controllers\Controller;
 use App\Models\CateParent;
 use App\Models\Cate;
 use App\Models\Product;
-use App\Models\SpThuocTinh;
 use App\Models\ProductImg;
-use App\Models\ThuocTinh;
-use App\Models\City;
-use App\Models\LoaiThuocTinh;
-use App\Models\Banner;
 use App\Models\Orders;
 use App\Models\OrderDetail;
-use App\Models\Customer;
-use App\Models\Events;
-use App\Models\ProductEvent;
+use App\Models\Settings;
+
 use Helper, File, Session, Auth;
 use Mail;
 
@@ -151,46 +145,32 @@ class CartController extends Controller
         $getlistProduct = Session::get('products');
         $listProductId = array_keys($getlistProduct);
 
-        $this->validate($request,[
-            'full_name' => 'required',
-            'phone' => 'required',
-            'email' => 'required|email',
-            'city_id' => 'required',
-            'district_id' => 'required',
-            'address' => 'required'
-        ],
-        [
-            'full_name.required' => 'Quý khách chưa nhập họ tên',
-            'phone.required' => 'Quý khách chưa nhập điện thoại liên hệ',
-            'email.required' => 'Quý khách chưa nhập email',
-            'city_id.required' => 'Quý khách chưa chọn tỉnh/thành',
-            'district_id.required' => 'Quý khách chưa chọn quận/huyện',
-            'address.required' => 'Quý khách chưa nhập số nhà - Tên đường '
-        ]);
+        $addressInfo = Session::get('address_info'); 
+        $dataArr = $request->all();
         
         $arrProductInfo = Product::whereIn('product.id', $listProductId)
                             ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
                             ->select('product_img.image_url', 'product.*')->get();
-        $dataArr['tong_tien'] = 0;
-        $dataArr['tong_sp'] = array_sum($getlistProduct);
-        
-        $dataArr['district_id'] = $request->district_id;
-        $dataArr['city_id']  = $request->city_id;        
-        $dataArr['address']  = $request->address;
-        $dataArr['gender']  = $request->gender;
-        $dataArr['full_name']  = $request->full_name;
-        $dataArr['email']  = $email = $request->email;
-        $dataArr['phone']  = $request->phone;
-        $dataArr['notes']  = $request->notes;
-        $dataArr['address_type']  = 1;
+        $dataArr['total_bill'] = 0;
+        $dataArr['total_product'] = array_sum($getlistProduct);
+        $dataArr['address']  = $addressInfo['address'];        
+        $dataArr['fullname']  = $addressInfo['fullname'];
+        $dataArr['email']  = $email = $addressInfo['email'];
+        $dataArr['phone']  = $addressInfo['phone'];
         $dataArr['method_id'] = $request->method_id;
-        
+        if( $addressInfo['choose_other_address'] == 1 && isset($addressInfo['choose_other_address'])){
+            $dataArr['is_other_address']  = 1;
+            $dataArr['other_address']  = $addressInfo['other_address'];            
+            $dataArr['other_fullname']  = $addressInfo['other_fullname'];
+            $dataArr['other_email']  = $addressInfo['other_email'];
+            $dataArr['other_phone']  = $addressInfo['other_phone'];
+        }
         foreach ($arrProductInfo as $product) {
             $price = $product->is_sale ? $product->price_sale : $product->price;        
-            $dataArr['tong_tien'] += $price * $getlistProduct[$product->id];
+            $dataArr['total_bill'] += $price * $getlistProduct[$product->id];
         }
 
-        $dataArr['tien_thanh_toan'] = $dataArr['tong_tien'];
+        $dataArr['total_payment'] = $dataArr['total_bill'];
 
         $rs = Orders::create($dataArr);
         
@@ -201,21 +181,28 @@ class CartController extends Controller
         foreach ($arrProductInfo as $product) {            
             # code...
             $dataDetail['product_id']        = $product->id;
-            $dataDetail['so_luong']     = $getlistProduct[$product->id];
-            $dataDetail['don_gia']      = $product->price;
+            $dataDetail['amount']     = $getlistProduct[$product->id];
+            $dataDetail['price']      = $product->price;
             $dataDetail['order_id']     = $order_id;
-            $dataDetail['tong_tien']    = $getlistProduct[$product->id]*$product->price;
+            $dataDetail['total']    = $getlistProduct[$product->id]*$product->price;
 
             OrderDetail::create($dataDetail); 
         }
         
-        $emailArr = array_merge([$email], ['hoangnhonline@gmail.com']);
+        $settingArr = Settings::whereRaw('1')->lists('value', 'name');
+        $adminMailArr = explode(',', $settingArr['admin_email']);
+        if($email != ''){
+
+            $emailArr = array_merge([$email], $adminMailArr);
+        }else{
+            $emailArr = $adminMailArr;
+        }
         
         // send email
         $order_id =str_pad($order_id, 6, "0", STR_PAD_LEFT);
-        //$emailArr = [];
+        
         if(!empty($emailArr)){
-            Mail::send('frontend.email.cart',
+            Mail::send('frontend.cart.email',
                 [                    
                     'orderDetail'             => $orderDetail,
                     'arrProductInfo'    => $arrProductInfo,
@@ -226,8 +213,8 @@ class CartController extends Controller
                 function($message) use ($emailArr, $order_id) {
                     $message->subject('Xác nhận đơn hàng hàng #'.$order_id);
                     $message->to($emailArr);
-                    $message->from('annammobile.com@gmail.com', 'annammobile.com');
-                    $message->sender('annammobile.com@gmail.com', 'annammobile.com');
+                    $message->from('phukiencuoigiang@gmail.com', 'Phụ kiện cưới Giang');
+                    $message->sender('phukiencuoigiang@gmail.com', 'Phụ kiện cưới Giang');
             });
         }
 

@@ -1,6 +1,5 @@
-@extends('frontend.layout')
-@include('frontend.partials.meta')
-@section('content')
+<?php echo $__env->make('frontend.partials.meta', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->startSection('content'); ?>
 <?php $total = 0; ?>
 <div class="block block-breadcrumb">
   <div class="container">
@@ -24,8 +23,9 @@
           THÔNG TIN ĐẶT HÀNG
         </div>
         <div class="block-content">
-          <form action="{{ route('payment') }}" method="POST" class="form-billing" id="paymentForm">
-            {{ csrf_field() }}
+          <form action="<?php echo e(route('payment')); ?>" method="POST" class="form-billing" id="paymentForm">
+            <?php echo e(csrf_field()); ?>
+
             <div class="form-group">
               <label class="choose-another"><input type="radio" name="method_id" checked="checked" value="1" class="radio-cus"> Thanh toán tiền mặt khi nhận hàng - COD</label>
             </div>
@@ -47,7 +47,7 @@
               </div>
               <div class="form-group">
                 <div class="thumb">
-                  <img src="{{ URL::asset('public/assets/images/payments/TCB.jpg') }}" alt="ACB">
+                  <img src="<?php echo e(URL::asset('public/assets/images/payments/TCB.jpg')); ?>" alt="ACB">
                 </div>
                 <div class="des">
                   <p class="title">Ngân hàng thươnag mại cổ phần Á Châu - Chi nhánh Thủ Đức</p>
@@ -58,7 +58,7 @@
               </div>
               <div class="form-group">
                 <div class="thumb">
-                  <img src="{{ URL::asset('public/assets/images/payments/ACB.jpg') }}" alt="ACB">
+                  <img src="<?php echo e(URL::asset('public/assets/images/payments/ACB.jpg')); ?>" alt="ACB">
                 </div>
                 <div class="des">
                   <p class="title">Ngân hàng thươnag mại cổ phần Á Châu - Chi nhánh Thủ Đức</p>
@@ -69,7 +69,7 @@
               </div>
               <div class="form-group">
                 <div class="thumb">
-                  <img src="{{ URL::asset('public/assets/images/payments/VCB.jpg') }}" alt="ACB">
+                  <img src="<?php echo e(URL::asset('public/assets/images/payments/VCB.jpg')); ?>" alt="ACB">
                 </div>
                 <div class="des">
                   <p class="title">Ngân hàng thươnag mại cổ phần Á Châu - Chi nhánh Thủ Đức</p>
@@ -84,7 +84,7 @@
               <label class="choose-another"><input type="radio" name="method_id" value="3" class="radio-cus"> Thanh toán qua Bảo Kim</label>
             </div>
             <div class="form-group text-right">
-              <a href="{!! route('address-info') !!}" title="Quay Lại" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Quay Lại</a>
+              <a href="<?php echo route('address-info'); ?>" title="Quay Lại" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Quay Lại</a>
               <button title="Quay Lại" class="btn btn-main" id="btnPayment" >Đặt hàng <i class="fa fa-long-arrow-right"></i></button>
             </div>
           </form>
@@ -99,27 +99,27 @@
         <div class="block-content">
           <p>
             <span class="title">Họ và tên:</span>
-            <span class="info">{!! $addressInfo['fullname'] !!}</span>
+            <span class="info"><?php echo $addressInfo['fullname']; ?></span>
           </p>
           <p>
             <span class="title">Địa chỉ:</span>
-            <span class="info">{!! $addressInfo['address'] !!}</span>
+            <span class="info"><?php echo $addressInfo['address']; ?></span>
           </p>
           <p>
             <span class="title">Điện thoại di động:</span>
-            <span class="info">{!! $addressInfo['phone'] !!}</span>
+            <span class="info"><?php echo $addressInfo['phone']; ?></span>
           </p>
           <p>
             <span class="title">Email:</span>
-            <span class="info">{!! $addressInfo['email'] !!}</span>
+            <span class="info"><?php echo $addressInfo['email']; ?></span>
           </p>
           <p>
             <span class="title">Ngày đặt hàng:</span>
-            <span class="info">{!! date('d-m-Y') !!}</span>
+            <span class="info"><?php echo date('d-m-Y'); ?></span>
           </p>
         </div>
       </div>
-      @if( isset($addressInfo['choose_other_address']) && $addressInfo['choose_other_address'] == 1)
+      <?php if( isset($addressInfo['choose_other_address']) && $addressInfo['choose_other_address'] == 1): ?>
       <div class="block block-billing-product block-info-address">
         <div class="block-title">
           THÔNG TIN NGƯỜI NHẬN
@@ -127,26 +127,26 @@
         <div class="block-content">
           <p>
             <span class="title">Họ và tên:</span>
-            <span class="info">{!! $addressInfo['other_fullname'] !!}</span>
+            <span class="info"><?php echo $addressInfo['other_fullname']; ?></span>
           </p>
           <p>
             <span class="title">Địa chỉ:</span>
-            <span class="info">{!! $addressInfo['other_address'] !!}</span>
+            <span class="info"><?php echo $addressInfo['other_address']; ?></span>
           </p>
 
           <p>
             <span class="title">Điện thoại di động:</span>
-            <span class="info">{!! $addressInfo['other_phone'] !!}</span>
+            <span class="info"><?php echo $addressInfo['other_phone']; ?></span>
           </p>
-          @if( $addressInfo['other_email'] )
+          <?php if( $addressInfo['other_email'] ): ?>
           <p>
             <span class="title">Email:</span>
-            <span class="info">{!! $addressInfo['other_email'] !!}</span>
+            <span class="info"><?php echo $addressInfo['other_email']; ?></span>
           </p>          
-          @endif
+          <?php endif; ?>
         </div>
       </div>
-      @endif
+      <?php endif; ?>
 
       <div class="block-billing-product">
         <div class="block-title">
@@ -161,11 +161,11 @@
               </tr>
             </thead>
             <tbody>
-              @if(!empty(Session::get('products')))
+              <?php if(!empty(Session::get('products'))): ?>
               
-              @if( $arrProductInfo->count() > 0)
+              <?php if( $arrProductInfo->count() > 0): ?>
                   <?php $i = 0; ?>
-                @foreach($arrProductInfo as $product)
+                <?php foreach($arrProductInfo as $product): ?>
                 <?php 
                 $i++;
                 $price = $product->is_sale ? $product->price_sale : $product->price; 
@@ -176,26 +176,26 @@
 
               <tr>
                 <td>
-                  <p class="tb-commom"><strong>{!! $product->name !!}</strong></p>
-                  <p class="tb-commom">Số lượng: {{ $getlistProduct[$product->id] }} x {!! number_format($product->price_sell) !!}</p>
+                  <p class="tb-commom"><strong><?php echo $product->name; ?></strong></p>
+                  <p class="tb-commom">Số lượng: <?php echo e($getlistProduct[$product->id]); ?> x <?php echo number_format($product->price_sell); ?></p>
                   
                 </td>
                 <td class="text-right">
-                  <strong >{!! number_format($total_per_product) !!}đ</strong>
+                  <strong ><?php echo number_format($total_per_product); ?>đ</strong>
                 </td>
               </tr>
-              @endforeach
+              <?php endforeach; ?>
 
-              @endif  
+              <?php endif; ?>  
 
-              @endif
+              <?php endif; ?>
 
               <tr>
                 <td>
                   <strong>Tổng phụ</strong>
                 </td>
                 <td>
-                  <p class="text-right">{{ number_format($total) }}đ</p>
+                  <p class="text-right"><?php echo e(number_format($total)); ?>đ</p>
                 </td>
               </tr>
               <tr>
@@ -203,7 +203,7 @@
                   <strong>Tổng cộng</strong>
                 </td>
                 <td>
-                  <p class="cl-red text-right">{{ number_format($total) }}đ</p>
+                  <p class="cl-red text-right"><?php echo e(number_format($total)); ?>đ</p>
                 </td>
               </tr>
               <tr>
@@ -218,8 +218,8 @@
     </div><!-- /block-col-right -->
   </div>
 </div><!-- /block_big-title -->
-@stop
-@section('js')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('js'); ?>
    <script type="text/javascript">
    $(document).ready(function(){
     $('#btnPayment').click(function(){            
@@ -228,7 +228,7 @@
     });
   });
   </script>
-@stop
+<?php $__env->stopSection(); ?>
 
 
 
@@ -237,3 +237,5 @@
 
 
 
+
+<?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

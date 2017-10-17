@@ -5,14 +5,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderDetail extends Model  {
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'order_detail';
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'order_detail';
 
-	 /**
+     /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
@@ -24,18 +24,21 @@ class OrderDetail extends Model  {
      * @var array
      */
     protected $fillable = [
-	  	'order_id',
-	  	'product_id',
-	  	'so_luong',
-	  	'don_gia',
-	  	'tong_tien',
-        'so_dich_vu',
-        'don_gia_dich_vu',
-        'tong_dich_vu'
-  	];
+        'order_id',
+        'product_id',
+        'amount',
+        'price',        
+        'total'
+    ];
 
     public function product()
     {
-        return $this->hasOne('App\Models\Product', 'id', 'product_id');
+        return $this->hasOne('App\Models\Product', 'id', 'sp_id');
     }
+
+    public function order()
+    {
+        return $this->belongTos('App\Models\Orders', 'id', 'order_id');
+    }
+        
 }
