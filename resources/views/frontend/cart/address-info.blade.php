@@ -42,11 +42,8 @@
               <span class="input-addon"><i class="fa fa-home"></i></span>
               <input type="text" class="form-control req" id="address" name="address" placeholder="Địa chỉ" value="{!! isset($addressInfo['address']) ? $addressInfo['address'] : "" !!}">
             </div>
-            <div class="form-group">
-              <?php 
-              var_dump($addressInfo['choose_other_address']);
-              ?>
-              <label class="choose-another"><input type="checkbox" value="1" id="choose-other-address" @if( isset($addressInfo['choose_other_address']) && $addressInfo['choose_other_address'] == 1 )  ? "checked" : "" @endif name="choose_other_address" class="radio-cus"> Giao đến địa chỉ khác</label>
+            <div class="form-group">              
+              <label class="choose-another"><input type="checkbox" value="1" id="choose-other-address" @if( isset($addressInfo['choose_other_address']) && $addressInfo['choose_other_address'] == 1 ) checked  @endif name="choose_other_address" class="radio-cus"> Giao đến địa chỉ khác</label>
             </div>
             <div id="div-other-address" @if( !isset($addressInfo['choose_other_address'])) style="display: none;" @endif>
               <div class="form-group">
