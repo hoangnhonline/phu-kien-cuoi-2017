@@ -24,15 +24,13 @@ class CartController extends Controller
     }
     public function index(Request $request)
     {
-        if(!Session::has('products')) {
-            return redirect()->route('home');
-        }
-
         $getlistProduct = Session::get('products');
+        if(!empty($getlistProduct)){
         $listProductId = array_keys($getlistProduct);
         $arrProductInfo = Product::whereIn('product.id', $listProductId)
                             ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
                             ->select('product_img.image_url', 'product.*')->get();
+        }
         $seo['title'] = $seo['description'] = $seo['keywords'] = "Giỏ hàng";
         return view('frontend.cart.index', compact('arrProductInfo', 'getlistProduct', 'seo'));
     }

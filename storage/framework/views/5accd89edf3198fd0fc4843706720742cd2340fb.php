@@ -39,7 +39,7 @@
 				</form>
 
 				<div class="hdr-cart">
-					<a href="<?php echo e(route('cart')); ?>" title="Cart" data-toggle="modal" data-target="#Cart">
+					<a href="<?php echo e(route('cart')); ?>" title="Giỏ hàng">
 						<i class="fa fa-shopping-cart"></i>
 						<span>Giỏ hàng</span><br>
 						<span><b><?php echo e(Session::get('products') ? array_sum(Session::get('products')) : 0); ?></b> sản phẩm</span>
@@ -69,7 +69,7 @@
 			<i class="fa"></i>
 		</div>
 		<div class="block-cart-mb">
-			<a href="<?php echo e(route('cart')); ?>" title="Cart" data-toggle="modal" data-target="#Cart">
+			<a href="<?php echo e(route('cart')); ?>" title="Giỏ hàng">
 				<i class="fa fa-shopping-cart"></i>
 				<span><?php echo e(Session::get('products') ? array_sum(Session::get('products')) : 0); ?></span>
 			</a>

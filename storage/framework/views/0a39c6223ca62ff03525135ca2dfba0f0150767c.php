@@ -1,6 +1,5 @@
-@extends('frontend.layout')
-@include('frontend.partials.meta')
-@section('content')
+<?php echo $__env->make('frontend.partials.meta', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php $__env->startSection('content'); ?>
 <div class="block block-breadcrumb">
     <div class="container">
         <ul class="breadcrumb">
@@ -103,12 +102,12 @@
                         <p><strong>Website:</strong> www.namphucjeans.com</p>
                         <p><strong>Email:</strong> namphucjeans@yahoo.com.vn</p>
                     </div>
-                     @if(Session::has('message'))
+                     <?php if(Session::has('message')): ?>
                   
-                        <p class="alert alert-info" >{{ Session::get('message') }}</p>
+                        <p class="alert alert-info" ><?php echo e(Session::get('message')); ?></p>
                    
-                    @endif
-                    @if (count($errors) > 0)
+                    <?php endif; ?>
+                    <?php if(count($errors) > 0): ?>
                
                       <div class="alert alert-danger ">
                         <ul>                           
@@ -116,28 +115,28 @@
                         </ul>
                       </div>
                    
-                    @endif  
-                    <form method="POST" action="{{ route('send-contact') }}"  class="block-form">
-                    {{ csrf_field() }}                        
+                    <?php endif; ?>  
+                    <form method="POST" action="<?php echo e(route('send-contact')); ?>"  class="block-form">
+                    <?php echo e(csrf_field()); ?>                        
                         <h2 class="tit-page2">THÔNG TIN LIÊN HỆ</h2>
                         <div class="row">
                             <div class="form-group col-sm-12 col-xs-12">
-                                <input type="text" placeholder="Họ và tên" name="full_name" id="full_name" value="{{ old('full_name') }}" class="form-control"> 
+                                <input type="text" placeholder="Họ và tên" name="full_name" id="full_name" value="<?php echo e(old('full_name')); ?>" class="form-control"> 
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-12 col-xs-12">
-                                <input type="tel" placeholder="Số điện thoại" name="phone" id="phone" value="{{ old('phone') }}" class="form-control">
+                                <input type="tel" placeholder="Số điện thoại" name="phone" id="phone" value="<?php echo e(old('phone')); ?>" class="form-control">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-12 col-xs-12">
-                                <input type="email" placeholder="Email liên lạc" value="{{ old('email') }}" name="email" id="email" class="form-control">
+                                <input type="email" placeholder="Email liên lạc" value="<?php echo e(old('email')); ?>" name="email" id="email" class="form-control">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-12 col-xs-12">
-                                <textarea placeholder="Nội dung liên hệ ..." name="content" id="content" class="form-control">{{ old('content') }}</textarea>
+                                <textarea placeholder="Nội dung liên hệ ..." name="content" id="content" class="form-control"><?php echo e(old('content')); ?></textarea>
                             </div>
                         </div>
                         <div class="row">
@@ -156,4 +155,5 @@
         </div><!-- /block-col-right -->
     </div>
 </div><!-- /block_big-title -->
-@stop
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

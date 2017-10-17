@@ -13,10 +13,10 @@
   <div class="block block-two-col container">
     <div class="block-page-common">
       <div class="block block-title">
-        <h2>
+        <h1 class="title-main">
           <i class="fa fa-cart-arrow-down"></i>
           GIỎ HÀNG
-        </h2>
+        </h1>
       </div>
     </div><!-- /block-page-common -->
     <div class="row">
