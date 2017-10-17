@@ -27,7 +27,7 @@
 					</div>
 					<div class="select-choice">
 						<div class="form-category">
-							<select id="cid" class="cid choice" name="cid">
+							<select class="cid choice" name="pid">
 								<option value="">Danh mục</option>
 								@foreach($cateParentList as $value)
 							   	<option value="{{ $value->id }}" {{ isset($parent_id) && $parent_id == $value->id ? "selected" : "" }}>{!! $value->name !!}</option>>
