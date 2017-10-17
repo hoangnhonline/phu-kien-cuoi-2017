@@ -17,7 +17,7 @@
   <section class="content">
     <a class="btn btn-default btn-sm" href="{{ route('product.index', ['parent_id' => $detail->parent_id, 'cate_id' => $detail->cate_id]) }}" style="margin-bottom:5px">Quay lại</a>
     <a class="btn btn-primary btn-sm" href="{{ route('product', [$detail->slug, $detail->id] ) }}" target="_blank" style="margin-top:-6px"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>
-    <form role="form" method="POST" action="{{ route('product.update') }}" id="dataForm">
+    <form role="form" method="POST" action="{{ route('product.update') }}" id="dataForm" class="productForm">
     <div class="row">
       <!-- left column -->
       <input type="hidden" name="id" value="{{ $detail->id }}">
@@ -159,7 +159,7 @@
                             
                             <input type="file" id="file-image"  style="display:none" multiple/>
                          
-                            <button class="btn btn-primary" id="btnUploadImage" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
+                            <button class="btn btn-primary btnMultiUpload" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
                             <div class="clearfix"></div>
                             <div id="div-image" style="margin-top:10px">                              
                               @if( $hinhArr )
@@ -254,145 +254,11 @@
 @stop
 @section('javascript_page')
 <script type="text/javascript">
-
-$(document).on('click', '.remove-image', function(){
-  if( confirm ("Bạn có chắc chắn không ?")){
-    $(this).parents('.col-md-3').remove();
-  }
-});
-
-$(document).on('keypress', '#name_search', function(e){
-  if(e.which == 13) {
-      e.preventDefault();
-      filterAjax($('#search_type').val());
-  }
-});
-
-    $(document).ready(function(){
-           $('#btnSave').click(function(){
-        var errReq = 0;
-        $('#dataForm .req').each(function(){
-          var obj = $(this);
-          if(obj.val() == '' || obj.val() == '0'){
-            errReq++;
-            obj.addClass('error');
-          }else{
-            obj.removeClass('error');
-          }
-        });
-        if(errReq > 0){          
-         $('html, body').animate({
-              scrollTop: $("#dataForm .req.error").eq(0).parents('div').offset().top
-          }, 500);
-          return false;
-        }
-        if( $('#div-image img.img-thumbnail').length == 0){
-          if(confirm('Bạn chưa upload hình sản phẩm. Vẫn tiếp tục lưu ?')){
-            return true;
-          }else{
-            $('html, body').animate({
-                scrollTop: $("#dataForm").offset().top
-            }, 500);
-            $('a[href="#settings"]').click();            
-             return false;
-          }
-        }
-      });
-      $('#is_old').change(function(){
-        if($(this).prop('checked') == true){
-          $('#price_new').addClass('req');
-        }else{
-          $('#price_new').val('').removeClass('req');
-        }
-      });
-      $('#is_sale').change(function(){
-        if($(this).prop('checked') == true){
-          $('#price_sale').addClass('req');
-        }else{
-          $('#price_sale').val('').removeClass('req');
-        }
-      });
-      $('#dataForm .req').blur(function(){    
-        if($(this).val() != ''){
-          $(this).removeClass('error');
-        }else{
-          $(this).addClass('error');
-        }
-      });
+    $(document).ready(function(){           
       $('#parent_id').change(function(){
         location.href="{{ route('product.create') }}?parent_id=" + $(this).val();
       })
-      $(".select2").select2();   
-      
-      $('#btnUploadImage').click(function(){        
-        $('#file-image').click();
-      }); 
-     
-      var files = "";
-      $('#file-image').change(function(e){
-         files = e.target.files;
-         
-         if(files != ''){
-           var dataForm = new FormData();        
-          $.each(files, function(key, value) {
-             dataForm.append('file[]', value);
-          });   
-          
-          dataForm.append('date_dir', 0);
-          dataForm.append('folder', 'tmp');
-
-          $.ajax({
-            url: $('#route_upload_tmp_image_multiple').val(),
-            type: "POST",
-            async: false,      
-            data: dataForm,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                $('#div-image').append(response);
-                if( $('input.thumb:checked').length == 0){
-                  $('input.thumb').eq(0).prop('checked', true);
-                }
-            },
-            error: function(response){                             
-                var errors = response.responseJSON;
-                for (var key in errors) {
-                  
-                }
-                //$('#btnLoading').hide();
-                //$('#btnSave').show();
-            }
-          });
-        }
-      });
-     
-
-      $('#name').change(function(){
-         var name = $.trim( $(this).val() );
-         if( name != '' && $('#slug').val() == ''){
-            $.ajax({
-              url: $('#route_get_slug').val(),
-              type: "POST",
-              async: false,      
-              data: {
-                str : name
-              },              
-              success: function (response) {
-                if( response.str ){                  
-                  $('#slug').val( response.str );
-                }                
-              },
-              error: function(response){                             
-                  var errors = response.responseJSON;
-                  for (var key in errors) {
-                    
-                  }
-                  //$('#btnLoading').hide();
-                  //$('#btnSave').show();
-              }
-            });
-         }
-      }); 
+    
     });
     
 </script>

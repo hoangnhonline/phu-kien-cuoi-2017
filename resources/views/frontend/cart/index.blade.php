@@ -48,14 +48,14 @@
                       <figure class="img-prod">
                         <img alt="{!! $product->name !!}" src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}">
                       </figure>
-                      <a href="#" class="prod-tit" target="_blank" title="{!! $product->name !!}">{!! $product->name !!}</a>
+                      <a href="{{ route('product', [ $product->slug, $product->id ]) }}" class="prod-tit" target="_blank" title="{!! $product->name !!}">{!! $product->name !!}</a>
                       
                       <p>
                         <span>Mã sản phẩm:</span>
                         <span class="p-code">{!! $product->code !!}</span>
                       </p>
                       <p>
-                        <a href="#" title="Xóa sản phẩm" class="p-del">Xóa</a>
+                        <a href="javascript:void(0);" title="Xóa sản phẩm" data-id="{{ $product->id }}" class="p-del del_item">Xóa</a>
                       </p>
                     </div>
                     <div class="table-cell total-col">                     
@@ -197,22 +197,8 @@ function updateQuantity(id, quantity, type) {
             quantity: quantity
         },
         success: function(data) {
-            location.reload();
-            /*
-            $.ajax({
-                url: $('#route-short-cart').val(),
-                method: "GET",
-
-                success: function(data) {
-                    if (type == 'ajax') {
-                        $('#short-cart-content').html(data);
-                        calTotalProduct();
-                    } else {
-                        window.location.reload();
-                    }
-                }
-            });
-            */
+            
+            location.reload();            
         }
     });
 }

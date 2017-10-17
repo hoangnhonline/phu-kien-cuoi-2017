@@ -59,61 +59,6 @@ class HomeController extends Controller
                             ));
     }
 
-    public function oldDevice(Request $request)
-    {   
-        $productArr = $manhinhArr = [];
-        $loaiSp = CateParent::where('status', 1)->get();
-        $bannerArr = [];
-        $hoverInfo = [];
-        foreach( $loaiSp as $loai){            
-            $query = Product::where( [ 'status' => 1, 'parent_id' => $loai->id, 'is_hot' => 1])
-                            ->where('inventory', '>', 0)
-                            ->where('out_of_stock', 0)
-                            ->where('price', '>', 0)            
-                            ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')            
-                            ->select('product_img.image_url', 'product.*')                        
-                            ->orderBy('product.display_order')            
-                            ->limit(5);
-           
-            $productArr[$loai->id] = $query->get();
-
-            if( $loai->home_style > 0 ){
-                $bannerArr[$loai->id] = Banner::where(['object_id' => $loai->id, 'object_type' => 1])->orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
-            }   
-            if(count($productArr) > 0){
-                $hoverInfoTmp = HoverInfo::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
-                
-                foreach($hoverInfoTmp as $value){
-                    if($value->parent_id == $loai->id){
-                        $hoverInfo[$value->parent_id][] = $value;
-                    }
-                }
-            }            
-        
-        }// foreach
-      //  dd($hoverInfo);
-        $settingArr = Settings::whereRaw('1')->lists('value', 'name');
-        $seo = $settingArr;
-        $seo['title'] = $settingArr['site_title'];
-        $seo['description'] = $settingArr['site_description'];
-        $seo['keywords'] = $settingArr['site_keywords'];
-        $socialImage = $settingArr['banner'];
-
-
-
-        $articlesArr = Articles::where(['cate_id' => 1, 'is_hot' => 1])->orderBy('id', 'desc')->get();
-                
-        return view('frontend.old.index', compact(
-                                'productArr', 
-                                'bannerArr', 
-                                'articlesArr', 
-                                'socialImage', 
-                                'seo', 
-                                'thuocTinhArr', 
-                                'loaiThuocTinhArr', 
-                                'spThuocTinhArr',
-                                'hoverInfo'));
-    }
     public function pages(Request $request){
         $slug = $request->slug;
 
@@ -146,62 +91,39 @@ class HomeController extends Controller
     */
     public function search(Request $request)
     {
-        $tu_khoa = $request->keyword ? $request->keyword : ''; 
-        $price_fm = $request->price_fm ? $request->price_fm : 0;      
-        $price_to = $request->price_to ? $request->price_to : 500000000;      
-        $cateArr = $request->cate ? $request->cate : [];     
-        $colorArr = $request->color ? $request->color : [];   
-        $parent_id = $request->parent_id ? $request->parent_id : null;
-        $cate_id = $request->cate_id ? $request->cate_id : null;
-
-        $sort = $request->sort ? $request->sort : 'new';
+        $tu_khoa = $request->keyword ? $request->keyword : '';  
+        $code = $request->code ? $request->code : '';         
+        $price_id = $request->p ? $request->p : null;              
+        $colorArr = $request->color ? $request->color : [];          
+        $parent_id = $request->pid ? $request->pid : null;
 
         $colorArr = array_filter($colorArr);   
-        $loaiDetail = (object) [];
+        $cateDetail = (object) [];
         $query = Product::where('product.status', 1);
-        $query->where('inventory', '>', 0)->where('price', '>', 0)->where('cate_parent.status', 1) 
+        $query->where('inventory', '>', 0)->where('price', '>', 0)
                         ->where('out_of_stock', 0)                       
-                        ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')                        
-                        ->join('cate_parent', 'cate_parent.id', '=', 'product.parent_id')
+                        ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
                         ->select('product_img.image_url', 'product.*');
         if($tu_khoa){
             $query->where('product.alias', 'LIKE', '%'.$tu_khoa.'%');
         }
-        if(!empty($cateArr)){
-            $query->whereIn('product.cate_id', $cateArr);
+        if($code){
+            $query->where('product.code', 'LIKE', '%'.$code.'%');
         }
         if($parent_id){
             $query->where('product.parent_id', $parent_id);
-        }
-        if($cate_id){
-            $query->where('product.cate_id', $cate_id);
-        }
+        }        
+       
         if(!empty($colorArr)){
             $query->whereIn('product.color_id', $colorArr);
         }
-        
-        $query->where('price_sell', '<=', $price_to)->where('price_sell', '>=', $price_fm);
-        
-        if($sort == 'new'){
-            $query->orderBy('id', 'desc');
-        }elseif($sort=="old"){
-            $query->orderBy('id');
-        }elseif($sort == 'high'){
-            $query->orderBy('price_sell', 'desc');
-        }elseif($sort == 'low'){
-            $query->orderBy('price_sell');
-        }
+
         $productList = $query->paginate(20);
-        $loaiDetail->name = $seo['title'] = $seo['description'] =$seo['keywords'] = "Tìm kiếm sản phẩm theo từ khóa '".$tu_khoa."'";
-        $hoverInfo = [];
-        if($productList->count() > 0){
-            $hoverInfoTmp = HoverInfo::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
-            foreach($hoverInfoTmp as $value){
-                $hoverInfo[$value->parent_id][] = $value;
-            }
-        }        
-        //var_dump("<pre>", $hoverInfo);die;
-        return view('frontend.search.index', compact('productList', 'tu_khoa', 'seo', 'hoverInfo', 'loaiDetail', 'cateArr', 'price_fm', 'price_to', 'colorArr', 'parent_id', 'cate_id', 'sort'));
+        $cateDetail->name = $seo['title'] = $seo['description'] =$seo['keywords'] = "Kết quả tìm kiếm";
+        $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
+        $colorList = Color::all(); 
+        $priceList = PriceRange::all();
+        return view('frontend.search.index', compact('productList', 'tu_khoa', 'seo', 'cateDetail','price_id', 'colorArr', 'parent_id', 'kmHot', 'colorList', 'priceList', 'code'));
     }
     public function ajaxTab(Request $request){
         $table = $request->type ? $request->type : 'category';
