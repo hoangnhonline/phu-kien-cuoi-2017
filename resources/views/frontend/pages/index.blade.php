@@ -1,45 +1,32 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
 @section('content')
-<div class="block block_breadcrumb">
-    <ol class="breadcrumb">
-        <li><a href="{!! route('home') !!}">Trang chủ</a></li>         
-        <li class="active">{!! $detailPage->title !!}</li>
-    </ol>
-</div><!-- /block_breadcrumb -->
-<div class="block_news row">
-    <div class="col-md-9 col-sm-9 col-xs-12 block_cate_left">
-        <div class="block_news_content">
-            <h1 class="article-title">{!! $detailPage->title !!}</h1>
-            
-            <div class="block" style="margin-top:30px" id="content-of-page">
-                @if($detailPage->image_url)
-                <p class="block_intro">
-                    <img src="{!! Helper::showImage($detailPage->image_url ) !!}" alt="{!! $detailPage->title !!}">
-                </p>
-                @endif
-                {!! $detailPage->content !!}
-            </div><!-- /block -->            
-        </div>
-    </div><!-- /block_cate_left -->
+<div class="block block-breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="{!! route('home') !!}">Trang chủ</a></li>
+            <li class="active">{!! $detailPage->title !!}</li>
+        </ul>
+    </div>
+</div><!-- /block-breadcrumb -->
+<div class="block block-two-col container">
+    <div class="row">
+        @include('frontend.cate.sidebar')
+        <div class="col-sm-9 col-xs-12 block-col-right">
+            <div class="block-page-about">
+                <div class="block-page-common">
+                    <div class="block block-title">
+                        <h1 class="title-main">{!! $detailPage->title !!}</h1>
+                    </div>
+                </div>
+                <div class="block-article">
+                    <div class="block block-content">
+                        {!! $detailPage->content !!}
+                    </div>
+                </div>
+            </div>
+        </div><!-- /block-col-left -->
 
-    @include('frontend.news.sidebar')
-</div><!-- /block_categories -->
-<style type="text/css">
-    .block_news_related ul li a{
-        font-size: 12px;
-        height: 30px;
-        display: block;
-        overflow-y: hidden;
-    }
-    #content-of-page ul li, #content-of-page ol li {
-        list-style: circle;   
-    }
-    #content-of-page ul , #content-of-page ol {        
-        margin-left: 15px;
-    }
-    #content-of-page h3 {
-        font-size: 16px;
-    }
-</style>
+    </div>
+</div><!-- /block_big-title -->
 @endsection  

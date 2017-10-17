@@ -77,28 +77,28 @@
 		<nav class="menu-top">
 			<div class="container">
 				<ul class="nav-menu">
-					<li class="level0 active"><a href="index.html" title="Trang Chủ">Trang Chủ</a></li>
-					<li class="level0"><a href="about.html" title="Giới Thiệu">Giới Thiệu</a></li>
-					<li class="level0 parent">
-						<a href="product.html" title="Sản Phẩm">SẢN PHẨM</a>
+					<li class="level0 @if( $routeName == "home") active @endif"><a href="{!! route('home') !!}" title="Trang Chủ">Trang Chủ</a></li>
+					<li class="level0 @if( $routeName == "pages" && $slug == "gioi-thieu" ) active @endif"><a href="{!! route('pages', 'gioi-thieu' ) !!}" title="Giới Thiệu">Giới Thiệu</a></li>
+					<li class="level0 parent @if( in_array($routeName, ["cate-parent", "cate", "product"])) active @endif">
+						<a href="#" title="Sản Phẩm">SẢN PHẨM</a>
 						<ul class="level0 submenu">
-							<li class="level1"><a href="product.html" title="Phụ kiện cưới">Phụ kiện cưới</a></li>
-							<li class="level1 parent">
-								<a href="product.html" title="Phụ kiện bé yêu">Phụ kiện bé yêu</a>
-								<ul class="level1 submenu">
-									<li class="level2"><a href="product.html" title="Vương miệng cho bé">Vương miệng cho bé</a></li>
-									<li class="level2"><a href="product.html" title="Cài tóc cho bé">Cài tóc cho bé</a></li>
-									<li class="level2"><a href="product.html" title="Trang phục hóa thân nhân vật">Trang phục hóa thân nhân vật</a></li>
-								</ul>
+							@foreach( $cateParentList as $parent )							
+							<li class="level1 @if( !empty( $cateArrByLoai[$parent->id] ) ) parent @endif ">
+								<a href="{!! route( 'cate-parent', $parent->slug ) !!}" title="{!! $parent->name !!}">{!! $parent->name !!}</a>
+								@if( !empty( $cateArrByLoai[$parent->id] ) )									
+									<ul class="level1 submenu">
+										@foreach( $cateArrByLoai[$parent->id] as $cate )
+										<li class="level2"><a href="{{ route('cate', [ $parent->slug, $cate->slug ]) }}" title="{!! $cate->name !!}">{!! $cate->name !!}</a></li>
+										@endforeach
+									</ul>									
+								@endif
 							</li>
-							<li class="level1"><a href="product.html" title="Đồ trang điểm">Đồ trang điểm</a>
-							</li>
-							<li class="level1"><a href="product.html" title="Phụ kiện Anh">Phụ kiện Anh</a></li>
+							@endforeach
 						</ul>
 					</li>
-					<li class="level0"><a href="sales.html" title="Thi Công">KHUYẾN MÃI</a></li>
-					<li class="level0"><a href="recruitment.html" title="Nội Thất">TUYỂN DỤNG</a></li>
-					<li class="level0"><a href="contact.html" title="Liên Hệ">Liên Hệ</a></li>
+					<li class="level0"><a href="{!! route('news-list', 'khuyen-mai') !!}" title="KHUYẾN MÃI">KHUYẾN MÃI</a></li>
+					<li class="level0"><a href="{!! route('news-list', 'tuyen-dung') !!}" title="TUYỂN DỤNG">TUYỂN DỤNG</a></li>
+					<li class="level0"><a href="{!! route('contact') !!}" title="Liên Hệ">Liên Hệ</a></li>
 					<li class="nav-info">
 						<i class="fa fa-phone"></i> <a href="tel:0949765166">0949 765 166</a> - <a href="tel:0943761688">0943 761 688</a>
 					</li>

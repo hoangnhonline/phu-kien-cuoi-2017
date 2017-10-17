@@ -78,7 +78,9 @@
 	</div><!-- /wrapper-->
 
 	<?php echo $__env->make('frontend.partials.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-
+	<a id="return-to-top" class="td-scroll-up" href="javascript:void(0)">
+  		<i class="fa fa-angle-up" aria-hidden="true"></i>
+	</a><!-- Return To Top -->
 	<?php echo $__env->make('frontend.partials.modal', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 	<style type="text/css">
 		.edit {  
@@ -113,6 +115,9 @@
 			color : #056839;
 			font-weight: bold;
 			font-size: 14px;
+		}
+		h1.title-main{
+			text-transform: uppercase;
 		}
 	</style>
 	<!-- ===== JS ===== -->
@@ -173,9 +178,6 @@
 	<input type="hidden" id="route-add-to-cart" value="<?php echo e(route('add-product')); ?>" />
 	<input type="hidden" id="route-short-cart" value="<?php echo e(route('short-cart')); ?>" />
 	<input type="hidden" id="route-update-product" value="<?php echo e(route('update-product')); ?>" />	
-	<input type="hidden" id="route-cart" value="<?php echo e(route('cart')); ?>" />
-	<a id="return-to-top" class="td-scroll-up" href="javascript:void(0)">
-  		<img src="<?php echo e(URL::asset('public/assets/images/back-to-top.png')); ?>" alt="Returm to top">
-	</a><!-- return to top -->
+	<input type="hidden" id="route-cart" value="<?php echo e(route('cart')); ?>" />	
 </body>
 </html>

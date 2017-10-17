@@ -10,6 +10,8 @@ use App\Models\CateParent;
 use App\Models\Product;
 use App\Models\Articles;
 use App\Models\MetaData;
+use App\Models\Color;
+use App\Models\PriceRange;
 use Helper;
 
 class CateController extends Controller
@@ -77,8 +79,10 @@ class CateController extends Controller
                 $seo['title'] = $seo['description'] = $seo['keywords'] = $cateDetail->name;
             }  
             $page = $request->page ? $request->page : 1;    
-            $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);    
-            return view('frontend.cate.child', compact('parent_id', 'cateDetail', 'productList', 'seo', 'page', 'kmHot'));
+            $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
+            $colorList = Color::all(); 
+            $priceList = PriceRange::all();
+            return view('frontend.cate.child', compact('parent_id', 'cateDetail', 'productList', 'seo', 'page', 'kmHot', 'colorList', 'priceList'));
             
         }else{
             return redirect()->route('home');   

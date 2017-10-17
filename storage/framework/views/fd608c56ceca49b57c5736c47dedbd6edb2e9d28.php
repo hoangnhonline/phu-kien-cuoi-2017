@@ -9,27 +9,27 @@
                             <div class="product-items owl-carousel nav-top-right nav-border nav-sm" data-nav="true" data-dots="false" data-margin="30" data-responsive='{"0":{"items":1},"480":{"items":1},"600":{"items":1},"992":{"items":1}}'>
                                 <div class="item">
                                     <?php $i = 0;?>
-                                    @foreach($newProductList as $product)
+                                    <?php foreach($newProductList as $product): ?>
                                     <?php $i++; ?>
                                     <div class="product-item">
                                         <div class="product-item-info">
                                             <div class="product-item-head">
-                                                <a href="{{ route('product', [$product->slug, $product->id]) }}" class="product-item-photo">
-                                                    <img alt="{!! $product->name !!}" class="lazy" data-original="{{ $product->image_url ? Helper::showImageThumb($product->image_url) : URL::asset('admin/dist/img/no-image.jpg') }}">
+                                                <a href="<?php echo e(route('product', [$product->slug, $product->id])); ?>" class="product-item-photo">
+                                                    <img alt="<?php echo $product->name; ?>" class="lazy" data-original="<?php echo e($product->image_url ? Helper::showImageThumb($product->image_url) : URL::asset('admin/dist/img/no-image.jpg')); ?>">
                                                 </a>
                                             </div><!-- /product-item-info -->
                                             <div class="product-item-details">
                                                 <h2 class="product-item-name">
-                                                    <a href="{{ route('product', [$product->slug, $product->id]) }}" title="{!! $product->name !!}">{!! $product->name !!}</a>
+                                                    <a href="<?php echo e(route('product', [$product->slug, $product->id])); ?>" title="<?php echo $product->name; ?>"><?php echo $product->name; ?></a>
                                                 </h2>
-                                                <p class="price" style="color:#d0021b">{{ $product->is_sale == 1 ? number_format($product->price_sale) : number_format($product->price) }}đ</p>
+                                                <p class="price" style="color:#d0021b"><?php echo e($product->is_sale == 1 ? number_format($product->price_sale) : number_format($product->price)); ?>đ</p>
                                             </div><!-- /product-item-details -->
                                         </div>
                                     </div><!-- /product-item -->    
-                                    @if($i%3 == 0 && $newProductList->count() > 3)
+                                    <?php if($i%3 == 0 && $newProductList->count() > 3): ?>
                                     </div><div class="item">                                    
-                                    @endif    
-                                    @endforeach                            
+                                    <?php endif; ?>    
+                                    <?php endforeach; ?>                            
                                 </div><!-- /item -->
                                 
                             </div>
@@ -39,20 +39,20 @@
       <?php 
         $bannerArr = DB::table('banner')->where(['object_id' => 4, 'object_type' => 3])->orderBy('display_order', 'asc')->get();
         ?>    
-        @if($bannerArr)
-        @foreach($bannerArr as $banner)
+        <?php if($bannerArr): ?>
+        <?php foreach($bannerArr as $banner): ?>
           <div class="block block_adv">
             <div class="block_content">
-              @if($banner->ads_url !='')
-              <a href="{{ $banner->ads_url }}" title="banner slide {{ $i }}">
-              @endif
-                <img src="{{ Helper::showImage($banner->image_url) }}" alt="banner quang cao">  
-              @if($banner->ads_url !='')
+              <?php if($banner->ads_url !=''): ?>
+              <a href="<?php echo e($banner->ads_url); ?>" title="banner slide <?php echo e($i); ?>">
+              <?php endif; ?>
+                <img src="<?php echo e(Helper::showImage($banner->image_url)); ?>" alt="banner quang cao">  
+              <?php if($banner->ads_url !=''): ?>
                 </a>
-              @endif  
+              <?php endif; ?>  
             </div>
           </div><!-- /block_adv -->         
-        @endforeach  
-      @endif 
+        <?php endforeach; ?>  
+      <?php endif; ?> 
     </div>
   </div><!-- /block_cate_right -->

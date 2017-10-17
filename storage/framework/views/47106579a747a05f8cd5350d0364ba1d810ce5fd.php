@@ -13,7 +13,7 @@
         <div class="col-xs-12 block-col-main">
             <div class="block-page-common clearfix">
                 <div class="block block-title tit-more">
-                    <h2><?php echo $parentDetail->name; ?></h2>
+                    <h1 class="title-main"><?php echo $parentDetail->name; ?></h1>
                     <?php if($parentDetail->description): ?>
                     <p class="desc text-center">
                        <?php echo $parentDetail->description; ?>

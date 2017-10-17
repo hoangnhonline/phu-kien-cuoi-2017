@@ -17,7 +17,7 @@
         <div class="col-sm-9 col-xs-12 block-col-right">
             <div class="block-page-common clearfix">
                 <div class="block block-title">
-                    <h2>PHỤ KIỆN CHO BÉ</h2>
+                    <h1 class="title-main"><?php echo $cateDetail->name; ?></h1>
                 </div>
                 <div class="block-content">
                     <div class="product-list">

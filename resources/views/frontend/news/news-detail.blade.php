@@ -1,52 +1,70 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
 @section('content')
-<div class="block block_breadcrumb">
-    <ol class="breadcrumb">
-        <li><a href="{!! route('home') !!}">Trang chủ</a></li>
-        <li><a href="{!! route('news-list') !!}">Tin tức</a></li>        
-        <li class="active">{!! $detail->title !!}</li>
-    </ol>
-</div><!-- /block_breadcrumb -->
-<div class="block_news row">
-    <div class="col-md-9 col-sm-9 col-xs-12 block_cate_left">
-        <div class="block_news_content">
-            <h1 class="article-title">{!! $detail->title !!}</h1>
-            <p class="content-date">Ngày tạo: {!! date('d/m/Y H:i', strtotime($detail->created_at)) !!}</p>
-            <div class="block">
-                <p class="block_intro">
-                    <img class="lazy" data-original="{!! Helper::showImage($detail->image_url ) !!}" alt="{!! $detail->title !!}">
-                </p>
-                {!! $detail->content !!}
-            </div><!-- /block -->
-            @if( $otherArr )
-                       
-            <div class="block_news_related" style="margin-top:40px">
-                <span class="block_title">CÁC TIN KHÁC</span>
-                <ul class="row">
-                 @foreach( $otherArr as $articles)
-                <li class="col-sm-3 col-sm-6">
-                    <div class="des" style="text-align:left">
-                        <img src="{!! Helper::showImage($articles->image_url ) !!}" alt="{!! $articles->title !!}">
-                        <a href="{{ route('news-detail', ['slug' => $articles->slug, 'id' => $articles->id]) }}" title="{!! $articles->title !!}" >{!! $articles->title !!}</a>
-                        <span>[{!! date('d/m/Y', strtotime($detail->created_at)) !!}]</span>
-                    </div>
-                </li>                
-                @endforeach
-                </ul>
-            </div>
-            @endif
-        </div>
-    </div><!-- /block_cate_left -->
+<div class="block block-breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="{{ route('home') }}" title="Trở về trang chủ">Trang chủ</a></li>
+            <li><a href="{!! route('news-list', $cateDetail->slug) !!}">{!! $cateDetail->name !!}</a></li>
+            <li class="active">{!! $detail->title !!}</li>
+        </ul>
+    </div>
+</div><!-- /block-breadcrumb -->
+<div class="block block-two-col container">
+    <div class="row">
+        
+        @include('frontend.cate.sidebar')
 
-    @include('frontend.news.sidebar')
-</div><!-- /block_categories -->
-<style type="text/css">
-    .block_news_related ul li a{
-        font-size: 12px;
-        height: 30px;
-        display: block;
-        overflow-y: hidden;
-    }
-</style>
-@endsection  
+        <div class="col-sm-9 col-xs-12 block-col-right">
+            <div class="block block-page-common block-dt-sales">
+                <div class="block block-title">
+                    <h1 class="title-main">{!! $detail->title !!}</h2>
+                </div>
+                <div class="block-content">
+                    <div class="block block-aritcle">
+                        {!! $detail->content !!}
+                    </div>
+                    <div class="block block-share" id="share-buttons">
+                        <div class="share-item">
+                            <div class="fb-like" data-href="{{ url()->current() }}" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
+                        </div>
+                        <div class="share-item" style="max-width: 65px;">
+                            <div class="g-plus" data-action="share"></div>
+                        </div>
+                        <div class="share-item">
+                            <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text={!! $detail->title !!}"></a>
+                        </div>
+                        <div class="share-item">
+                            <div class="addthis_inline_share_toolbox share-item"></div>
+                        </div>
+                    </div><!-- /block-share-->
+                    @if($tagSelected->count() > 0)
+                    <div class="block-tags">
+                        <ul>
+                            <li class="tags-first">Tags:</li>
+                            @foreach($tagSelected as $tag)                            
+                            <li class="tags-link"><a href="{{ route('tag', $tag->slug) }}" title="{!! $tag->name !!}">{!! $tag->name !!}</a></li>
+                            @endforeach
+                        </ul>
+                    </div><!-- /block-tags -->
+                    @endif
+                </div>
+            </div><!-- /block-ct-news -->
+            @if( $otherArr )
+            <div class="block-page-common block-aritcle-related">
+                <div class="block block-title">
+                    <h2 class="title-main">BÀI VIẾT LIÊN QUAN</h2>
+                </div>
+                <div class="block-content">
+                    <ul class="list">
+                        @foreach( $otherArr as $articles)
+                        <li> <a href="{{ route('news-detail', ['slug' => $articles->slug, 'id' => $articles->id]) }}" title="{!! $articles->title !!}" >{!! $articles->title !!}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div><!-- /block-ct-news -->
+            @endif
+        </div><!-- /block-col-right -->
+    </div>
+</div><!-- /block_big-title -->
+@stop  

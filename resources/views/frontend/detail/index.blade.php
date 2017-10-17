@@ -49,7 +49,7 @@
                         <div class="col-sm-7">
                             <div class="block-page-common clearfix">
                                 <div class="block block-title">
-                                    <h2>{!! $detail->name !!}</h2>
+                                    <h1 class="title-main">{!! $detail->name !!}</h1>
                                 </div>
                                 <div class="block-content">
 
@@ -133,7 +133,7 @@
                     @if( $detail->content )
                     <div class="block block-datail-atc block-page-common">
                         <div class="block block-title">
-                            <h2>THÔNG TIN CHI TIẾT SẢN PHẨM</h2>
+                            <h2 class="title-main">THÔNG TIN CHI TIẾT SẢN PHẨM</h2>
                         </div>
                         <div class="block-content">
                            {!! $detail->content !!}
@@ -142,7 +142,7 @@
                     @endif
                     <div class="block-datail-atc block-page-common">
                         <div class="block block-title">
-                            <h2>SẢN PHẨM LIÊN QUAN</h2>
+                            <h2 class="title-main">SẢN PHẨM LIÊN QUAN</h2>
                         </div>
                         <div class="block-content product-list">
                             <ul class="owl-carousel owl-theme owl-style2" data-nav="true" data-dots="false" data-autoplay="true" data-autoplayTimeout="500" data-loop="true" data-margin="30" data-responsive='{"0":{"items":1},"480":{"items":2},"600":{"items":2},"768":{"items":3},"800":{"items":3},"992":{"items":4}}'>

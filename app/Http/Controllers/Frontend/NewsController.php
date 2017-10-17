@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Models\ArticlesCate;
 use App\Models\Articles;
 use App\Models\Product;
+use App\Models\Color;
+use App\Models\PriceRange;
 
 use Helper, File, Session, Auth;
 use Mail;
@@ -19,28 +21,28 @@ class NewsController extends Controller
        
         $page = $request['page'] ? $request['page'] : 1;       
         $cateArr = [];
-       
-        $cateDetail = ArticlesCate::find(1);
+        $slug = $request->slug;
+        $cateDetail = ArticlesCate::where('slug', $slug)->first();
 
-        $title = trim($cateDetail->meta_title) ? $cateDetail->meta_title : $cateDetail->name;
+        if( $cateDetail ){ 
+            $title = trim($cateDetail->meta_title) ? $cateDetail->meta_title : $cateDetail->name;
 
-        $articlesList = Articles::where('cate_id', $cateDetail->id)->orderBy('id', 'desc')->paginate(20);
+            $articlesList = Articles::where('cate_id', $cateDetail->id)->orderBy('id', 'desc')->paginate(20);
 
-        $hotArr = Articles::where( ['cate_id' => $cateDetail->id, 'is_hot' => 1] )->orderBy('id', 'desc')->limit(5)->get();
-        $seo['title'] = $cateDetail->meta_title ? $cateDetail->meta_title : $cateDetail->title;
-        $seo['description'] = $cateDetail->meta_description ? $cateDetail->meta_description : $cateDetail->title;
-        $seo['keywords'] = $cateDetail->meta_keywords ? $cateDetail->meta_keywords : $cateDetail->title;
-        $socialImage = $cateDetail->image_url;
+            $hotArr = Articles::where( ['cate_id' => $cateDetail->id, 'is_hot' => 1] )->orderBy('id', 'desc')->limit(5)->get();
+            $seo['title'] = $cateDetail->meta_title ? $cateDetail->meta_title : $cateDetail->title;
+            $seo['description'] = $cateDetail->meta_description ? $cateDetail->meta_description : $cateDetail->title;
+            $seo['keywords'] = $cateDetail->meta_keywords ? $cateDetail->meta_keywords : $cateDetail->title;
+            $socialImage = $cateDetail->image_url;
 
-        $newProductList =  Product::where('inventory', '>', 0)->where('price', '>', 0)
-                        ->where('is_new', 1)            
-                        ->where('out_of_stock', 0)       
-                        ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
-                        ->join('cate_parent', 'cate_parent.id', '=', 'product.parent_id')
-                        ->select('product_img.image_url', 'product.*')
-                        ->orderBy('id', 'desc')->limit(6)->get();
+            $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
+            $colorList = Color::all(); 
+            $priceList = PriceRange::all();
 
-        return view('frontend.news.index', compact('title', 'hotArr', 'articlesList', 'cateDetail', 'seo', 'socialImage', 'page', 'newProductList'));
+            return view('frontend.news.index', compact('title', 'hotArr', 'articlesList', 'cateDetail', 'seo', 'socialImage', 'page', 'kmHot', 'colorList', 'priceList'));
+        }else{
+            return redirect()->route('home');
+        }
     }      
 
      public function newsDetail(Request $request)
@@ -65,16 +67,13 @@ class NewsController extends Controller
             $tagSelected = Articles::getListTag($id);
             $cateDetail = ArticlesCate::find($detail->cate_id);
 
-            $newProductList =  Product::where('inventory', '>', 0)->where('price', '>', 0)
-                        ->where('is_new', 1)        
-                        ->where('out_of_stock', 0)           
-                        ->leftJoin('product_img', 'product_img.id', '=','product.thumbnail_id')
-                        ->select('product_img.image_url', 'product.*')
-                        ->orderBy('id', 'desc')->limit(6)->get();
+            $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
+            $colorList = Color::all(); 
+            $priceList = PriceRange::all();
 
-            return view('frontend.news.news-detail', compact('title',  'hotArr', 'detail', 'otherArr', 'seo', 'socialImage', 'tagSelected', 'cateDetail', 'newProductList'));
+            return view('frontend.news.news-detail', compact('title',  'hotArr', 'detail', 'otherArr', 'seo', 'socialImage', 'tagSelected', 'cateDetail',  'kmHot', 'colorList', 'priceList'));
         }else{
-            return view('erros.404');
+            return redirect()->route('home');
         }
     }
 }

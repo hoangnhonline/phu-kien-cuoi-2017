@@ -78,7 +78,9 @@
 	</div><!-- /wrapper-->
 
 	@include('frontend.partials.footer')
-
+	<a id="return-to-top" class="td-scroll-up" href="javascript:void(0)">
+  		<i class="fa fa-angle-up" aria-hidden="true"></i>
+	</a><!-- Return To Top -->
 	@include('frontend.partials.modal')
 	<style type="text/css">
 		.edit {  
@@ -113,6 +115,9 @@
 			color : #056839;
 			font-weight: bold;
 			font-size: 14px;
+		}
+		h1.title-main{
+			text-transform: uppercase;
 		}
 	</style>
 	<!-- ===== JS ===== -->
@@ -173,9 +178,6 @@
 	<input type="hidden" id="route-add-to-cart" value="{{ route('add-product') }}" />
 	<input type="hidden" id="route-short-cart" value="{{ route('short-cart') }}" />
 	<input type="hidden" id="route-update-product" value="{{ route('update-product') }}" />	
-	<input type="hidden" id="route-cart" value="{{ route('cart') }}" />
-	<a id="return-to-top" class="td-scroll-up" href="javascript:void(0)">
-  		<img src="{{ URL::asset('public/assets/images/back-to-top.png') }}" alt="Returm to top">
-	</a><!-- return to top -->
+	<input type="hidden" id="route-cart" value="{{ route('cart') }}" />	
 </body>
 </html>

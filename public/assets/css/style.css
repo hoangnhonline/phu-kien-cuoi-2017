@@ -149,28 +149,28 @@ select {
   font-family: "FontAwesome";
   content: "\f178";
 }
-.block-page-common .block-title h2 i {
+.block-page-common .block-title .title-main i {
   font-size: 20px;
   color: #c70f19;
   margin-right: 10px;
 }
-.block-page-common .block-title h2 {
+.block-page-common .block-title .title-main {
   font-size: 15px;
   color: #333333;
   font-weight: bold;
   position: relative;
   padding-bottom: 15px;
 }
-.block-page-common .block-title h2:before {
+.block-page-common .block-title .title-main:before {
   content: url("../images/line.png");
   position: absolute;
   bottom: 0; left: 0;
 }
-.block-page-common .block-title.tit-more h2 {
+.block-page-common .block-title.tit-more .title-main {
   text-align: center;
   margin-bottom: 20px;
 }
-.block-page-common .block-title.tit-more h2:before {
+.block-page-common .block-title.tit-more .title-main:before {
   right: 0;
   margin: auto;
 }
@@ -667,7 +667,6 @@ select {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   padding: 0;
-  padding-bottom: 15px;
   margin-bottom: 10px;
   border-bottom: 1px solid #c70f19
 }
@@ -702,7 +701,7 @@ select {
 }
 
 .shopcart-ct .tr-wrap > .table-row {
-  border-bottom: 1px dashed #c70f19;
+  border-bottom: 1px solid #ccc;
   padding-bottom: 15px;
   margin-bottom: 15px;
 }
@@ -739,16 +738,17 @@ select {
   padding: 0;
   margin: 0;
   font-weight: 600;
+  box-shadow: 0 -2px 6px 0px #CCC;
 }
 .block-cart .shopcart-ct .tr-wrap {
   padding: 15px;
   border: 1px solid #dfdfdf;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
+  box-shadow: 0 1px 7px -1px #CCC;
 }
 .block-cart .cart-tbl {
-  padding-bottom: 15px;
-  margin-bottom: 0;
+  margin-bottom: 15px;
   border-bottom: none;
 }
 .block-cart .shopcart-ct .product-col {
@@ -850,7 +850,7 @@ select {
   box-shadow: 0 0 7px -1px #CCC;
 }
 .block-billing-product .block-content {
-  padding: 0;
+  padding: 10px;
   border: 1px solid #dfdfdf;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -921,7 +921,7 @@ select {
   width: 100%;
 }
 .table-billing-product .table-width {
-  width: 73%;
+  width: 67%;
 }
 .block-billing-product .table-billing-product>tbody>tr>td,
 .block-billing-product .table-billing-product>tbody>tr>th,
@@ -934,6 +934,9 @@ select {
   vertical-align: top;
   border-bottom: 1px solid #189eff;
 }
+.block-billing-product .table-billing-product>thead>tr>th {
+  border-bottom: none;
+}
 .block-billing-product .table-billing-product>thead>tr {
   background: #eaeaea;
   padding: 20px 15px;
@@ -943,6 +946,10 @@ select {
 }
 .table-billing-product p {
   margin-bottom: 10px;
+}
+.table-billing-product p.total-price {
+  font-size: 15px;
+  font-weight: bold;
 }
 .table-billing-product p:last-child {
   margin-bottom: 0;
@@ -960,6 +967,18 @@ select {
 .table-billing-product .tb-img img {
   border: 1px solid #b2b2b2;
 }
+.table-billing-product .tb-p-cl {
+  border: none;
+  height: 15px; width: 15px;
+  display: inline-block;
+  background-color: #000;
+}
+.table-billing-product .tb-p-code {
+  color: #056839;
+  font-weight: bold;
+  font-size: 14px;
+}
+
 .block-billing .content {
   background: #eaeaea;
   padding: 20px;
@@ -2480,17 +2499,17 @@ h2.tit-page3 {
 .td-scroll-up {
   cursor: pointer;
   position: fixed;
-  bottom: 419px;
-  right: 16%;
-  /*width: 40px;
+  bottom: 4px;
+  right: 5px;
+  width: 40px;
   height: 40px;
-  background-color: #c70f19;*/
+  background-color: #056839;
   z-index: 1;
   transform: translate3d(0, 70px, 0);
-  -webkit-transform: translate3d(0, 390px, 0);
-  -moz-transform: translate3d(0, 390px, 0);
-  -ms-transform: translate3d(0, 390px, 0);
-  -o-transform: translate3d(0, 390px, 0);
+  -webkit-transform: translate3d(0, 70px, 0);
+  -moz-transform: translate3d(0, 70px, 0);
+  -ms-transform: translate3d(0, 70px, 0);
+  -o-transform: translate3d(0, 70px, 0);
   -webkit-transition: transform 0.4s cubic-bezier(0.55, 0, 0.1, 1) 0s;
   -moz-transition: transform 0.4s cubic-bezier(0.55, 0, 0.1, 1) 0s;
   -o-transition: transform 0.4s cubic-bezier(0.55, 0, 0.1, 1) 0s;
@@ -2511,7 +2530,7 @@ h2.tit-page3 {
   -ms-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
 }
-/*.td-scroll-up i {
+.td-scroll-up i {
   position: relative;
   color: #fff;
   font-size: 25px;
@@ -2522,11 +2541,11 @@ h2.tit-page3 {
 }
 .td-scroll-up:hover {
   color: #fff;
-  background: #f4525b;
+  background: #008244;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   transition: all 0.3s;
-}*/
+}
 
 /* Edit On Page
   ========================================================================== */

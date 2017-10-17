@@ -6,20 +6,18 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\CateParent;
-use App\Models\BaoHanh;
 use App\Models\Cate;
 use App\Models\Product;
-use App\Models\SpThuocTinh;
 use App\Models\ProductImg;
-use App\Models\ThuocTinh;
-use App\Models\LoaiThuocTinh;
 use App\Models\Banner;
-
+use App\Models\Pages;
 use App\Models\Articles;
 use App\Models\ArticlesCate;
 use App\Models\Customer;
 use App\Models\Newsletter;
 use App\Models\Settings;
+use App\Models\Color;
+use App\Models\PriceRange;
 
 use Helper, File, Session, Auth, Hash;
 
@@ -116,7 +114,24 @@ class HomeController extends Controller
                                 'spThuocTinhArr',
                                 'hoverInfo'));
     }
+    public function pages(Request $request){
+        $slug = $request->slug;
 
+        $detailPage = Pages::where('slug', $slug)->first();
+         
+        if(!$detailPage){
+            return redirect()->route('home');
+        }
+        $seo['title'] = $detailPage->meta_title ? $detailPage->meta_title : $detailPage->title;
+        $seo['description'] = $detailPage->meta_description ? $detailPage->meta_description : $detailPage->title;
+        $seo['keywords'] = $detailPage->meta_keywords ? $detailPage->meta_keywords : $detailPage->title;      
+
+        $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
+        $colorList = Color::all(); 
+        $priceList = PriceRange::all();
+       
+        return view('frontend.pages.index', compact('detailPage', 'seo', 'slug', 'kmHot', 'colorList', 'priceList'));    
+    }
     public function getNoti(){
         $countMess = 0;
         if(Session::get('userId') > 0){
