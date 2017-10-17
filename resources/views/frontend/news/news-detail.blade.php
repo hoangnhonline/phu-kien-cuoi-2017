@@ -58,7 +58,7 @@
                 <div class="block-content">
                     <ul class="list">
                         @foreach( $otherArr as $articles)
-                        <li> <a href="{{ route('news-detail', ['slug' => $articles->slug, 'id' => $articles->id]) }}" title="{!! $articles->title !!}" >{!! $articles->title !!}</a></li>
+                        <li> <a href="{{ route('news-detail', [$articles->cate->slug, $articles->slug, $articles->id]) }}" title="{!! $articles->title !!}" >{!! $articles->title !!}</a></li>
                         @endforeach
                     </ul>
                 </div>

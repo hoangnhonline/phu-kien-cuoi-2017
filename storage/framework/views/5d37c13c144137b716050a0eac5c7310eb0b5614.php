@@ -58,7 +58,7 @@
                 <div class="block-content">
                     <ul class="list">
                         <?php foreach( $otherArr as $articles): ?>
-                        <li> <a href="<?php echo e(route('news-detail', ['slug' => $articles->slug, 'id' => $articles->id])); ?>" title="<?php echo $articles->title; ?>" ><?php echo $articles->title; ?></a></li>
+                        <li> <a href="<?php echo e(route('news-detail', [$articles->cate->slug, $articles->slug, $articles->id])); ?>" title="<?php echo $articles->title; ?>" ><?php echo $articles->title; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
