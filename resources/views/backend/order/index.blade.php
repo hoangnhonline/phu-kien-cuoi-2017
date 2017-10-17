@@ -72,10 +72,10 @@
               <th style="width: 1%">No.</th>
               <th style="width: 1%;white-space:nowrap;width:200px"> Đơn hàng</th>
               <th style="text-align:center;width:150px">Ngày đặt hàng</th>
-              <th style="text-align:right;width:200px">Giao hàng đến</th>           
+              <th style="text-align:left;width:200px">Giao hàng đến</th>           
               <th style="text-align:right;width:100px">Tổng hoá đơn</th>
               <th width="120px" style="white-space:nowrap">Trạng thái</th>
-              <th width="230px" style="white-space:nowrap"> </th>
+              <th width="1%" style="white-space:nowrap"> </th>
             </tr>
             <tbody>
 
@@ -91,20 +91,30 @@
 
                 ?>
                 #{{ str_pad($order->id, 6,'0', STR_PAD_LEFT) }}</a> 
-                <span style="color:#555"> bởi {{$order->full_name}}</span>
+                <span style="color:#555"> bởi {{$order->fullname}}</span>
                 <br>
                 <a href="mailto:">{{ $order->email }}</a>
                 <br>
                 {{ $order->phone }}
                 </td>
                 <td style="text-align:center;width:150px;white-space:nowrap">{{ date('d-m-Y H:i ', strtotime($order->created_at))}}</td>
-                <td>
-
-                <a href="http://maps.google.com/maps?&q={{ $order->address }}, {{ $order->ward_id ? Helper::getName($order->ward_id, 'ward') : "" }}, {{ $order->district_id ? Helper::getName($order->district_id, 'district') : "" }}, {{ $order->city_id ? Helper::getName($order->city_id, 'city') : "" }}" target="_blank"> 
-                {{ $order->full_name }}, {{ $order->address }}, {{ $order->ward_id ? Helper::getName($order->ward_id, 'ward') : "" }}, {{ $order->district_id ? Helper::getName($order->district_id, 'district') : "" }}, {{ $order->city_id ? Helper::getName($order->city_id, 'city') : "" }}</a>
+                <td>                
+                @if( $order->is_other_address == 0 )
+                <a href="http://maps.google.com/maps?&q={{ $order->address }}" target="_blank"> 
+                {{ $order->fullname }}<br> {{ $order->address }} <br> {{ $order->phone }}
+                <br>
+                {{ $order->email }}
+                </a>
+                @else
+                <a href="http://maps.google.com/maps?&q={{ $order->other_address }}" target="_blank"> 
+                {{ $order->other_fullname }}<br> {{ $order->other_address }} <br> {{ $order->other_phone }}
+                <br>
+                {{ $order->other_email }}
+                </a>
+                @endif
                 </td>
                              
-                <td style="text-align:right;width:100px">{{number_format($order->tong_tien)}}</td>
+                <td style="text-align:right;width:100px">{{ number_format($order->total_payment) }}</td>
                 <td>
                   <select class="select-change-status form-control" order-id="{{$order->id}}" customer-id="{{$order->customer_id}}" >
                     @foreach($list_status as $index => $status)
@@ -116,21 +126,8 @@
                     @endforeach
                   </select>
                 </td>
-                <td style="text-align:right">
-                  @if($order->customer_id > 0)
-                  <button class="btn btn-danger btn-sm sendNoti" data-type="2" data-customer-id="{{ $order->customer_id }}" data-order-id="{{ $order->id }}" >Gửi tin nhắn 
-                  <?php 
-                  $countMess = App\Models\CustomerNotification::countMessOrderCustomer($order->customer_id, $order->id);
-
-                  ?>
-                  @if($countMess > 0)
-                  <span class="badge">{{ $countMess }}</span>
-                  @endif
-                  </button>  
-                   @endif  
-                  <a href="{{route('order.detail', $order->id)}}?status={{ $s['status'] }}&name={{ $s['name'] }}&date_from={{ $s['date_from'] }}&date_to={{ $s['date_to'] }}" class="btn btn-info btn-sm">Chi tiết</a>
-                                 
-               
+                <td style="text-align:right">                 
+                  <a href="{{ route('order.detail', $order->id)}}?status={{ $s['status'] }}&name={{ $s['name'] }}&date_from={{ $s['date_from'] }}&date_to={{ $s['date_to'] }}" class="btn btn-info btn-sm">Chi tiết</a> 
                 </td>
                 </tr>
                 @endforeach

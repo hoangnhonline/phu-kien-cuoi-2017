@@ -45,6 +45,60 @@ $(document).ready(function(){
 
   "use strict";
 
+  $(".select2").select2();
+  $('#is_sale').change(function(){
+    if($(this).prop('checked') == true){
+      $('#price_sale, #sale_percent').addClass('req');
+    }else{
+      $('#price_sale, #sale_percent').val('').removeClass('req');
+    }
+  });
+
+  if( $('form.productForm').length == 1 ){
+    $('#btnSave').click(function(){
+        var errReq = 0;
+        $('#dataForm .req').each(function(){
+          var obj = $(this);
+          if(obj.val() == '' || obj.val() == '0'){
+            errReq++;
+            obj.addClass('error');
+          }else{
+            obj.removeClass('error');
+          }
+        });
+        if(errReq > 0){          
+         $('html, body').animate({
+              scrollTop: $("#dataForm .req.error").eq(0).parents('div').offset().top
+          }, 500);
+          return false;
+        }
+        if( $('#div-image img.img-thumbnail').length == 0){
+          if(confirm('Bạn chưa upload hình sản phẩm. Vẫn tiếp tục lưu ?')){
+            return true;
+          }else{
+            $('html, body').animate({
+                scrollTop: $("#dataForm").offset().top
+            }, 500);
+            $('a[href="#settings"]').click();            
+             return false;
+          }
+        }
+
+      });
+  }
+
+  $(document).on('click', '.remove-image', function(){
+    if( confirm ("Bạn có chắc chắn không ?")){
+      $(this).parents('.col-md-3').remove();
+    }
+  });
+  $('#dataForm .req').blur(function(){    
+      if($(this).val() != ''){
+        $(this).removeClass('error');
+      }else{
+        $(this).addClass('error');
+      }
+    });
   $('.btnSingleUpload').click(function(){        
     singleUpload($(this));
   });

@@ -13,7 +13,7 @@
 								<p><i class="fa fa-map-marker"></i><span @if($isEdit) class="edit" @endif" data-text="9">{!! $textList[9] !!}</span></p>
 								<p><i class="fa fa-phone"></i> <span @if($isEdit) class="edit" @endif" data-text="10">{!! $textList[10] !!}</span></p>
 								<p><i class="fa fa-envelope"></i> <a href="mailto:{!! $textList[11] !!}"><span @if($isEdit) class="edit" @endif" data-text="11">{!! $textList[11] !!}</span></a></p>
-								<p><i class="fa fa-globe"></i> <a href="#">www.iweb247.com</a></p>
+								<p><i class="fa fa-globe"></i> <a href="http://phukiencuoigiang.com">phukiencuoigiang.com</a></p>
 							</address>
 						</div>
 					</div>

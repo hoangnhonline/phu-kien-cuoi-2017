@@ -12,7 +12,8 @@ use App\Models\Articles;
 use App\Models\ProductImg;
 use App\Models\Banner;
 use App\Models\MetaData;
-
+use App\Models\Color;
+use App\Models\PriceRange;
 use Helper, File, Session, Auth;
 
 class DetailController extends Controller
@@ -71,7 +72,9 @@ class DetailController extends Controller
                     });
                     $otherList = $query->orderBy('product.id', 'desc')->limit(6)->get();
         $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);
-        return view('frontend.detail.index', compact('detail', 'loaiDetail', 'cateDetail', 'hinhArr', 'productArr', 'seo', 'socialImage', 'otherList', 'kmHot'));
+        $colorList = Color::all(); 
+        $priceList = PriceRange::all();
+        return view('frontend.detail.index', compact('detail', 'loaiDetail', 'cateDetail', 'hinhArr', 'productArr', 'seo', 'socialImage', 'otherList', 'kmHot', 'colorList', 'priceList'));
     }
 
     public function ajaxTab(Request $request){

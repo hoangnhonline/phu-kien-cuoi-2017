@@ -235,7 +235,8 @@ class CartController extends Controller
     }
     public function deleteAll(){
         Session::put('products', []);
-        return redirect()->route('home');
+        Session::put('address_info', []);
+        return redirect()->route('cart');
     }
 }
 

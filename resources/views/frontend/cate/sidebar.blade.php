@@ -8,36 +8,37 @@
                 </h2>
             </div>
             <div class="block-content">
-                <form method="" action="" class="frm-search">
+                <form action="{!! route('search') !!}" method="GET" id="searchForm" class="frm-search">
                     <div class="form-group">
-                    <input type="text" class="form-control" id="" name="" value="" placeholder="Nhập từ khóa bạn muốn tìm kiếm">
+                    <input type="text" class="form-control" id="keyword" name="keyword" value="{{ isset($tu_khoa) ? $tu_khoa : "" }}" placeholder="Từ khóa tìm kiếm...">
                   </div>
                     <div class="form-group">
-                    <input type="text" class="form-control" id="" name="" value="" placeholder="Nhập mã sản phẩm">
+                    <input type="text" class="form-control" id="code" name="code" value="{{ isset($code) ? $code : "" }}" placeholder="Mã sản phẩm">
                   </div>
                     <div class="form-group">
-                        <select class="form-control" id="" name="">
-                        <option value="0">--Chọn mức giá--</option>
+                        <select class="form-control" id="price_range" name="p">
+                        <option value="">--Chọn mức giá--</option>
+                        @foreach( $priceList as $price)
+                        <option value="{!! $price->id !!}" {{ isset($p) && $p == $price->id ? "selected" : "" }}>{!! $price->name !!}</option>
+                        @endforeach
                       </select>
                   </div>
                     <div class="form-group">
-                        <select class="form-control" id="" name="">
-                        <option value="0">--Chọn danh mục--</option>
+                        <select class="form-control" id="parent_id" name="pid">
+                        <option value="">--Chọn danh mục--</option>
+                        @foreach( $cateParentList as $parent )
+                        <option value="{{ $parent->id }}" {{ isset($parent_id) && $parent_id == $parent->id ? "selected" : "" }}>{!! $parent->name !!}</option>
+                        @endforeach
                       </select>
                   </div>
                     <div class="form-group">
                         <div class="choose-prod-color-list">
-                            <a href="#" class="color_01"></a>
-                            <a href="#" class="color_02 active"></a>
-                            <a href="#" class="color_03"></a>
-                            <a href="#" class="color_04"></a>
-                            <a href="#" class="color_05"></a>
-                            <a href="#" class="color_06"></a>
-                            <a href="#" class="color_07"></a>
-                            <a href="#" class="color_08"></a>
-                            <a href="#" class="color_09"></a>
+                            @foreach( $colorList as $color )
+                            <a href="javascript:;"  data-id="{{ $color->id }}" class="choose-color {{ isset($colorArr) && in_array($color->id, $colorArr) ? "active" : "" }}" style="background-color:{{ $color->color_code  }}"></a>
+                            <input type="hidden" name="color[]" value="{{ isset($colorArr) && in_array($color->id, $colorArr) ? $color->id : "" }}">
+                            @endforeach
                         </div>
-                  </div>
+                    </div>
                     <div class="form-group">
                     <button type="submit" class="btn btn-main show">Tìm kiếm</button>
                   </div>
@@ -101,3 +102,19 @@
         </div>
     </div>
 </div><!-- /block-col-left -->
+@section('js')
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.choose-color').click(function(){
+            var obj = $(this);
+            if(obj.hasClass('active')){
+                obj.removeClass('active');
+                obj.next().val('');
+            }else{
+                obj.addClass('active');
+                obj.next().val(obj.data('id'));
+            }
+        });
+    });
+</script>
+@stop
