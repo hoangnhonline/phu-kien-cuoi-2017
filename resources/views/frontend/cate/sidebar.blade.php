@@ -102,19 +102,3 @@
         </div>
     </div>
 </div><!-- /block-col-left -->
-@section('js')
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('.choose-color').click(function(){
-            var obj = $(this);
-            if(obj.hasClass('active')){
-                obj.removeClass('active');
-                obj.next().val('');
-            }else{
-                obj.addClass('active');
-                obj.next().val(obj.data('id'));
-            }
-        });
-    });
-</script>
-@stop

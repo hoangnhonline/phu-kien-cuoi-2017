@@ -4,7 +4,7 @@
 <div class="block block-breadcrumb">
     <div class="container">
         <ul class="breadcrumb">
-            <li><a href="#">Trang chủ</a></li>
+            <li><a href="{{ route('home') }}" title="Trở về trang chủ">Trang chủ</a></li>
             <li class="active">Liên hệ</li>
         </ul>
     </div>
@@ -22,36 +22,16 @@
                     </div>
                     <div class="block-content">
                         <ul class="list">
+                            @if($kmHot)
+                            @foreach( $kmHot as $obj )
                             <li>
-                                <a href="#" title="">
-                                    <p class="thumb"><img src="images/pro-sidebar/1.jpg" alt=""></p>
-                                    <h3>Tiêu đề khuyến mãi được viết bởi nhóm iMarketing</h3>
+                                <a href="{!! route('news-detail', [ $obj->cate->slug, $obj->slug, $obj->id ] ) !!}" title="{!! $obj->title !!}">
+                                    <p class="thumb"><img src="{!! Helper::showImage( $obj->image_url ) !!}" alt="{!! $obj->title !!}"></p>
+                                    <h3>{!! $obj->title !!}</h3>
                                 </a>
                             </li>
-                            <li>
-                                <a href="#" title="">
-                                    <p class="thumb"><img src="images/pro-sidebar/2.jpg" alt=""></p>
-                                    <h3>Tiêu đề khuyến mãi được viết bởi nhóm iMarketing</h3>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="">
-                                    <p class="thumb"><img src="images/pro-sidebar/3.jpg" alt=""></p>
-                                    <h3>Tiêu đề khuyến mãi được viết bởi nhóm iMarketing</h3>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="">
-                                    <p class="thumb"><img src="images/pro-sidebar/4.jpg" alt=""></p>
-                                    <h3>Tiêu đề khuyến mãi được viết bởi nhóm iMarketing</h3>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="">
-                                    <p class="thumb"><img src="images/pro-sidebar/5.jpg" alt=""></p>
-                                    <h3>Tiêu đề khuyến mãi được viết bởi nhóm iMarketing</h3>
-                                </a>
-                            </li>
+                            @endforeach
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -96,12 +76,12 @@
                     <h1 class="title-main">LIÊN HỆ</h1>
                 </div>
                 <div class="block-content">
-                    <h2 class="tit-page2">CÔNG TY CUNG CẤP PHỤ KIỆN CƯỚI CAO CẤP</h2>
+                    <h2 class="tit-page2 @if($isEdit) edit @endif" data-text="15">{!! $textList[15] !!}</h2>
                     <div class="block-address">
-                        <p><strong>Địa chỉ:</strong> 788 - 790 Lạc Long Quân, phường 9, quận Tân Bình, thành phố Hồ Chí Minh</p>
-                        <p><strong>Hotline:</strong> (08) 35 00 32 47 - 0909 787 111</p>
-                        <p><strong>Website:</strong> www.namphucjeans.com</p>
-                        <p><strong>Email:</strong> namphucjeans@yahoo.com.vn</p>
+                        <p><strong>Địa chỉ:</strong> <span data-text="16" @if($isEdit) class="edit" @endif>{!! $textList[16] !!}</span></p>
+                        <p><strong>Hotline:</strong> <span data-text="17" @if($isEdit) class="edit" @endif>{!! $textList[17] !!}</span></p>
+                        <p><strong>Website:</strong> <a href="http://phukiencuoigiang.com">http://phukiencuoigiang.com</a></p>
+                        <p><strong>Email:</strong> <span data-text="18" @if($isEdit) class="edit" @endif>{!! $textList[18] !!}</span></p>
                     </div>
                      @if(Session::has('message'))
                   

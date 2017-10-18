@@ -216,7 +216,7 @@ class Helper
           $seo = $arrSeo[url()->current()];
         }
         if(empty($seo)){
-          $seo['title'] = $seo['description'] = $seo['keywords'] = "Trang chủ annammobile.com";
+          $seo['title'] = $seo['description'] = $seo['keywords'] = "Trang chủ phukiencuoigiang.com";
         }      
         return $seo;
     }

@@ -3,10 +3,9 @@
 <div class="block block-breadcrumb">
     <div class="container">
         <ul class="breadcrumb">
-            <li><a href="<?php echo e(route('home')); ?>" title="Trở về trang chủ">Trang chủ</a></li>
-            <li><a href="<?php echo e(route('cate-parent', [$cateDetail->cateParent->slug])); ?>"><?php echo $cateDetail->cateParent->name; ?></a></li>
-            <li class="active"><?php echo $cateDetail->name; ?></li>
-        </ul>
+        <li><a href="<?php echo e(route('home')); ?>" title="Trở về trang chủ">Trang chủ</a></li>        
+        <li class="active"><?php echo $cateDetail->name; ?></li>
+    </ul>
     </div>
 </div><!-- /block-breadcrumb -->
 <div class="block block-two-col container">
@@ -61,8 +60,7 @@
                         </div>
 
                         <nav class="block-pagination">
-                            <?php echo e($productList->links()); ?>
-
+                            <?php echo e($productList->appends(['pid' => $parent_id, 'p' => $price_id, 'keyword' => $tu_khoa, 'color' => $colorArr])->links()); ?>  
                         </nav><!-- /block-pagination -->
                     </div>
                 </div>
@@ -71,5 +69,8 @@
 
     </div>
 </div><!-- /block_big-title -->
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('js'); ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,10 +1,5 @@
 @extends('frontend.layout')
 @include('frontend.partials.meta')
-@section('header')
-  @include('frontend.partials.header')
-  
-@endsection
-
 @section('content')
 <div class="block block-breadcrumb">
     <div class="container">
@@ -193,41 +188,39 @@
 
 @stop
 @section('js')
-<!-- Js zoom -->
-<script src="{{ URL::asset('public/assets/lib/jquery.zoom.min.js') }}"></script>
-<!-- Flexslider -->
-<script src="{{ URL::asset('public/assets/lib/flexslider/jquery.flexslider-min.js') }}"></script>
-<script type="text/javascript">
-$(document).ready(function () {
-       // The slider being synced must be initialized first
-    $('#carousel').flexslider({
-        animation: "slide",
-        controlNav: false,
-        animationLoop: true,
-        slideshow: false,
-        itemWidth: 75,
-        itemMargin: 15,
-        nextText: "",
-        prevText: "",
-        asNavFor: '#slider'
-    });
+    <!-- Js zoom -->
+    <script src="{{ URL::asset('public/assets/lib/jquery.zoom.min.js') }}"></script>
+    <!-- Flexslider -->
+    <script src="{{ URL::asset('public/assets/lib/flexslider/jquery.flexslider-min.js') }}"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+           // The slider being synced must be initialized first
+        $('#carousel').flexslider({
+            animation: "slide",
+            controlNav: false,
+            animationLoop: true,
+            slideshow: false,
+            itemWidth: 75,
+            itemMargin: 15,
+            nextText: "",
+            prevText: "",
+            asNavFor: '#slider'
+        });
 
-    $('#slider').flexslider({
-        animation: "fade",
-        controlNav: false,
-        directionNav: false,
-        animationLoop: false,
-        slideshow: false,
-        animationSpeed: 500,
-        sync: "#carousel"
-    });
+        $('#slider').flexslider({
+            animation: "fade",
+            controlNav: false,
+            directionNav: false,
+            animationLoop: false,
+            slideshow: false,
+            animationSpeed: 500,
+            sync: "#carousel"
+        });
 
-    $('.slides-large li').each(function () {
-        $(this).zoom();
-    });
-    });
+        $('.slides-large li').each(function () {
+            $(this).zoom();
+        });
+        });
 
-</script>
+    </script>
 @stop
-
-

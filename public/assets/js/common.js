@@ -31,8 +31,53 @@
       }
       $(this).owlCarousel(config);
     });
-  });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
+  $('.edit').click(function(){
+    $('#txtId').val($(this).data('text'));
+    $('#txtContent').val($(this).html());
+    $('#editContentModal').modal('show');
+  });
+  $('#btnSaveContent').click(function(){
+    $.ajax({
+      url : $('#route-save-content').val(),
+      type : "POST",
+      data : {
+        id : $('#txtId').val(),
+        content : $('#txtContent').val()
+      },
+      success:  function(){
+        window.location.reload();
+      }
+
+    });
+  });
+  $('.choose-color').click(function(){
+          var obj = $(this);
+          if(obj.hasClass('active')){
+              obj.removeClass('active');
+              obj.next().val('');
+          }else{
+              obj.addClass('active');
+              obj.next().val(obj.data('id'));
+          }
+      });
+  });
+  jQuery('.fb-page1').toggleClass('hide');
+    jQuery('#closefbchat').html('<i class="fa fa-comments fa-2x"></i> Chat Tư Vấn').css({'bottom':0});
+  jQuery('#closefbchat').click(function(){
+    jQuery('.fb-page1').toggleClass('hide');
+    if(jQuery('.fb-page1').hasClass('hide')){
+      jQuery('#closefbchat').html('<i class="fa fa-comments fa-2x"></i> Chat Tư Vấn').css({'bottom':0});
+    }
+    else{
+      jQuery('#closefbchat').text('Tắt Chat').css({'bottom':299});
+    }
+  });
   /*
    * 2. Scroll to Top
   */

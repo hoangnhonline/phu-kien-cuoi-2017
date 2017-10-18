@@ -27,7 +27,7 @@
 					</div>
 					<div class="select-choice">
 						<div class="form-category">
-							<select id="cid" class="cid choice" name="cid">
+							<select class="cid choice" name="pid">
 								<option value="">Danh mục</option>
 								<?php foreach($cateParentList as $value): ?>
 							   	<option value="<?php echo e($value->id); ?>" <?php echo e(isset($parent_id) && $parent_id == $value->id ? "selected" : ""); ?>><?php echo $value->name; ?></option>>
@@ -100,7 +100,7 @@
 					<li class="level0"><a href="<?php echo route('news-list', 'tuyen-dung'); ?>" title="TUYỂN DỤNG">TUYỂN DỤNG</a></li>
 					<li class="level0"><a href="<?php echo route('contact'); ?>" title="Liên Hệ">Liên Hệ</a></li>
 					<li class="nav-info">
-						<i class="fa fa-phone"></i> <a href="tel:0949765166">0949 765 166</a> - <a href="tel:0943761688">0943 761 688</a>
+						<i class="fa fa-phone"></i> <a href="tel:<?php echo $textList[13]; ?>" data-text="13" <?php if($isEdit): ?> class="edit" <?php endif; ?>><?php echo $textList[13]; ?></a> - <a href="tel:<?php echo $textList[14]; ?>" <?php if($isEdit): ?> class="edit" <?php endif; ?>><?php echo $textList[14]; ?></a>
 					</li>
 				</ul>
 			</div>

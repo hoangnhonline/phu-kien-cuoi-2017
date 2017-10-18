@@ -139,7 +139,8 @@ class HomeController extends Controller
         $seo['description'] = 'Liên hệ';
         $seo['keywords'] = 'Liên hệ';
         $socialImage = '';
-        return view('frontend.contact.index', compact('seo', 'socialImage'));
+        $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
+        return view('frontend.contact.index', compact('seo', 'socialImage', 'kmHot'));
     }
 
     public function newsList(Request $request)

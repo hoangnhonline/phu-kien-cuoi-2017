@@ -13,7 +13,7 @@
 								<p><i class="fa fa-map-marker"></i><span <?php if($isEdit): ?> class="edit" <?php endif; ?>" data-text="9"><?php echo $textList[9]; ?></span></p>
 								<p><i class="fa fa-phone"></i> <span <?php if($isEdit): ?> class="edit" <?php endif; ?>" data-text="10"><?php echo $textList[10]; ?></span></p>
 								<p><i class="fa fa-envelope"></i> <a href="mailto:<?php echo $textList[11]; ?>"><span <?php if($isEdit): ?> class="edit" <?php endif; ?>" data-text="11"><?php echo $textList[11]; ?></span></a></p>
-								<p><i class="fa fa-globe"></i> <a href="#">www.iweb247.com</a></p>
+								<p><i class="fa fa-globe"></i> <a href="http://phukiencuoigiang.com">phukiencuoigiang.com</a></p>
 							</address>
 						</div>
 					</div>

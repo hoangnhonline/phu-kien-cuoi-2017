@@ -1,9 +1,4 @@
 <?php echo $__env->make('frontend.partials.meta', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-<?php $__env->startSection('header'); ?>
-  <?php echo $__env->make('frontend.partials.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-  
-<?php $__env->stopSection(); ?>
-
 <?php $__env->startSection('content'); ?>
 <div class="block block-breadcrumb">
     <div class="container">
@@ -194,43 +189,40 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>
-<!-- Js zoom -->
-<script src="<?php echo e(URL::asset('public/assets/lib/jquery.zoom.min.js')); ?>"></script>
-<!-- Flexslider -->
-<script src="<?php echo e(URL::asset('public/assets/lib/flexslider/jquery.flexslider-min.js')); ?>"></script>
-<script type="text/javascript">
-$(document).ready(function () {
-       // The slider being synced must be initialized first
-    $('#carousel').flexslider({
-        animation: "slide",
-        controlNav: false,
-        animationLoop: true,
-        slideshow: false,
-        itemWidth: 75,
-        itemMargin: 15,
-        nextText: "",
-        prevText: "",
-        asNavFor: '#slider'
-    });
+    <!-- Js zoom -->
+    <script src="<?php echo e(URL::asset('public/assets/lib/jquery.zoom.min.js')); ?>"></script>
+    <!-- Flexslider -->
+    <script src="<?php echo e(URL::asset('public/assets/lib/flexslider/jquery.flexslider-min.js')); ?>"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+           // The slider being synced must be initialized first
+        $('#carousel').flexslider({
+            animation: "slide",
+            controlNav: false,
+            animationLoop: true,
+            slideshow: false,
+            itemWidth: 75,
+            itemMargin: 15,
+            nextText: "",
+            prevText: "",
+            asNavFor: '#slider'
+        });
 
-    $('#slider').flexslider({
-        animation: "fade",
-        controlNav: false,
-        directionNav: false,
-        animationLoop: false,
-        slideshow: false,
-        animationSpeed: 500,
-        sync: "#carousel"
-    });
+        $('#slider').flexslider({
+            animation: "fade",
+            controlNav: false,
+            directionNav: false,
+            animationLoop: false,
+            slideshow: false,
+            animationSpeed: 500,
+            sync: "#carousel"
+        });
 
-    $('.slides-large li').each(function () {
-        $(this).zoom();
-    });
-    });
+        $('.slides-large li').each(function () {
+            $(this).zoom();
+        });
+        });
 
-</script>
+    </script>
 <?php $__env->stopSection(); ?>
-
-
-
 <?php echo $__env->make('frontend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,16 +1,15 @@
-@extends('backend.layout')
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  @if($parent_id > 0)
+  <?php if($parent_id > 0): ?>
   <h1>
-    Danh mục con của : <span class="cate-name">{{ $loaiSp->name }}</span>
+    Danh mục con của : <span class="cate-name"><?php echo e($loaiSp->name); ?></span>
   </h1>
-  @endif
+  <?php endif; ?>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ route( 'cate.index' ) }}">Danh mục cha</a></li>
+    <li><a href="<?php echo e(route( 'cate.index' )); ?>">Danh mục cha</a></li>
     <li class="active">Danh sách</li>
   </ol>
 </section>
@@ -19,23 +18,23 @@
 <section class="content">
   <div class="row">
     <div class="col-md-12">
-      @if(Session::has('message'))
-      <p class="alert alert-info" >{{ Session::get('message') }}</p>
-      @endif
-      <a href="{{ route('cate.create', [$parent_id]) }}" class="btn btn-info btn-sm" style="margin-bottom:5px">Tạo mới</a>
+      <?php if(Session::has('message')): ?>
+      <p class="alert alert-info" ><?php echo e(Session::get('message')); ?></p>
+      <?php endif; ?>
+      <a href="<?php echo e(route('cate.create', [$parent_id])); ?>" class="btn btn-info btn-sm" style="margin-bottom:5px">Tạo mới</a>
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Bộ lọc</h3>
         </div>
         <div class="panel-body">
-          <form class="form-inline" role="form" method="GET" action="{{ route('cate.index') }}" id="formSearch">
+          <form class="form-inline" role="form" method="GET" action="<?php echo e(route('cate.index')); ?>" id="formSearch">
             <div class="form-group">
               <label for="email">Danh mục :</label>
               <select class="form-control" name="parent_id" id="parent_id">
                 <option value="0">--Không chọn--</option>
-                @foreach( $cateParentList as $value )
-                <option value="{{ $value->id }}" {{ $value->id == $parent_id ? "selected" : "" }}>{{ $value->name }}</option>
-                @endforeach
+                <?php foreach( $cateParentList as $value ): ?>
+                <option value="<?php echo e($value->id); ?>" <?php echo e($value->id == $parent_id ? "selected" : ""); ?>><?php echo e($value->name); ?></option>
+                <?php endforeach; ?>
               </select>
             </div>            
             <button type="submit" class="btn btn-default btn-sm">Lọc</button>
@@ -59,41 +58,41 @@
               <th width="1%;" style="white-space:nowrap">Thao tác</th>
             </tr>
             <tbody>
-            @if( $items->count() > 0 )
+            <?php if( $items->count() > 0 ): ?>
               <?php $i = 0; ?>
-              @foreach( $items as $item )
+              <?php foreach( $items as $item ): ?>
                 <?php $i ++; ?>
-              <tr id="row-{{ $item->id }}">
-                <td><span class="order">{{ $i }}</span></td>
+              <tr id="row-<?php echo e($item->id); ?>">
+                <td><span class="order"><?php echo e($i); ?></span></td>
                 <td style="vertical-align:middle;text-align:center">
-                  <img src="{{ URL::asset('public/admin/dist/img/move.png')}}" class="move img-thumbnail" alt="Cập nhật thứ tự"/>
+                  <img src="<?php echo e(URL::asset('public/admin/dist/img/move.png')); ?>" class="move img-thumbnail" alt="Cập nhật thứ tự"/>
                 </td>
                 <td>                  
-                  <a href="{{ route( 'cate.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a>
+                  <a href="<?php echo e(route( 'cate.edit', [ 'id' => $item->id ])); ?>"><?php echo e($item->name); ?></a>
                   
-                  @if( $item->is_hot == 1 )
-                  <img class="img-thumbnail" src="{{ URL::asset('public/admin/dist/img/star.png')}}" alt="Nổi bật" title="Nổi bật" />
-                  @endif
+                  <?php if( $item->is_hot == 1 ): ?>
+                  <img class="img-thumbnail" src="<?php echo e(URL::asset('public/admin/dist/img/star.png')); ?>" alt="Nổi bật" title="Nổi bật" />
+                  <?php endif; ?>
 
-                  <p>{{ $item->description }}</p>
+                  <p><?php echo e($item->description); ?></p>
                 </td> 
-                <td style="text-align:center"><a class="btn btn-info" href="{{ route('cate.index', [$item->id])}}">{{ $item->product->count() }}</a></td>
+                <td style="text-align:center"><a class="btn btn-info" href="<?php echo e(route('cate.index', [$item->id])); ?>"><?php echo e($item->product->count()); ?></a></td>
                 <td style="white-space:nowrap; text-align:right">
                 
-                 <a class="btn btn-default btn-sm" href="{{ route('cate', ['danh-muc', $item->slug] ) }}" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>                  
-                  <a href="{{ route( 'cate.edit', [ 'id' => $item->id ]) }}" class="btn-sm btn btn-warning">Chỉnh sửa</a>                 
-                  @if($item->product->count() == 0)
-                  <a onclick="return callDelete('{{ $item->name }}','{{ route( 'cate.destroy', [ 'id' => $item->id ]) }}');" class="btn-sm btn btn-danger">Xóa</a>
-                  @endif
+                 <a class="btn btn-default btn-sm" href="<?php echo e(route('cate', ['danh-muc', $item->slug] )); ?>" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>                  
+                  <a href="<?php echo e(route( 'cate.edit', [ 'id' => $item->id ])); ?>" class="btn-sm btn btn-warning">Chỉnh sửa</a>                 
+                  <?php if($item->product->count() == 0): ?>
+                  <a onclick="return callDelete('<?php echo e($item->name); ?>','<?php echo e(route( 'cate.destroy', [ 'id' => $item->id ])); ?>');" class="btn-sm btn btn-danger">Xóa</a>
+                  <?php endif; ?>
                   
                 </td>
               </tr> 
-              @endforeach
-            @else
+              <?php endforeach; ?>
+            <?php else: ?>
             <tr>
               <td colspan="9">Không có dữ liệu.</td>
             </tr>
-            @endif
+            <?php endif; ?>
 
           </tbody>
           </table>
@@ -106,8 +105,8 @@
 </section>
 <!-- /.content -->
 </div>
-@stop
-@section('javascript_page')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('javascript_page'); ?>
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({
@@ -167,4 +166,5 @@ function updateOrder(table, strOrder){
   });
 }
 </script>
-@stop
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('backend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

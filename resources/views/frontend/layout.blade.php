@@ -21,7 +21,7 @@
     <meta property="og:title" content="@yield('title')" />
     <meta property="og:description" content="@yield('site_description')" />
     <meta property="og:url" content="{{ url()->current() }}" />
-    <meta property="og:site_name" content="annammobile.com" />
+    <meta property="og:site_name" content="phukiencuoigiang.com" />
     <?php $socialImage = isset($socialImage) ? $socialImage : $settingArr['banner']; ?>
     <meta property="og:image" content="{{ Helper::showImage($socialImage) }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -42,6 +42,7 @@
 		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}"></script>
 		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js') }}"></script>
 	<![endif]-->
+	{!! $settingArr['google_analystic'] !!}
 </head>
 <body>
 	<div id="fb-root"></div>
@@ -81,45 +82,14 @@
 	<a id="return-to-top" class="td-scroll-up" href="javascript:void(0)">
   		<i class="fa fa-angle-up" aria-hidden="true"></i>
 	</a><!-- Return To Top -->
+	<input type="hidden" id="route-add-to-cart" value="{{ route('add-product') }}" />
+	<input type="hidden" id="route-short-cart" value="{{ route('short-cart') }}" />
+	<input type="hidden" id="route-update-product" value="{{ route('update-product') }}" />	
+	<input type="hidden" id="route-cart" value="{{ route('cart') }}" />	
+	<input type="hidden" id="route-save-content" value="{{ route('save-content') }}" />	
+
 	@include('frontend.partials.modal')
-	<style type="text/css">
-		.edit {  
-		position: relative;
-		border: 1px dashed transparent;
-		min-height: 20px;
-		}
-		.edit:hover {
-		border: 1px dashed #c70f19;\
-		}
-		.edit:hover:before {
-		content: "\f040";
-		font-family: "FontAwesome";
-		font-size: 13px;
-		color: #ffffff;
-		width: 20px;
-		height: 20px;
-		display: block;
-		background: #c70f19;
-		position: absolute;
-		top: 0;
-		right: 0;
-		cursor: pointer;
-		}
-		.block-info-address .block-content{
-			padding: 10px 15px;
-		}
-		.block-info-address{
-			margin-bottom: 15px;
-		}
-		.form-billing .choose-another{
-			color : #056839;
-			font-weight: bold;
-			font-size: 14px;
-		}
-		h1.title-main{
-			text-transform: uppercase;
-		}
-	</style>
+	
 	<!-- ===== JS ===== -->
 	<script src="{{ URL::asset('public/assets/js/jquery.min.js') }}"></script>
 	<!-- ===== JS Bootstrap ===== -->
@@ -131,53 +101,9 @@
     <!-- Js Common -->
 	<script src="{{ URL::asset('public/assets/js/common.js') }}"></script>
 	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-59b215c2a2658a8a"></script> 	
-	<script src="https://apis.google.com/js/platform.js" async defer></script>
-	<script>
-		jQuery('.fb-page1').toggleClass('hide');
-			jQuery('#closefbchat').html('<i class="fa fa-comments fa-2x"></i> Chat Tư Vấn').css({'bottom':0});
-		jQuery('#closefbchat').click(function(){
-			jQuery('.fb-page1').toggleClass('hide');
-			if(jQuery('.fb-page1').hasClass('hide')){
-				jQuery('#closefbchat').html('<i class="fa fa-comments fa-2x"></i> Chat Tư Vấn').css({'bottom':0});
-			}
-			else{
-				jQuery('#closefbchat').text('Tắt Chat').css({'bottom':299});
-			}
-		});
-	</script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$.ajaxSetup({
-			      headers: {
-			          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			      }
-			  });
-
-			$('.edit').click(function(){
-				$('#txtId').val($(this).data('text'));
-				$('#txtContent').val($(this).html());
-				$('#editContentModal').modal('show');
-			});
-			$('#btnSaveContent').click(function(){
-				$.ajax({
-					url : '{{ route('save-content') }}',
-					type : "POST",
-					data : {
-						id : $('#txtId').val(),
-						content : $('#txtContent').val()
-					},
-					success:  function(){
-						window.location.reload();
-					}
-
-				});
-			});
-		});
-	</script>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>	
 	@yield('js')
-	<input type="hidden" id="route-add-to-cart" value="{{ route('add-product') }}" />
-	<input type="hidden" id="route-short-cart" value="{{ route('short-cart') }}" />
-	<input type="hidden" id="route-update-product" value="{{ route('update-product') }}" />	
-	<input type="hidden" id="route-cart" value="{{ route('cart') }}" />	
+	
+
 </body>
 </html>
