@@ -4,7 +4,7 @@
 			<div class="row">
 				<div class="col-sm-4 col-xs-12 block-logo">
 					<a href="{!! route('home') !!}" title="Logo">
-						<img src="{{ URL::asset('public/assets/images/logo.png') }}" alt="Logo">
+						<img src="{{ Helper::showImage( $settingArr['logo']) }}" alt="Logo">
 					</a>
 				</div><!-- /block-logo -->
 				<div class="col-sm-8 col-xs-12 block-info">
