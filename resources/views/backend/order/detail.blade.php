@@ -15,8 +15,10 @@
 
 <!-- Main content -->
 <section class="content">
+
  <a class="btn btn-default btn-sm" href="{{ route('orders.index') }}?status={{ $s['status'] }}&name={{ $s['name'] }}&date_from={{ $s['date_from'] }}&date_to={{ $s['date_to'] }}" style="margin-bottom:5px">Quay lại</a>
-  <div class="row">
+ <button class="btn btn-info btn-sm" onclick="return printOrder();" style="margin-bottom:5px">In đơn hàng</button>
+  <div class="row" id="content-print">
     <div class="col-md-12">
       @if(Session::has('message'))
       <p class="alert alert-info" >{{ Session::get('message') }}</p>
@@ -24,7 +26,7 @@
       <div class="box">
 
         <div class="box-header with-border">
-          <div class="col-md-4">
+          <div class="col-md-4" style="width: 33%;float:left">
               <h4>Chi tiết chung</h4>
             <p>
               <span>Thời gian đặt hàng :</span><br> {{ date('d-m-Y H:i', strtotime($order->created_at )) }} <br>
@@ -45,7 +47,7 @@
               
             </p>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" style="width: 33%;float:left">
             <h4>Thông tin thanh toán</h4>
             <p>
               <span>Địa chỉ :</span><br> {{ $order->address }}<br>
@@ -58,7 +60,7 @@
               
             </p>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" style="width: 34%;float:left">
             <h4>Chi tiết giao nhận hàng</h4>
             <p>
               @if( $order->is_other_address == 0 )
@@ -78,10 +80,10 @@
           </div>
 
         </div>
-
+        <div style="clear:both"></div>
         <!-- /.box-header -->
         <div class="box-body">
-          <table class="table table-bordered" id="table-list-data">
+          <table class="table table-bordered" id="table-list-data" border="1" cellpadding="5" cellspacing="0">
             <tr>
               <th style="width:1%">No.</th>
               <th> Tên Sản phẩm </th>
@@ -131,7 +133,15 @@
 @stop
 @section('javascript_page')
 <script type="text/javascript">
-
+function printOrder(){
+  var prtContent = document.getElementById("content-print");
+  var WinPrint = window.open('', '', 'width=900,height=650');
+  WinPrint.document.write(prtContent.innerHTML);
+  WinPrint.document.close();
+  WinPrint.focus();
+  WinPrint.print();
+  WinPrint.close();
+}
 $(document).ready(function(){
   $('.btn-delete-order-detail').click(function(){
     var order_detail_id = $(this).attr('order-detail-id');

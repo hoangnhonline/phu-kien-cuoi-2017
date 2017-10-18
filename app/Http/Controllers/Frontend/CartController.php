@@ -189,7 +189,7 @@ class CartController extends Controller
         }
         
         $settingArr = Settings::whereRaw('1')->lists('value', 'name');
-        $adminMailArr = explode(',', $settingArr['admin_email']);
+        $adminMailArr = explode(',', $settingArr['email_cc']);
         if($email != ''){
 
             $emailArr = array_merge([$email], $adminMailArr);
@@ -216,7 +216,7 @@ class CartController extends Controller
                     $message->sender('phukiencuoigiang@gmail.com', 'Phụ kiện cưới Giang');
             });
         }
-        
+        Session::put('baokim', 0);
         if( $request->method_id == 3){
             Session::put('baokim', 1);
             $modelBaoKim = new BaoKimPayment();

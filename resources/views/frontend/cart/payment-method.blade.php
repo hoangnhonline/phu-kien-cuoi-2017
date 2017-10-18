@@ -36,7 +36,7 @@
               <div class="content">                
               <div class="form-group">
                 <div class="thumb">
-                  <img src="images/payments/VIB.jpg" alt="">
+                  <img src="{{ URL::asset('public/assets/images/payments/VIB.jpg') }}" alt="VIB">
                 </div>
                 <div class="des">
                   <p class="title">Ngân hàng thươnag mại cổ phần Á Châu - Chi nhánh Thủ Đức</p>
@@ -84,7 +84,7 @@
               <label class="choose-another"><input type="radio" name="method_id" value="3" class="radio-cus"> Thanh toán qua Bảo Kim</label>
             </div>
             <div class="form-group text-right">
-              <a href="{!! route('address-info') !!}" title="Quay Lại" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Quay Lại</a>
+              <a href="{!! route('address-info') !!}" title="Quay Lại" id="btnBack" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Quay Lại</a>
               <button title="Quay Lại" class="btn btn-main" id="btnPayment" >Đặt hàng <i class="fa fa-long-arrow-right"></i></button>
             </div>
           </form>
@@ -222,8 +222,9 @@
 @section('js')
    <script type="text/javascript">
    $(document).ready(function(){
-    $('#btnPayment').click(function(){            
+    $('#btnPayment').click(function(){       
         $(this).html('<i class="fa fa-spin fa-spinner"></i>').attr('disabled', 'disabled');
+        $('#btnBack').hide();
         $('#paymentForm').submit();      
     });
   });
