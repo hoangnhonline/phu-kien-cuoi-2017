@@ -18,7 +18,7 @@ class NewsController extends Controller
 {
     public function newsList(Request $request)
     {
-       
+       Helper::counter(1, 3);
         $page = $request['page'] ? $request['page'] : 1;       
         $cateArr = [];
         $slug = $request->slug;
@@ -47,6 +47,7 @@ class NewsController extends Controller
 
      public function newsDetail(Request $request)
     { 
+        Helper::counter(1, 3);
         $id = $request->id;
 
         $detail = Articles::where( 'id', $id )
@@ -70,7 +71,7 @@ class NewsController extends Controller
             $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
             $colorList = Color::all(); 
             $priceList = PriceRange::all();
-            
+
             return view('frontend.news.news-detail', compact('title',  'hotArr', 'detail', 'otherArr', 'seo', 'socialImage', 'tagSelected', 'cateDetail',  'kmHot', 'colorList', 'priceList'));
         }else{
             return redirect()->route('home');

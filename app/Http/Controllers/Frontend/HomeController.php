@@ -28,7 +28,7 @@ class HomeController extends Controller
     public static $cateParentListKey = [];    
 
     public function __construct(){        
-       
+       Helper::counter(1, 3);
     }
     /**
     * Display a listing of the resource.

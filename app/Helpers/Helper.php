@@ -84,10 +84,11 @@ class Helper
         }
         
     }
-    public static function view($object_id, $object_type){
+    public static function view($object_id, $object_type, $day_id = null){
         $rs = CounterValues::where(['object_id' => $object_id, 'object_type' => $object_type])->first();
+
         if($rs){
-            return $rs->all_value;
+            return $day_id ? $rs->day_value : $rs->all_value;
         }else{
             return 0;
         }

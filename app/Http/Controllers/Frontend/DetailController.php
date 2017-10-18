@@ -34,6 +34,8 @@ class DetailController extends Controller
     */
     public function index(Request $request)
     {   
+        Helper::counter(1, 3);
+        
         $productArr = [];
         $id = $request->id;
         $detail = Product::find($id);

@@ -76,26 +76,17 @@
                 </h2>
             </div>
             <div class="block-content">
-                <ul class="list">
-                    <li>
-                        <span class="icon"><i class="fa fa-user"></i></span>
-                        <span class="text">Hôm qua:</span>
-                        <span class="number">246</span>
-                    </li>
+                <ul class="list">                    
                     <li>
                         <span class="icon"><i class="fa fa-user"></i></span>
                         <span class="text">Hôm nay:</span>
-                        <span class="number">246</span>
+                        <span class="number"><?php echo e(Helper::view(1, 3, 1)); ?></span>
                     </li>
-                    <li>
-                        <span class="icon"><i class="fa fa-user"></i></span>
-                        <span class="text">Trong tuần:</span>
-                        <span class="number">246</span>
-                    </li>
+                    
                     <li>
                         <span class="icon"><i class="fa fa-user"></i></span>
                         <span class="text">Tổng truy cập:</span>
-                        <span class="number">246</span>
+                        <span class="number"><?php echo e(Helper::view(1, 3)); ?></span>
                     </li>
                 </ul>
             </div>
