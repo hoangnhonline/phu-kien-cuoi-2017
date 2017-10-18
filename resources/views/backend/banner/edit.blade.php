@@ -53,7 +53,7 @@
                   ?></label>  
                   <input type="hidden" name="id" value="{{ $detailBanner->id }}">  
                   <div class="col-md-9">
-                    <img id="thumbnail_image" src="{{ $detailBanner->image_url ? Helper::showImage($detailBanner->image_url) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="300">
+                    <img id="thumbnail_image_url" src="{{ $detailBanner->image_url ? Helper::showImage($detailBanner->image_url) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="300">
                  
                     <button class="btn btn-default btn-sm btnSingleUpload" data-set="image_url" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
                   </div>
