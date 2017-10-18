@@ -70,7 +70,7 @@ class NewsController extends Controller
             $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
             $colorList = Color::all(); 
             $priceList = PriceRange::all();
-
+            
             return view('frontend.news.news-detail', compact('title',  'hotArr', 'detail', 'otherArr', 'seo', 'socialImage', 'tagSelected', 'cateDetail',  'kmHot', 'colorList', 'priceList'));
         }else{
             return redirect()->route('home');

@@ -10,7 +10,7 @@
             <div class="block-content">
                 <form action="{!! route('search') !!}" method="GET" id="searchForm" class="frm-search">
                     <div class="form-group">
-                    <input type="text" class="form-control" id="keyword" name="keyword" value="{{ isset($tu_khoa) ? $tu_khoa : "" }}" placeholder="Từ khóa tìm kiếm...">
+                    <input type="text" class="form-control txtSearch" id="keyword" name="keyword" value="{{ isset($tu_khoa) ? $tu_khoa : "" }}" placeholder="Từ khóa tìm kiếm...">
                   </div>
                     <div class="form-group">
                     <input type="text" class="form-control" id="code" name="code" value="{{ isset($code) ? $code : "" }}" placeholder="Mã sản phẩm">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                    <button type="submit" class="btn btn-main show">Tìm kiếm</button>
+                    <button type="submit"  class="btn btn-main show btnSearch">Tìm kiếm</button>
                   </div>
                 </form>
             </div>
