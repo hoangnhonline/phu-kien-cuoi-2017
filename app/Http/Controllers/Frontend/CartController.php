@@ -199,7 +199,7 @@ class CartController extends Controller
         
         // send email
         $order_id =str_pad($order_id, 6, "0", STR_PAD_LEFT);
-        /*
+        
         if(!empty($emailArr)){
             Mail::send('frontend.cart.email',
                 [                    
@@ -216,7 +216,7 @@ class CartController extends Controller
                     $message->sender('phukiencuoigiang@gmail.com', 'Phụ kiện cưới Giang');
             });
         }
-        */
+        
         if( $request->method_id == 3){
             Session::put('baokim', 1);
             $modelBaoKim = new BaoKimPayment();
