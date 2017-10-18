@@ -111,28 +111,14 @@ class BannerController extends Controller
             'slug.required' => 'Bạn chưa nhập slug',
         ]);
         */
-        $dataArr['status'] = isset($dataArr['status'])  ? 1 : 0;
-        
-        if($dataArr['image_url'] && $dataArr['image_name']){
-            
-            $tmp = explode('/', $dataArr['image_url']);
-
-            if(!is_dir('public/uploads/'.date('Y/m/d'))){
-                mkdir('public/uploads/'.date('Y/m/d'), 0777, true);
-            }
-
-            $destionation = date('Y/m/d'). '/'. end($tmp);
-            
-            File::move(config('phukien.upload_path').$dataArr['image_url'], config('phukien.upload_path').$destionation);
-            
-            $dataArr['image_url'] = $destionation;
-        }
+        $dataArr['status'] = isset($dataArr['status'])  ? 1 : 0;        
+       
         $dataArr['created_user'] = Auth::user()->id;
 
         $dataArr['updated_user'] = Auth::user()->id;
         Banner::create($dataArr);
 
-        Session::flash('message', 'Tạo mới banner thành công');
+        Session::flash('message', 'Tạo mới thành công');
 
         return redirect()->route('banner.index', ['object_id' => $dataArr['object_id'], 'object_type' => $dataArr['object_type']]);
     }
@@ -198,27 +184,12 @@ class BannerController extends Controller
         
         $dataArr['updated_user'] = Auth::user()->id;
         $dataArr['status'] = isset($dataArr['status'])  ? 1 : 0;
-
-        if($dataArr['image_url'] && $dataArr['image_name']){
-            
-            $tmp = explode('/', $dataArr['image_url']);
-
-            if(!is_dir('public/uploads/'.date('Y/m/d'))){
-                mkdir('public/uploads/'.date('Y/m/d'), 0777, true);
-            }
-
-            $destionation = date('Y/m/d'). '/'. end($tmp);
-            
-            File::move(config('phukien.upload_path').$dataArr['image_url'], config('phukien.upload_path').$destionation);
-            
-            $dataArr['image_url'] = $destionation;
-        }
         
         $model = Banner::find($dataArr['id']);
 
         $model->update($dataArr);
 
-        Session::flash('message', 'Cập nhật banner thành công');
+        Session::flash('message', 'Cập nhật thành công');
 
         return redirect()->route('banner.index', ['object_id' => $dataArr['object_id'], 'object_type' => $dataArr['object_type']]);
     }
@@ -236,7 +207,7 @@ class BannerController extends Controller
         $model->delete();
 
         // redirect
-        Session::flash('message', 'Xóa banner thành công');
+        Session::flash('message', 'Xóa thành công');
         return redirect()->route('banner.index', ['object_type' => $model->object_type, 'object_id' => $model->object_id]);
     }
 }

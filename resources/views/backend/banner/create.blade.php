@@ -57,6 +57,7 @@
                     <img id="thumbnail_image_url" src="{{ old('image_url') ? Helper::showImage(old('image_url')) : URL::asset('public/admin/dist/img/img.png') }}" class="img-thumbnail" width="300">
                  
                     <button class="btn btn-default btn-sm btnSingleUpload" data-set="image_url" type="button"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload</button>
+                    <input type="hidden" name="image_url" id="image_url" value="{{ old('image_url') }}"/>          
                   </div>
                   <div style="clear:both"></div>
                 </div>  
@@ -79,8 +80,8 @@
                   <label>Liên kết</label>
                   <input type="text" name="ads_url" id="ads_url" value="{{ old('ads_url') }}" class="form-control">
                 </div>  
-                <input type="hidden" name="image_url" id="image_url" value="{{ old('image_url') }}"/>          
-            	<input type="hidden" name="image_name" id="image_name" value="{{ old('image_name') }}"/>
+      
+      
                 <input type="hidden" name="object_id" value="{{ $object_id }}">
                 <input type="hidden" name="object_type" value="{{ $object_type }}">
             </div>                        
