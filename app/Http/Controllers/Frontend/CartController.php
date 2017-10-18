@@ -246,6 +246,8 @@ class CartController extends Controller
         
         $seo['title'] = $seo['description'] = $seo['keywords'] = "Mua hàng thành công";
         Session::put('products', []);
+        Session::put('address_info', []);
+        Session::put('baokim', 0);
         Session::flush();
 
         return view('frontend.cart.success', compact('order_id', 'seo', 'orderDetail'));
