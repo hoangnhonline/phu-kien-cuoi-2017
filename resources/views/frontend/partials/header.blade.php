@@ -98,7 +98,7 @@
 					</li>
 					<li class="level0 @if( ( $routeName == "news-list" || $routeName == "news-detail" ) && isset($cateDetail) && $cateDetail->slug == "khuyen-mai" ) active @endif""><a href="{!! route('news-list', 'khuyen-mai') !!}" title="KHUYẾN MÃI">KHUYẾN MÃI</a></li>
 					<li class="level0 @if( ( $routeName == "news-list" || $routeName == "news-detail")  && isset($cateDetail) && $cateDetail->slug == "tuyen-dung"  ) active @endif""><a href="{!! route('news-list', 'tuyen-dung') !!}" title="TUYỂN DỤNG">TUYỂN DỤNG</a></li>
-					<li class="level0"><a href="{!! route('contact') !!}" title="Liên Hệ">Liên Hệ</a></li>
+					<li class="level0 @if( $routeName == "contact") active @endif"><a href="{!! route('contact') !!}" title="Liên Hệ">Liên Hệ</a></li>
 					<li class="nav-info">
 						<i class="fa fa-phone"></i> <a href="tel:{!! $textList[13] !!}" data-text="13" @if($isEdit) class="edit" @endif>{!! $textList[13] !!}</a> - <a href="tel:{!! $textList[14] !!}" @if($isEdit) class="edit" @endif>{!! $textList[14] !!}</a>
 					</li>
