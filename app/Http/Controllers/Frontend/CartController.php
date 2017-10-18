@@ -12,6 +12,7 @@ use App\Models\ProductImg;
 use App\Models\Orders;
 use App\Models\OrderDetail;
 use App\Models\Settings;
+use App\Models\BaoKimPayment;
 
 use Helper, File, Session, Auth;
 use Mail;
@@ -156,7 +157,7 @@ class CartController extends Controller
         $dataArr['email']  = $email = $addressInfo['email'];
         $dataArr['phone']  = $addressInfo['phone'];
         $dataArr['method_id'] = $request->method_id;
-        if( $addressInfo['choose_other_address'] == 1 && isset($addressInfo['choose_other_address'])){
+        if( isset($addressInfo['choose_other_address']) && $addressInfo['choose_other_address'] == 1 ){
             $dataArr['is_other_address']  = 1;
             $dataArr['other_address']  = $addressInfo['other_address'];            
             $dataArr['other_fullname']  = $addressInfo['other_fullname'];
@@ -198,7 +199,7 @@ class CartController extends Controller
         
         // send email
         $order_id =str_pad($order_id, 6, "0", STR_PAD_LEFT);
-        
+        /*
         if(!empty($emailArr)){
             Mail::send('frontend.cart.email',
                 [                    
@@ -215,17 +216,33 @@ class CartController extends Controller
                     $message->sender('phukiencuoigiang@gmail.com', 'Phụ kiện cưới Giang');
             });
         }
-
+        */
+        if( $request->method_id == 3){
+            Session::put('baokim', 1);
+            $modelBaoKim = new BaoKimPayment();
+            $url = $modelBaoKim->createRequestUrl($order_id, "hoangnhonline@gmail.com", $dataArr['total_payment'], 0, 0, "Đơn hàng $order_id của khách hàng ".$dataArr['fullname'], route('success'), route('success', ['cancel' => 1]), route('home'));
+            return redirect($url);
+        }
         return redirect()->route('success');
         
     }    
-    public function success(){
+    public function success(Request $request){        
         if(!Session::has('products')) {
             return redirect()->route('home');
         }
         $order_id = Session::get('order_id');
+        $order_id = Session::get('baokim');
         
         $orderDetail = Orders::find($order_id);
+
+        $isCancel = $request->cancel ? 1 : 0;
+        if( Session::get('baokim') == 1 && $isCancel == 0 ){
+            $modelBaoKim = new BaoKimPayment();
+            if( $modelBaoKim->verifyResponseUrl()){
+                $transaction_status = $request->transaction_status;
+                Orders::where('id', $order_id)->update('payment_status', $transaction_status);
+            }
+        }
         
         $seo['title'] = $seo['description'] = $seo['keywords'] = "Mua hàng thành công";
         Session::put('products', []);
