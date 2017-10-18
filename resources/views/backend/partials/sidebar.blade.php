@@ -30,20 +30,15 @@
           <li {{ in_array(\Request::route()->getName(), ['cate.index', 'cate.edit', 'cate.create']) ? "class=active" : "" }}><a href="{{ route('cate.index') }}"><i class="fa fa-circle-o"></i> Danh mục con</a></li>
           <!--<li {{ \Request::route()->getName() == "product.kho" ? "class=active" : "" }}><a href="{{ route('product.kho') }}"><i class="fa fa-circle-o"></i> Quản lý kho</a></li>    -->
         </ul>
-      </li>
+      </li>      
       
-      <li class="treeview {{ \Request::route()->getName() == "orders.index" ? "active" : "" }}">
-        <a href="#">
-          <i class="fa fa-reorder"></i> 
+      <li {{ in_array(\Request::route()->getName(), ['orders.index', 'orders.edit', 'banner.create']) ? "class=active" : "" }}>
+        <a href="{{ route('orders.index') }}">
+          <i class="fa fa-file-image-o"></i> 
           <span>Đơn hàng</span>
-          <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-          </span>
-        </a>
-        <ul class="treeview-menu">
-          <li {{ \Request::route()->getName() == "orders.index" ? "class=active" : "" }}><a href="{{ route('orders.index') }}"><i class="fa fa-circle-o"></i> Đơn hàng</a></li>          
-        </ul>
-      </li>    
+          
+        </a>       
+      </li>  
       <li class="treeview {{ in_array(\Request::route()->getName(), ['pages.index', 'pages.create', 'pages.edit']) ? 'active' : '' }}">
         <a href="#">
           <i class="fa fa-twitch"></i> 
@@ -84,14 +79,14 @@
           <span>Liên hệ</span>          
         </a>       
       </li>
-      <li {{ in_array(\Request::route()->getName(), ['banner.list', 'banner.edit', 'banner.create']) ? "class=active" : "" }}>
+      <li {{ in_array(\Request::route()->getName(), ['banner.list', 'banner.index', 'banner.edit', 'banner.create']) ? "class=active" : "" }}>
         <a href="{{ route('banner.list') }}">
           <i class="fa fa-file-image-o"></i> 
           <span>Banner</span>
           
         </a>       
       </li> 
-      <li class="treeview {{ in_array(\Request::route()->getName(), ['loai-thuoc-tinh.index', 'thuoc-tinh.index', 'color.index']) ? 'active' : '' }}">
+      <li class="treeview {{ in_array(\Request::route()->getName(), ['account.index', 'account.edit', 'account.create', 'color.index', 'color.edit', 'color.create', 'settings.index']) ? 'active' : '' }}">
         <a href="#">
           <i class="fa  fa-gears"></i>
           <span>Cài đặt</span>
@@ -101,7 +96,7 @@
         </a>
         <ul class="treeview-menu">
           <li {{ \Request::route()->getName() == "settings.index" ? "class=active" : "" }}><a href="{{ route('settings.index') }}"><i class="fa fa-circle-o"></i> Thông tin </a></li>
-          <li {{ \Request::route()->getName() == "info-seo.index" ? "class=active" : "" }}><a href="{{ route('info-seo.index') }}"><i class="fa fa-circle-o"></i> Cài đặt SEO</a></li>
+          <!--<li {{ \Request::route()->getName() == "info-seo.index" ? "class=active" : "" }}><a href="{{ route('info-seo.index') }}"><i class="fa fa-circle-o"></i> Cài đặt SEO</a></li>-->
           <li {{ \Request::route()->getName() == "account.index" ? "class=active" : "" }}><a href="{{ route('account.index') }}"><i class="fa fa-circle-o"></i> Users</a></li>          
           <li {{ \Request::route()->getName() == "color.index" ? "class=active" : "" }}><a href="{{ route('color.index') }}"><i class="fa fa-circle-o"></i> Màu sắc</a></li>      
         </ul>

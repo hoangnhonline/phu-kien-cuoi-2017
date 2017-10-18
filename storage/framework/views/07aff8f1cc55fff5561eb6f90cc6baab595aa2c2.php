@@ -1,5 +1,4 @@
-@extends('backend.layout')
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -8,7 +7,7 @@
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ route( 'newsletter.index') }}">Newsletter</a></li>
+    <li><a href="<?php echo e(route( 'newsletter.index')); ?>">Newsletter</a></li>
     <li class="active">Danh sách</li>
   </ol>
 </section>
@@ -17,18 +16,18 @@
 <section class="content">
   <div class="row">
     <div class="col-md-12">
-      @if(Session::has('message'))
-      <p class="alert alert-info" >{{ Session::get('message') }}</p>
-      @endif     
+      <?php if(Session::has('message')): ?>
+      <p class="alert alert-info" ><?php echo e(Session::get('message')); ?></p>
+      <?php endif; ?>     
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Bộ lọc</h3>
         </div>
         <div class="panel-body">
-          <form class="form-inline" role="form" method="GET" action="{{ route('newsletter.index') }}">                                  
+          <form class="form-inline" role="form" method="GET" action="<?php echo e(route('newsletter.index')); ?>">                                  
             <div class="form-group">
               <label for="name">Email :</label>
-              <input type="text" class="form-control" name="email" value="{{ $email }}">
+              <input type="text" class="form-control" name="email" value="<?php echo e($email); ?>">
             </div>
             <button type="submit" class="btn btn-default">Lọc</button>
           </form>         
@@ -37,13 +36,15 @@
       <div class="box">
 
         <div class="box-header with-border">
-          <h3 class="box-title">Danh sách ( <span class="value">{{ $items->total() }} email )</span></h3>
+          <h3 class="box-title">Danh sách ( <span class="value"><?php echo e($items->total()); ?> email )</span></h3>
         </div>
         
         <!-- /.box-header -->
-        <div class="box-body">       
+        <div class="box-body">
+        <a href="<?php echo e(route('newsletter.export')); ?>" class="btn btn-info btn-sm" style="margin-bottom:5px;float:left" target="_blank">Export</a>
           <div style="text-align:center">
-            {{ $items->appends( ['status' => $status, 'email' => $email] )->links() }}
+            <?php echo e($items->appends( ['status' => $status, 'email' => $email] )->links()); ?>
+
           </div>  
           <table class="table table-bordered" id="table-list-data">
             <tr>
@@ -53,34 +54,35 @@
               <th width="1%;white-space:nowrap">Thao tác</th>
             </tr>
             <tbody>
-            @if( $items->count() > 0 )
+            <?php if( $items->count() > 0 ): ?>
               <?php $i = 0; ?>
-              @foreach( $items as $item )
+              <?php foreach( $items as $item ): ?>
                 <?php $i ++; ?>
-              <tr id="row-{{ $item->id }}">
-                <td><span class="order">{{ $i }}</span></td>                       
+              <tr id="row-<?php echo e($item->id); ?>">
+                <td><span class="order"><?php echo e($i); ?></span></td>                       
                 <td>                  
-                  <a href="{{ route( 'newsletter.edit', [ 'id' => $item->id ]) }}">{{ $item->email }}</a>           
+                  <a href="<?php echo e(route( 'newsletter.edit', [ 'id' => $item->id ])); ?>"><?php echo e($item->email); ?></a>           
                 </td>
-                <td>{{ date('d-m-Y H:i', strtotime($item->created_at)) }}</td>
+                <td><?php echo e(date('d-m-Y H:i', strtotime($item->created_at))); ?></td>
                 <td style="white-space:nowrap">                  
-                  <a href="{{ route( 'newsletter.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning">Chỉnh sửa</a>                 
+                  <a href="<?php echo e(route( 'newsletter.edit', [ 'id' => $item->id ])); ?>" class="btn btn-warning">Chỉnh sửa</a>                 
                   
-                  <a onclick="return callDelete('{{ $item->email }}','{{ route( 'newsletter.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger">Xóa</a>
+                  <a onclick="return callDelete('<?php echo e($item->email); ?>','<?php echo e(route( 'newsletter.destroy', [ 'id' => $item->id ])); ?>');" class="btn btn-danger">Xóa</a>
                   
                 </td>
               </tr> 
-              @endforeach
-            @else
+              <?php endforeach; ?>
+            <?php else: ?>
             <tr>
               <td colspan="9">Không có dữ liệu.</td>
             </tr>
-            @endif
+            <?php endif; ?>
 
           </tbody>
           </table>
           <div style="text-align:center">
-            {{ $items->appends( ['status' => $status, 'email' => $email] )->links() }}
+            <?php echo e($items->appends( ['status' => $status, 'email' => $email] )->links()); ?>
+
           </div>  
         </div>        
       </div>
@@ -91,8 +93,8 @@
 </section>
 <!-- /.content -->
 </div>
-@stop
-@section('javascript_page')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('javascript_page'); ?>
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({
@@ -109,4 +111,5 @@ function callDelete(name, url){
   return flag;
 }
 </script>
-@stop
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('backend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

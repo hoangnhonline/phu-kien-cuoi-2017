@@ -12,7 +12,7 @@
 						<div class="col-sm-4 col-xs-12">
 							<div class="block-search">
 								<form class=""  action="<?php echo e(route('search')); ?>" method="GET">
-									<button type="submit" class="btn icon"><i class="fa fa-search"></i></button>
+									<button type="submit" class="btn icon btnSearch"><i class="fa fa-search"></i></button>
 									<div class="search-inner">
 										<input type="text" class="txtSearch" value="<?php echo isset($tu_khoa) ? $tu_khoa : ""; ?>" name="keyword" placeholder="Từ khóa bạn cần tìm...">
 									</div>
@@ -96,8 +96,8 @@
 							<?php endforeach; ?>
 						</ul>
 					</li>
-					<li class="level0"><a href="<?php echo route('news-list', 'khuyen-mai'); ?>" title="KHUYẾN MÃI">KHUYẾN MÃI</a></li>
-					<li class="level0"><a href="<?php echo route('news-list', 'tuyen-dung'); ?>" title="TUYỂN DỤNG">TUYỂN DỤNG</a></li>
+					<li class="level0 <?php if( ( $routeName == "news-list" || $routeName == "news-detail" ) && isset($cateDetail) && $cateDetail->slug == "khuyen-mai" ): ?> active <?php endif; ?>""><a href="<?php echo route('news-list', 'khuyen-mai'); ?>" title="KHUYẾN MÃI">KHUYẾN MÃI</a></li>
+					<li class="level0 <?php if( ( $routeName == "news-list" || $routeName == "news-detail")  && isset($cateDetail) && $cateDetail->slug == "tuyen-dung"  ): ?> active <?php endif; ?>""><a href="<?php echo route('news-list', 'tuyen-dung'); ?>" title="TUYỂN DỤNG">TUYỂN DỤNG</a></li>
 					<li class="level0"><a href="<?php echo route('contact'); ?>" title="Liên Hệ">Liên Hệ</a></li>
 					<li class="nav-info">
 						<i class="fa fa-phone"></i> <a href="tel:<?php echo $textList[13]; ?>" data-text="13" <?php if($isEdit): ?> class="edit" <?php endif; ?>><?php echo $textList[13]; ?></a> - <a href="tel:<?php echo $textList[14]; ?>" <?php if($isEdit): ?> class="edit" <?php endif; ?>><?php echo $textList[14]; ?></a>

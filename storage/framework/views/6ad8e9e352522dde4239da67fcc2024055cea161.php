@@ -47,14 +47,14 @@
                       <figure class="img-prod">
                         <img alt="<?php echo $product->name; ?>" src="<?php echo e($product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png')); ?>">
                       </figure>
-                      <a href="#" class="prod-tit" target="_blank" title="<?php echo $product->name; ?>"><?php echo $product->name; ?></a>
+                      <a href="<?php echo e(route('product', [ $product->slug, $product->id ])); ?>" class="prod-tit" target="_blank" title="<?php echo $product->name; ?>"><?php echo $product->name; ?></a>
                       
                       <p>
                         <span>Mã sản phẩm:</span>
                         <span class="p-code"><?php echo $product->code; ?></span>
                       </p>
                       <p>
-                        <a href="#" title="Xóa sản phẩm" class="p-del">Xóa</a>
+                        <a href="javascript:void(0);" title="Xóa sản phẩm" data-id="<?php echo e($product->id); ?>" class="p-del del_item">Xóa</a>
                       </p>
                     </div>
                     <div class="table-cell total-col">                     
@@ -196,22 +196,8 @@ function updateQuantity(id, quantity, type) {
             quantity: quantity
         },
         success: function(data) {
-            location.reload();
-            /*
-            $.ajax({
-                url: $('#route-short-cart').val(),
-                method: "GET",
-
-                success: function(data) {
-                    if (type == 'ajax') {
-                        $('#short-cart-content').html(data);
-                        calTotalProduct();
-                    } else {
-                        window.location.reload();
-                    }
-                }
-            });
-            */
+            
+            location.reload();            
         }
     });
 }

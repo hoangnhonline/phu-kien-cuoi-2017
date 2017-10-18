@@ -25,4 +25,8 @@ class Color extends Model  {
      */
     protected $fillable = ['name', 'color_code', 'icon_url', 'display_order'];
 
+    public function product()
+    {
+        return $this->hasMany('App\Models\Product', 'color_id');
+    }
 }

@@ -14,7 +14,7 @@
     <meta name="description" content="<?php echo $__env->yieldContent('site_description'); ?>"/>
     <meta name="keywords" content="<?php echo $__env->yieldContent('site_keywords'); ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-    <link rel="shortcut icon" href="<?php echo $__env->yieldContent('favicon'); ?>" type="image/x-icon"/>
+    <link rel="shortcut icon" href="<?php echo e(URL::asset('public/assets/images/favicon.ico')); ?>" type="image/x-icon"/>
     <link rel="canonical" href="<?php echo e(url()->current()); ?>"/>        
     <meta property="og:locale" content="vi_VN" />
     <meta property="og:type" content="website" />

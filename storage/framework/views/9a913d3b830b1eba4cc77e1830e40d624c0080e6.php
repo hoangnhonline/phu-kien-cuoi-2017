@@ -1,5 +1,4 @@
-@extends('backend.layout')
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -8,7 +7,7 @@
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="{{ route( 'color.index' ) }}">Màu</a></li>
+    <li><a href="<?php echo e(route( 'color.index' )); ?>">Màu</a></li>
     <li class="active">Danh sách</li>
   </ol>
 </section>
@@ -17,25 +16,26 @@
 <section class="content">
   <div class="row">
     <div class="col-md-12">
-      @if(Session::has('message'))
-      <p class="alert alert-info" >{{ Session::get('message') }}</p>
-      @endif
-      <a href="{{ route('color.create') }}" class="btn btn-info" style="margin-bottom:5px">Tạo mới</a>
+      <?php if(Session::has('message')): ?>
+      <p class="alert alert-info" ><?php echo e(Session::get('message')); ?></p>
+      <?php endif; ?>
+      <a href="<?php echo e(route('color.create')); ?>" class="btn btn-info" style="margin-bottom:5px">Tạo mới</a>
       
       <div class="box">
 
         <div class="box-header with-border">
-          <h3 class="box-title">Danh sách ( <span class="value">{{ $items->total() }} màu )</span></h3>
+          <h3 class="box-title">Danh sách ( <span class="value"><?php echo e($items->total()); ?> màu )</span></h3>
         </div>
         
         <!-- /.box-header -->
         <div class="box-body">
 
-          <form action="{{ route('cap-nhat-thu-tu') }}" method="POST">
-           @if( $items->count() > 0 ) 
+          <form action="<?php echo e(route('cap-nhat-thu-tu')); ?>" method="POST">
+           <?php if( $items->count() > 0 ): ?> 
           <button type="submit" class="btn btn-warning btn-sm">Cập nhật thứ tự</button>
-          @endif
-            {{ csrf_field() }}
+          <?php endif; ?>
+            <?php echo e(csrf_field()); ?>
+
             <input type="hidden" name="table" value="color">
             <table class="table table-bordered" id="table-list-data">
               <tr>
@@ -46,41 +46,41 @@
                 <th width="1%;white-space:nowrap">Thao tác</th>
               </tr>
               <tbody>
-              @if( $items->count() > 0 )
+              <?php if( $items->count() > 0 ): ?>
                 <?php $i = 0; ?>
-                @foreach( $items as $item )
+                <?php foreach( $items as $item ): ?>
                   <?php $i ++; ?>
-                <tr id="row-{{ $item->id }}">
-                  <td><span class="order">{{ $i }}</span></td>      
+                <tr id="row-<?php echo e($item->id); ?>">
+                  <td><span class="order"><?php echo e($i); ?></span></td>      
                   <td width="100">
-                    <input type="text" name="display_order[]" value="{{ $item->display_order}}" class="form-control" style="width:60px">
-                    <input type="hidden" name="id[]" value="{{ $item->id }}">
+                    <input type="text" name="display_order[]" value="<?php echo e($item->display_order); ?>" class="form-control" style="width:60px">
+                    <input type="hidden" name="id[]" value="<?php echo e($item->id); ?>">
                   </td>     
                   <td>                  
-                    <a href="{{ route( 'color.edit', [ 'id' => $item->id ]) }}">{{ $item->name }}</a>
+                    <a href="<?php echo e(route( 'color.edit', [ 'id' => $item->id ])); ?>"><?php echo e($item->name); ?></a>
                   </td>
                   <td>
-                    <a class="color_code" style="background-color:{{ $item->color_code }}">{{ $item->color_code }}</a>
+                    <a class="color_code" style="background-color:<?php echo e($item->color_code); ?>"><?php echo e($item->color_code); ?></a>
                   </td>
                   <td style="white-space:nowrap">                  
-                    <a href="{{ route( 'color.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>                 
-                    @if( $item->product->count() == 0 )
-                    <a onclick="return callDelete('{{ $item->title }}','{{ route( 'color.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger btn-sm">Xóa</a>
-                    @endif                    
+                    <a href="<?php echo e(route( 'color.edit', [ 'id' => $item->id ])); ?>" class="btn btn-warning btn-sm">Chỉnh sửa</a>                 
+                    <?php if( $item->product->count() == 0 ): ?>
+                    <a onclick="return callDelete('<?php echo e($item->title); ?>','<?php echo e(route( 'color.destroy', [ 'id' => $item->id ])); ?>');" class="btn btn-danger btn-sm">Xóa</a>
+                    <?php endif; ?>                    
                   </td>
                 </tr> 
-                @endforeach
-              @else
+                <?php endforeach; ?>
+              <?php else: ?>
               <tr>
                 <td colspan="3">Không có dữ liệu.</td>
               </tr>
-              @endif
+              <?php endif; ?>
 
             </tbody>
             </table>
-            @if( $items->count() > 0 )
+            <?php if( $items->count() > 0 ): ?>
             <button type="submit" class="btn btn-warning btn-sm">Cập nhật thứ tự</button>
-            @endif
+            <?php endif; ?>
            </form>
         </div>        
       </div>
@@ -104,8 +104,8 @@
     color: #FFF;
 }
 </style>
-@stop
-@section('javascript_page')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('javascript_page'); ?>
 <script type="text/javascript">
 function callDelete(name, url){  
   swal({
@@ -122,4 +122,5 @@ function callDelete(name, url){
   return flag;
 }
 </script>
-@stop
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('backend.layout', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
