@@ -65,7 +65,7 @@
                   <td style="white-space:nowrap">                  
                     <a href="{{ route( 'color.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>                 
                     @if( $item->product->count() == 0 )
-                    <a onclick="return callDelete('{{ $item->title }}','{{ route( 'color.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger btn-sm">Xóa</a>
+                    <a onclick="return callDelete('{{ $item->name }}','{{ route( 'color.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger btn-sm">Xóa</a>
                     @endif                    
                   </td>
                 </tr> 

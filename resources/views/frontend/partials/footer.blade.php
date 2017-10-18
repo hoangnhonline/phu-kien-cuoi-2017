@@ -24,12 +24,12 @@
 						<h3 class="ft-block-tit @if($isEdit) edit @endif" data-text="7">{!! $textList[7] !!}</h3>
 						<div class="ft-block-body">
 							<p class="txt-desc @if($isEdit) edit @endif" data-text="8">{!! $textList[8] !!}</h3></p>
-							<form method="post" action="" class="frm-getemail">
+							<div class="frm-getemail">
 								<div class="input-group">
-							    <input id="email" type="text" class="form-control" name="email" placeholder="Email của bạn">
-									<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+							    <input id="txtNewsletter" type="email" class="form-control" name="txtNewsletter" placeholder="Email của bạn">
+									<span class="input-group-addon" id="btnNewsletter"><i class="fa fa-envelope"></i></span>
 							  </div>
-							</form>
+							</div>
 						</div>
 					</div>
 				</div>

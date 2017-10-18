@@ -64,9 +64,9 @@
                 </td>
                 <td>{{ date('d-m-Y H:i', strtotime($item->created_at)) }}</td>
                 <td style="white-space:nowrap">                  
-                  <a href="{{ route( 'newsletter.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning">Chỉnh sửa</a>                 
+                  <a href="{{ route( 'newsletter.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>                 
                   
-                  <a onclick="return callDelete('{{ $item->email }}','{{ route( 'newsletter.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger">Xóa</a>
+                  <a onclick="return callDelete('{{ $item->email }}','{{ route( 'newsletter.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger  btn-sm">Xóa</a>
                   
                 </td>
               </tr> 

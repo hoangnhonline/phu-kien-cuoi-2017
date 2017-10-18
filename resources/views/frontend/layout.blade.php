@@ -87,6 +87,7 @@
 	<input type="hidden" id="route-update-product" value="{{ route('update-product') }}" />	
 	<input type="hidden" id="route-cart" value="{{ route('cart') }}" />	
 	<input type="hidden" id="route-save-content" value="{{ route('save-content') }}" />	
+	<input type="hidden" id="route-newsletter" value="{{ route('newsletter') }}" />
 
 	@include('frontend.partials.modal')
 	
