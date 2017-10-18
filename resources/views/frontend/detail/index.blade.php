@@ -151,7 +151,7 @@
                                             <span class="ico-new ico">NEW</span>
                                             @endif
                                             @if( $obj->is_sale == 1 && $obj->sale_percent > 0 )
-                                            <span class="ico-sales ico">-15%</span>
+                                            <span class="ico-sales ico">-{{ $obj->sale_percent }}%</span>
                                             @endif
                                         </p>
                                         <a href="{{ route('product', [$obj->slug, $obj->id ]) }}" title="{!! $obj->name !!}">
