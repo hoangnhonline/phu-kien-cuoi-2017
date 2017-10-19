@@ -20,7 +20,7 @@
       </div>
     </div><!-- /block-page-common -->
     <div class="row">
-      <div class="col-sm-8 col-xs-12 block-col-left">
+      <div class="col-sm-8 col-xs-12 block-col-sidebar">
         <div class="block-cart">
           <div class="shopcart-ct">
             <form action="#" method="POST" class="form-cart">
@@ -95,7 +95,7 @@
           </div>
         </div>
       </div><!-- /block-col-left -->
-      <div class="col-sm-4 col-xs-12 block-col-main">
+      <div class="col-sm-4 col-xs-12 block-col-right">
         <div class="block-billing-product">
           <div class="block block-content">
             <table class="table-billing-product">
