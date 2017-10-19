@@ -95,7 +95,7 @@
           </div>
         </div>
       </div><!-- /block-col-left -->
-      <div class="col-sm-4 col-xs-12 block-col-right">
+      <div class="col-sm-4 col-xs-12 block-col-main">
         <div class="block-billing-product">
           <div class="block block-content">
             <table class="table-billing-product">

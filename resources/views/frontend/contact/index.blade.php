@@ -11,57 +11,8 @@
 </div><!-- /block-breadcrumb -->
 <div class="block block-two-col container">
     <div class="row">
-        <div class="col-sm-3 col-xs-12 block-col-left">
-            <div class="block-sidebar">
-                <div class="block-module block-links-sidebar">
-                    <div class="block-title">
-                        <h2>
-                            <i class="fa fa-gift"></i>
-                            KHUYẾN MÃI HOT
-                        </h2>
-                    </div>
-                    <div class="block-content">
-                        <ul class="list">
-                            @if($kmHot)
-                            @foreach( $kmHot as $obj )
-                            <li>
-                                <a href="{!! route('news-detail', [ $obj->cate->slug, $obj->slug, $obj->id ] ) !!}" title="{!! $obj->title !!}">
-                                    <p class="thumb"><img src="{!! Helper::showImage( $obj->image_url ) !!}" alt="{!! $obj->title !!}"></p>
-                                    <h3>{!! $obj->title !!}</h3>
-                                </a>
-                            </li>
-                            @endforeach
-                            @endif
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="block-module block-statistics-sidebar">
-                    <div class="block-title">
-                        <h2>
-                            <i class="fa fa-bar-chart"></i>
-                            THỐNG KÊ TRUY CẬP
-                        </h2>
-                    </div>
-                    <div class="block-content">
-                        <ul class="list">                    
-                            <li>
-                                <span class="icon"><i class="fa fa-user"></i></span>
-                                <span class="text">Hôm nay:</span>
-                                <span class="number">{{ Helper::view(1, 3, 1) }}</span>
-                            </li>
-                            
-                            <li>
-                                <span class="icon"><i class="fa fa-user"></i></span>
-                                <span class="text">Tổng truy cập:</span>
-                                <span class="number">{{ Helper::view(1, 3) }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div><!-- /block-col-left -->
-        <div class="col-sm-9 col-xs-12 block-col-right">
+        
+        <div class="col-sm-9 col-xs-12 block-col-main">
             <div class="block-page-common clearfix">
                 <div class="block block-title">
                     <h1 class="title-main">LIÊN HỆ</h1>
@@ -125,6 +76,56 @@
                 </div>
             </div><!-- /block-ct-news -->
         </div><!-- /block-col-right -->
+        <div class="col-sm-3 col-xs-12 block-col-left">
+            <div class="block-sidebar">
+                <div class="block-module block-links-sidebar">
+                    <div class="block-title">
+                        <h2>
+                            <i class="fa fa-gift"></i>
+                            KHUYẾN MÃI HOT
+                        </h2>
+                    </div>
+                    <div class="block-content">
+                        <ul class="list">
+                            @if($kmHot)
+                            @foreach( $kmHot as $obj )
+                            <li>
+                                <a href="{!! route('news-detail', [ $obj->cate->slug, $obj->slug, $obj->id ] ) !!}" title="{!! $obj->title !!}">
+                                    <p class="thumb"><img src="{!! Helper::showImage( $obj->image_url ) !!}" alt="{!! $obj->title !!}"></p>
+                                    <h3>{!! $obj->title !!}</h3>
+                                </a>
+                            </li>
+                            @endforeach
+                            @endif
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="block-module block-statistics-sidebar">
+                    <div class="block-title">
+                        <h2>
+                            <i class="fa fa-bar-chart"></i>
+                            THỐNG KÊ TRUY CẬP
+                        </h2>
+                    </div>
+                    <div class="block-content">
+                        <ul class="list">                    
+                            <li>
+                                <span class="icon"><i class="fa fa-user"></i></span>
+                                <span class="text">Hôm nay:</span>
+                                <span class="number">{{ Helper::view(1, 3, 1) }}</span>
+                            </li>
+                            
+                            <li>
+                                <span class="icon"><i class="fa fa-user"></i></span>
+                                <span class="text">Tổng truy cập:</span>
+                                <span class="number">{{ Helper::view(1, 3) }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /block-col-left -->
     </div>
 </div><!-- /block_big-title -->
 @stop

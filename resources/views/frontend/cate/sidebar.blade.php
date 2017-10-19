@@ -1,4 +1,4 @@
-<div class="col-sm-3 col-xs-12 block-col-left">
+<div class="col-sm-3 col-xs-12 block-col-sidebar">
     <div class="block-sidebar">
         <div class="block-module block-search-sidebar">
             <div class="block-title">

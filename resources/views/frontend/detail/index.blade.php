@@ -13,10 +13,7 @@
 </div><!-- /block-breadcrumb -->
 <div class="block block-two-col container">
     <div class="row">
-        
-        @include ('frontend.cate.sidebar')
-
-        <div class="col-sm-9 col-xs-12 block-col-right">
+        <div class="col-sm-9 col-xs-12 block-col-main">
             <div class="block-title-commom block-detail">
                 <div class="block-content">
                     <div class="block row">
@@ -182,6 +179,9 @@
                 </div>
             </div><!-- /block-detail -->
         </div><!-- /block-col-left -->
+        @include ('frontend.cate.sidebar')
+
+        
 
     </div>
 </div><!-- /block_big-title -->

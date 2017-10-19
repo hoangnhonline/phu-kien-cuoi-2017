@@ -91,7 +91,7 @@
         </div>
       </div><!-- /block-billing -->
     </div><!-- /block-col-left -->
-    <div class="col-sm-4 col-xs-12 block-col-right">
+    <div class="col-sm-4 col-xs-12 block-col-main">
       <div class="block block-billing-product block-info-address">
         <div class="block-title">
           THÔNG TIN NGƯỜI MUA

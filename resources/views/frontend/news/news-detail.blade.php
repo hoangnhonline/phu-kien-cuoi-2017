@@ -12,10 +12,7 @@
 </div><!-- /block-breadcrumb -->
 <div class="block block-two-col container">
     <div class="row">
-        
-        @include('frontend.cate.sidebar')
-
-        <div class="col-sm-9 col-xs-12 block-col-right">
+        <div class="col-sm-9 col-xs-12 block-col-main">
             <div class="block block-page-common block-dt-sales">
                 <div class="block block-title">
                     <h1 class="title-main">{!! $detail->title !!}</h2>
@@ -65,6 +62,7 @@
             </div><!-- /block-ct-news -->
             @endif
         </div><!-- /block-col-right -->
+        @include('frontend.cate.sidebar')
     </div>
 </div><!-- /block_big-title -->
 @stop  
