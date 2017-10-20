@@ -31,7 +31,7 @@
                     </div>
                     <div class="product-list">
 
-                        <div class="owl-carousel owl-theme owl-style2" data-nav="true" data-margin="30" data-items='5' data-autoplayTimeout="500" data-autoplay="false" data-loop="true" data-navcontainer="true" data-responsive='{"0":{"items":1},"480":{"items":2},"600":{"items":2},"768":{"items":3},"800":{"items":3},"992":{"items":5}}'>
+                        <div class="owl-carousel owl-theme owl-style2" data-nav="true" data-margin="30" data-items='5' data-autoplayTimeout="500" data-autoplay="false" data-loop="false" data-navcontainer="true" data-responsive='{"0":{"items":1},"480":{"items":2},"600":{"items":2},"768":{"items":3},"800":{"items":3},"992":{"items":5}}'>
                             @foreach($productArr[$cate->id] as $obj)
                             <div class="product-item">
                                 <div class="product-img">
@@ -43,12 +43,12 @@
                                         <span class="ico-sales ico">-{{ $obj->sale_percent }}%</span>
                                         @endif
                                     </p>
-                                    <a href="{{ route('product', [$obj->slug, $obj->id ]) }}" title="{!! $obj->name !!}">
+                                    <a href="{{ route('product', [$obj->slug]) }}" title="{!! $obj->name !!}">
                                         <img src="{!! Helper::showImageThumb( $obj->image_url ) !!}" class="img-1" alt="{!! $obj->name !!}">
                                     </a>
                                 </div>
                                 <div class="product-info">
-                                    <h2 class="title"><a href="{{ route('product', [$obj->slug, $obj->id ]) }}" title="{!! $obj->name !!}">{!! $obj->name !!}</a></h2>
+                                    <h2 class="title"><a href="{{ route('product', [$obj->slug]) }}" title="{!! $obj->name !!}">{!! $obj->name !!}</a></h2>
                                     <div class="product-price">
                                         <span class="label-txt">Giá:</span> <span class="price-new">
                                             @if($obj->is_sale == 1 && $obj->price_sale > 0)

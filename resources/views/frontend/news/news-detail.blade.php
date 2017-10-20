@@ -18,7 +18,7 @@
                     <h1 class="title-main">{!! $detail->title !!}</h2>
                 </div>
                 <div class="block-content">
-                    <div class="block block-aritcle">
+                    <div class="block block-aritcle block-editor-content">
                         {!! $detail->content !!}
                     </div>
                     <div class="block block-share" id="share-buttons">
@@ -47,7 +47,7 @@
                     @endif
                 </div>
             </div><!-- /block-ct-news -->
-            @if( $otherArr )
+            @if( $otherArr->count() > 0 )
             <div class="block-page-common block-aritcle-related">
                 <div class="block block-title">
                     <h2 class="title-main">BÀI VIẾT LIÊN QUAN</h2>

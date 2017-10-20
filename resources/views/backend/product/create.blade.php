@@ -104,7 +104,7 @@
                         </div>
                         <div class="form-group col-md-4 none-padding" >                  
                             <label>Giá<span class="red-star">*</span></label>
-                            <input type="text" class="form-control req number" name="price" id="price" value="{{ old('price') }}">
+                            <input type="text" class="form-control number" name="price" id="price" value="{{ old('price') }}">
                         </div>
                         <div class="form-group col-md-4 none-padding pleft-5" >                  
                             <label>Giá SALE</label>

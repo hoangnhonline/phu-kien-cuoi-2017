@@ -40,7 +40,7 @@ class OrderController extends Controller
             $query->whereRaw("DATE(created_at) <= '".$dateToFormat."'");
         }
         if( $name != '' ){            
-            $query->whereRaw(" ( email LIKE '%".$name."%' ) OR ( full_name LIKE '%".$name."%' )");
+            $query->whereRaw(" ( email LIKE '%".$name."%' ) OR ( fullname LIKE '%".$name."%' )");
         }
         $orders = $query->orderBy('orders.id', 'DESC')->paginate(20);
         $list_status = $this->list_status;

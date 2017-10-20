@@ -48,7 +48,7 @@
                       <figure class="img-prod">
                         <img alt="{!! $product->name !!}" src="{{ $product->image_url ? Helper::showImage($product->image_url) : URL::asset('public/assets/images/no-img.png') }}">
                       </figure>
-                      <a href="{{ route('product', [ $product->slug, $product->id ]) }}" class="prod-tit" target="_blank" title="{!! $product->name !!}">{!! $product->name !!}</a>
+                      <a href="{{ route('product', [ $product->slug ]) }}" class="prod-tit" target="_blank" title="{!! $product->name !!}">{!! $product->name !!}</a>
                       
                       <p>
                         <span>Mã sản phẩm:</span>

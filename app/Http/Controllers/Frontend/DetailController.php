@@ -37,8 +37,8 @@ class DetailController extends Controller
         Helper::counter(1, 3);
         
         $productArr = [];
-        $id = $request->id;
-        $detail = Product::find($id);
+        $slug = $request->slug;
+        $detail = Product::where('slug', $slug)->first();
         if(!$detail){
             return redirect()->route('home');
         }

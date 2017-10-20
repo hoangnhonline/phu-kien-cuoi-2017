@@ -47,10 +47,10 @@
 				</div>
 
 				<ul class="hdr-social">
-					<li><a href=""><i class="fa fa-facebook"></i></a></li>
-					<li><a href=""><i class="fa fa-google"></i></a></li>
-					<li><a href=""><i class="fa fa-youtube"></i></a></li>
-					<li><a href=""><i class="fa fa-skype"></i></a></li>
+					<li><a href="{{ $settingArr['facebook_fanpage'] }}" target="_blank"><i class="fa fa-facebook"></i></a></li>
+					<li><a href="{{ $settingArr['google_fanpage'] }}" target="_blank"><i class="fa fa-google"></i></a></li>
+					<li><a href="{{ $settingArr['youtube'] }}" target="_blank"><i class="fa fa-youtube"></i></a></li>
+					<!--<li><a href="" target="_blank"><i class="fa fa-skype"></i></a></li>-->
 				</ul>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 				<i class="fa fa-facebook"></i>
 			</div>
 			<div class="fb-inner">
-				<div class="fb-page" data-href="https://www.facebook.com/facebook" data-tabs="timeline" data-width="300px" data-height="500px" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/facebook" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/facebook">Facebook</a></blockquote></div>
+				<div class="fb-page" data-href="{{ $settingArr['facebook_fanpage'] }}" data-tabs="timeline" data-width="300px" data-height="500px" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="{{ $settingArr['facebook_fanpage'] }}" class="fb-xfbml-parse-ignore"><a href="{{ $settingArr['facebook_fanpage'] }}">Facebook</a></blockquote></div>
 			</div>
 		</div>
 	</div><!-- /block-header-bottom -->

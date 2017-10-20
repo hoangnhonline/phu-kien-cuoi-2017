@@ -133,7 +133,7 @@
                 </td>
                 <td style="text-align:right">{{ number_format($item->inventory) }}</td>
                 <td style="white-space:nowrap; text-align:right">
-                  <a class="btn btn-default btn-sm" href="{{ route('product', [$item->slug , $item->id] ) }}" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>                  
+                  <a class="btn btn-default btn-sm" href="{{ route('product', [$item->slug] ) }}" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>                  
                   <a href="{{ route( 'product.edit', [ 'id' => $item->id ]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>                 
 
                   <a onclick="return callDelete('{{ $item->name }}','{{ route( 'product.destroy', [ 'id' => $item->id ]) }}');" class="btn btn-danger btn-sm">Xóa</a>

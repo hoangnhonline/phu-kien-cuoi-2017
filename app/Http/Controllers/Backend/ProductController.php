@@ -237,14 +237,12 @@ class ProductController extends Controller
 
         $this->validate($request,[
             'name' => 'required',
-            'slug' => 'required' ,         
-            'price' => 'required',      
+            'slug' => 'required' ,                     
             'inventory' => 'required'       
         ],
         [
             'name.required' => 'Bạn chưa nhập tên sản phẩm',
-            'slug.required' => 'Bạn chưa nhập slug',
-            'price.required' => 'Bạn chưa nhập giá',
+            'slug.required' => 'Bạn chưa nhập slug',            
             'inventory.required' => 'Bạn chưa nhập số lượng tồn'                      
         ]);
        
@@ -463,14 +461,12 @@ class ProductController extends Controller
         
         $this->validate($request,[
             'name' => 'required',
-            'slug' => 'required',            
-            'price' => 'required',
+            'slug' => 'required',                        
             'inventory' => 'required'            
         ],
         [
             'name.required' => 'Bạn chưa nhập tên sản phẩm',
-            'slug.required' => 'Bạn chưa nhập slug',            
-            'price.required' => 'Bạn chưa nhập giá',
+            'slug.required' => 'Bạn chưa nhập slug',                        
             'inventory.required' => 'Bạn chưa nhập số lượng tồn'                    
         ]);
 

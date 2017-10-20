@@ -112,7 +112,7 @@
                                         </div>
                                     </div><!-- /block-share-->
                                     <div class="block-btn-addtocart">
-                                        @if( $quantity > 0 )
+                                        @if( $quantity > 0 && $detail->price > 0 )
                                         <button type="button" data-id="{{ $detail->id }}" class="btn btn-addcart-product btn-main">MUA NGAY</button>
                                         @else
                                         <button type="button" class="btn btn-default btn-order-contact">LIÊN HỆ</button>
@@ -127,11 +127,12 @@
                         <div class="block block-title">
                             <h2 class="title-main">THÔNG TIN CHI TIẾT SẢN PHẨM</h2>
                         </div>
-                        <div class="block-content">
+                        <div class="block-content block-editor-content">
                            {!! $detail->content !!}
                         </div>
                     </div>
                     @endif
+                    @if ($otherList->count() > 0)
                     <div class="block-datail-atc block-page-common">
                         <div class="block block-title">
                             <h2 class="title-main">SẢN PHẨM LIÊN QUAN</h2>
@@ -151,12 +152,12 @@
                                             <span class="ico-sales ico">-{{ $obj->sale_percent }}%</span>
                                             @endif
                                         </p>
-                                        <a href="{{ route('product', [$obj->slug, $obj->id ]) }}" title="{!! $obj->name !!}">
+                                        <a href="{{ route('product', [$obj->slug]) }}" title="{!! $obj->name !!}">
                                             <img src="{!! Helper::showImageThumb( $obj->image_url ) !!}" class="img-1" alt="{!! $obj->name !!}">
                                         </a>
                                     </div>
                                     <div class="product-info">
-                                        <h2 class="title"><a href="{{ route('product', [$obj->slug, $obj->id ]) }}" title="{!! $obj->name !!}">{!! $obj->name !!}</a></h2>
+                                        <h2 class="title"><a href="{{ route('product', [$obj->slug]) }}" title="{!! $obj->name !!}">{!! $obj->name !!}</a></h2>
                                         <div class="product-price">
                                         <span class="label-txt">Giá:</span> <span class="price-new">
                                             @if($obj->is_sale == 1 && $obj->price_sale > 0)
@@ -176,6 +177,7 @@
                             </ul>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div><!-- /block-detail -->
         </div><!-- /block-col-left -->

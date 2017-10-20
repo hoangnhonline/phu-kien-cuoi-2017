@@ -44,7 +44,7 @@ Route::group(['namespace' => 'Frontend'], function()
     Route::post('/send-contact', ['as' => 'send-contact', 'uses' => 'ContactController@store']);
     Route::post('/set-service', ['as' => 'set-service', 'uses' => 'CartController@setService']);
     
-    Route::get('san-pham/{slug}-{id}.html', ['as' => 'product', 'uses' => 'DetailController@index']);    
+    Route::get('san-pham/{slug}.html', ['as' => 'product', 'uses' => 'DetailController@index']);    
     
     Route::group(['prefix' => 'thanh-toan'], function () {
         Route::get('thong-tin-thanh-toan', ['as' => 'payment', 'uses' => 'CartController@payment']);

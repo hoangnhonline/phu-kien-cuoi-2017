@@ -118,7 +118,7 @@ class HomeController extends Controller
             $query->whereIn('product.color_id', $colorArr);
         }
 
-        $productList = $query->paginate(20);
+        $productList = $query->orderBy('is_hot', 'desc')->orderBy('id', 'desc')->paginate(20);
         $cateDetail->name = $seo['title'] = $seo['description'] =$seo['keywords'] = "Kết quả tìm kiếm";
         $kmHot = Articles::getList(['is_hot' => 1, 'cate_id' => 2, 'limit' => 5]);   
         $colorList = Color::all(); 

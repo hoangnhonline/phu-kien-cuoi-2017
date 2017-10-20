@@ -157,7 +157,7 @@
             <thead>
               <tr>
                 <th style="width: 73%;"><strong>Sản phẩm</strong></th>
-                <th><strong>Tổng cộng</strong></th>
+                <th class="text-right"><strong style="white-space:nowrap">Tổng cộng</strong></th>
               </tr>
             </thead>
             <tbody>

@@ -59,7 +59,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-12 col-xs-12">
-                                <textarea placeholder="Nội dung liên hệ ..." name="content" id="content" class="form-control">{{ old('content') }}</textarea>
+                                <textarea rows="7" placeholder="Nội dung liên hệ ..." name="content" id="content" class="form-control">{{ old('content') }}</textarea>
                             </div>
                         </div>
                         <div class="row">

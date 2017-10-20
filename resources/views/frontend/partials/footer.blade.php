@@ -43,7 +43,7 @@
 		<div class="container">
 			<p class="text-center"><i data-text="12" @if($isEdit) class="edit" @endif>{!! $textList[12] !!}</i></p>
 			<div class="fbchatbox hidden-xs">
-				<div class="fb-page fb-page1" data-href="https://www.facebook.com/www.icare.center" data-small-header="true" data-adapt-container-width="false" data-height="300" data-width="300" data-hide-cover="true" data-show-facepile="true" data-show-posts="false" data-tabs="messages"><div class="fb-xfbml-parse-ignore"></div></div>
+				<div class="fb-page fb-page1" data-href="{{ $settingArr['facebook_fanpage'] }}" data-small-header="true" data-adapt-container-width="false" data-height="300" data-width="300" data-hide-cover="true" data-show-facepile="true" data-show-posts="false" data-tabs="messages"><div class="fb-xfbml-parse-ignore"></div></div>
 				<span id="closefbchat" style="white-space: nowrap; position: absolute; right: 2px; bottom: 0px; padding: 5px 25px; background: #008244; color: rgb(255, 255, 255); cursor: pointer; border-radius: 4px 4px 0 0;">Tắt Chat</span>
 			</div>
 		</div>

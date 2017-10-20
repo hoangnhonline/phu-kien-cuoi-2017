@@ -85,7 +85,7 @@
             <thead>
               <tr>
                 <th class="table-width"><strong>Sản phẩm</strong></th>
-                <th><strong>Tổng cộng</strong></th>
+                <th class="text-right"><strong>Tổng cộng</strong></th>
               </tr>
             </thead>
             <tbody>

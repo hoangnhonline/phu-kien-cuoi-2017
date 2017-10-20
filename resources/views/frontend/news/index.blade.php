@@ -22,7 +22,7 @@
           <div class="item">
             <div class="thumb">
               <a href="{{ route('news-detail', [ $obj->cate->slug, $obj->slug, $obj->id ]) }}">
-                <img src="{!! Helper::showImage($obj->image_url) !!}" alt="{!! $obj->title !!}">
+                <img src="{{ $obj->image_url ? Helper::showImage($obj->image_url) : URL::asset('public/assets/images/no-img.jpg') }}" alt="{!! $obj->title !!}">
               </a>
             </div>
             <div class="des">

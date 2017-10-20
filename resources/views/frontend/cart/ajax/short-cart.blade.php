@@ -36,7 +36,7 @@ $total = 0;
 										<figure class="img-prod">
 											<img alt="{!! $product->name !!}" src="{{ Helper::showImage($product['image_url']) }}">
 										</figure>
-										<a href="{{ route('product', [$product->slug, $product->id]) }}" target="_blank" title="{!! $product->name !!}">{!! $product->name !!}</a>
+										<a href="{{ route('product', [$product->slug]) }}" target="_blank" title="{!! $product->name !!}">{!! $product->name !!}</a>
 										<a href="javascript:void(0)" onclick="return confirm('Quý khách chắc chắn muốn xóa sản phẩm này?'); " title="Xóa" data-id="{{ $product->id }}" class="del_item">Xóa</a>
 									</div><!-- /table-cell product-col -->
 									<div class="table-cell price-col t-r">{!! number_format($price) !!}</div><!-- /table-cell price-col t-r -->

@@ -16,7 +16,7 @@
   <!-- Main content -->
   <section class="content">
     <a class="btn btn-default btn-sm" href="{{ route('product.index', ['parent_id' => $detail->parent_id, 'cate_id' => $detail->cate_id]) }}" style="margin-bottom:5px">Quay lại</a>
-    <a class="btn btn-primary btn-sm" href="{{ route('product', [$detail->slug, $detail->id] ) }}" target="_blank" style="margin-top:-6px"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>
+    <a class="btn btn-primary btn-sm" href="{{ route('product', [$detail->slug] ) }}" target="_blank" style="margin-top:-6px"><i class="fa fa-eye" aria-hidden="true"></i> Xem</a>
     <form role="form" method="POST" action="{{ route('product.update') }}" id="dataForm" class="productForm">
     <div class="row">
       <!-- left column -->
@@ -114,7 +114,7 @@
                         </div>
                         <div class="form-group col-md-4 none-padding" >                  
                             <label>Giá<span class="red-star">*</span></label>
-                            <input type="text" class="form-control req number" name="price" id="price" value="{{ old('price', $detail->price) }}">
+                            <input type="text" class="form-control number" name="price" id="price" value="{{ old('price', $detail->price) }}">
                         </div>
                         <div class="form-group col-md-4 pleft-5 none-padding" >                  
                             <label>Giá SALE</label>
@@ -147,7 +147,7 @@
                       
                       <div class="form-group">
                           <label>Chi tiết</label>
-                          <textarea class="form-control" rows="4" name="content" id="content">{{ old('content') }}</textarea>
+                          <textarea class="form-control" rows="4" name="content" id="content">{{ old('content', $detail->content) }}</textarea>
                         </div>  
                         <div class="clearfix"></div>
                     </div><!--end thong tin co ban-->                    
