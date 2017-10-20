@@ -50,7 +50,7 @@
 					<li><a href="{{ $settingArr['facebook_fanpage'] }}" target="_blank"><i class="fa fa-facebook"></i></a></li>
 					<li><a href="{{ $settingArr['google_fanpage'] }}" target="_blank"><i class="fa fa-google"></i></a></li>
 					<li><a href="{{ $settingArr['youtube'] }}" target="_blank"><i class="fa fa-youtube"></i></a></li>
-					<li><a href="skype:{{ $settingArr['skype'] }}?chat"><i class="fa fa-skype"></i></a></li>-->
+					<li><a href="skype:{{ $settingArr['skype'] }}?chat"><i class="fa fa-skype"></i></a></li>
 				</ul>
 			</div>
 		</div>
