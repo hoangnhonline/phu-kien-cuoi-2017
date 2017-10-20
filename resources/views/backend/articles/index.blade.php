@@ -133,3 +133,12 @@
 </div>
 <input type="hidden" id="table_name" value="articles">
 @stop
+@section('javascript_page')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#cate_id').change(function(){
+      $(this).parents('form').submit();
+    });
+  });
+</script>
+@stop

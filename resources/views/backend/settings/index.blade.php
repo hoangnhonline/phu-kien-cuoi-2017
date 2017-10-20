@@ -68,6 +68,10 @@
                   <input type="text" class="form-control" name="youtube" id="youtube" value="{{ $settingArr['youtube'] }}">
                 </div>
                 <div class="form-group">
+                  <label>Nick skype</label>
+                  <input type="text" class="form-control" name="skype" id="skype" value="{{ $settingArr['skype'] }}">
+                </div>
+                <div class="form-group">
                   <label>Email CC</label>
                   <textarea class="form-control" rows="3" name="email_cc" id="email_cc">{{ $settingArr['email_cc'] }}</textarea>
                 </div>
